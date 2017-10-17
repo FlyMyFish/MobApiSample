@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">MobApiSample</string>
+    <string name="app_name">FindMe</string>
+    <string name="weather_api_city_list">城市列表</string>
 </resources>
