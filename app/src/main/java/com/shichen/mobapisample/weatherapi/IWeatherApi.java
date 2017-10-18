@@ -1,5 +1,9 @@
 package com.shichen.mobapisample.weatherapi;
 
+import com.shichen.mobapisample.bean.SupportCity;
+import com.shichen.mobapisample.bean.WeatherInfo;
+import com.shichen.mobapisample.bean.WeatherType;
+
 import io.reactivex.Observable;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
@@ -16,18 +20,32 @@ import retrofit2.http.Query;
  * 3.天气类型查询http://apicloud.mob.com/v1/weather/type
  * http://apicloud.mob.com/v1/weather/type?key=appkey
  * key	string	是	用户申请的appkey
+ * @author shichen 754314442@qq.com
  * Created by Administrator on 2017/9/21.
  */
 
 public interface IWeatherApi {
-    @GET("/query")
-    Observable<WeatherInfo> getWeatherInfoByCityAndProvince(@Query("key") String key,
-                                                            @Query("city") String city,
+    /**
+     * 根据省市获取天气信息
+     * @param city 城市名
+     * @param province 省名
+     * @return Observable
+     */
+    @GET("query?key=212d475a7aaa0")
+    Observable<WeatherInfo> getWeatherInfoByCityAndProvince(@Query("city") String city,
                                                             @Query("province") String province);
 
-    @GET("/citys")
-    Observable<SupportCity> getApiSupportCity(@Query("key") String key);
+    /**
+     * 得到现有的城市列表
+     * @return Observable
+     */
+    @GET("citys?key=212d475a7aaa0")
+    Observable<SupportCity> getApiSupportCity();
 
-    @GET("/type")
-    Observable<WeatherType> getApiWeatherType(@Query("key") String key);
+    /**
+     * 天气类型列表
+     * @return Observable
+     */
+    @GET("type?key=212d475a7aaa0")
+    Observable<WeatherType> getApiWeatherType();
 }

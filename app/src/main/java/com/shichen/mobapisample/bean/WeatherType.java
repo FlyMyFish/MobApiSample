@@ -1,10 +1,11 @@
-package com.shichen.mobapisample.weatherapi;
+package com.shichen.mobapisample.bean;
 
 /**
+ * @author shichen 754314442@qq.com
  * Created by Administrator on 2017/9/21.
  */
 
-public class WeatherType {
+public class WeatherType extends BaseResult{
 
     /**
      * msg : success
