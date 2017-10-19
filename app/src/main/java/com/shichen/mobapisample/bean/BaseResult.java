@@ -8,6 +8,10 @@ import com.google.gson.Gson;
  */
 
 public class BaseResult {
+    /**
+     * 转换为json字符串
+     * @return string
+     */
     @Override
     public String toString() {
         return new Gson().toJson(this);

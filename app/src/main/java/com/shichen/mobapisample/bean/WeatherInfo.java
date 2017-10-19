@@ -16,8 +16,17 @@ public class WeatherInfo extends BaseResult{
      * retCode : 200
      */
 
+    /**
+     * 返回说明
+     */
     private String msg;
+    /**
+     * 返回码
+     */
     private String retCode;
+    /**
+     * 返回结果集
+     */
     private List<ResultBean> result;
 
     public String getMsg() {
@@ -67,23 +76,77 @@ public class WeatherInfo extends BaseResult{
          * wind : 南风2级
          */
 
+        /**
+         * 空气质量
+         */
         private String airCondition;
+        /**
+         * 城市
+         */
         private String city;
+        /**
+         * 感冒指数
+         */
         private String coldIndex;
+        /**
+         * 更新时间
+         */
         private String updateTime;
+        /**
+         * 日期
+         */
         private String date;
+        /**
+         * 区县
+         */
         private String distrct;
+        /**
+         * 穿衣指数
+         */
         private String dressingIndex;
+        /**
+         * 运动指数
+         */
         private String exerciseIndex;
+        /**
+         * 湿度
+         */
         private String humidity;
+        /**
+         * 省份
+         */
         private String province;
+        /**
+         * 日落时间
+         */
         private String sunset;
+        /**
+         * 日出时间
+         */
         private String sunrise;
+        /**
+         * 温度
+         */
         private String temperature;
+        /**
+         * 时间
+         */
         private String time;
+        /**
+         * 洗车指数
+         */
         private String washIndex;
+        /**
+         * 天气
+         */
         private String weather;
+        /**
+         * 星期
+         */
         private String week;
+        /**
+         * 风向
+         */
         private String wind;
         private List<FutureBean> future;
 
@@ -249,11 +312,29 @@ public class WeatherInfo extends BaseResult{
              * wind : 无持续风向小于3级
              */
 
+            /**
+             * 日期
+             */
             private String date;
+            /**
+             * 白天天气
+             */
             private String dayTime;
+            /**
+             * 晚上天气
+             */
             private String night;
+            /**
+             * 温度
+             */
             private String temperature;
+            /**
+             * 星期
+             */
             private String week;
+            /**
+             * 风向
+             */
             private String wind;
 
             public String getDate() {

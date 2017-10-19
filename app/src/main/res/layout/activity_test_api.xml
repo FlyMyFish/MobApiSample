@@ -22,6 +22,7 @@
             <android.support.v7.widget.Toolbar
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
+                app:title="@string/test_api"
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
         </android.support.design.widget.AppBarLayout>
 
@@ -29,5 +30,18 @@
             style="@style/NormalBigBtnStyle"
             android:onClick="@{()->mHandler.getCityList()}"
             android:text="@string/weather_api_city_list" />
+        <Button
+            style="@style/NormalBigBtnStyle"
+            android:onClick="@{()->mHandler.getWeatherDataByProvinceAndCity()}"
+            android:text="@string/province_city_weather" />
+        <Button
+            style="@style/NormalBigBtnStyle"
+            android:onClick="@{()->mHandler.getWeatherType()}"
+            android:text="@string/weather_type" />
+        <ImageView
+            android:layout_width="200dp"
+            android:id="@+id/img_moon"
+            android:background="@color/colorAccent"
+            android:layout_height="200dp" />
     </LinearLayout>
 </layout>
