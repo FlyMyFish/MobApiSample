@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">FindMe</string>
     <string name="weather_api_city_list">城市列表</string>
+    <string name="api_result">接口数据</string>
+    <string name="ensure">确定</string>
+    <string name="test_api">测试接口</string>
 </resources>

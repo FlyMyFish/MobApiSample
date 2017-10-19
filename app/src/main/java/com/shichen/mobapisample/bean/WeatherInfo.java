@@ -1,13 +1,14 @@
-package com.shichen.mobapisample.weatherapi;
+package com.shichen.mobapisample.bean;
 
 import java.util.List;
 
 /**
  * 天气类
+ * @author shichen 754314442@qq.com
  * Created by Administrator on 2017/9/21.
  */
 
-public class WeatherInfo {
+public class WeatherInfo extends BaseResult{
 
     /**
      * msg : success
