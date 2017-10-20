@@ -5,6 +5,8 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.Toolbar;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -36,19 +38,29 @@ public class TestApiActivity extends BaseActivity {
         ActivityTestApiBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_test_api);
         binding.setMHandler(new TestApiHandler());
         weatherApi = getRetrofit().create(IWeatherApi.class);
-        ImageView imgMoon = (ImageView) findViewById(R.id.img_moon);
-        imgMoon.setImageDrawable(new MoonDrawable(getApplicationContext(), imgMoon));
+        Toolbar toolbar=(Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        //设置返回键可用
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
     public class TestApiHandler {
         public void getCityList() {
+            showLoadingDialog();
             weatherApi.getApiSupportCity()
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(new Observer<SupportCity>() {
                         @Override
                         public void onSubscribe(@NonNull Disposable disposable) {
-
+                            mDisposable=disposable;
                         }
 
                         @Override
@@ -67,25 +79,27 @@ public class TestApiActivity extends BaseActivity {
 
                         @Override
                         public void onError(@NonNull Throwable throwable) {
+                            disMissLoadingDialog();
                             Toast.makeText(getApplicationContext(), throwable.getMessage(), Toast.LENGTH_LONG).show();
                             throwable.printStackTrace();
                         }
 
                         @Override
                         public void onComplete() {
-
+                            disMissLoadingDialog();
                         }
                     });
         }
 
         public void getWeatherDataByProvinceAndCity() {
+            showLoadingDialog();
             weatherApi.getWeatherInfoByCityAndProvince("郑州", "河南")
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(new Observer<WeatherInfo>() {
                         @Override
                         public void onSubscribe(@NonNull Disposable d) {
-
+                            mDisposable=d;
                         }
 
                         @Override
@@ -104,25 +118,27 @@ public class TestApiActivity extends BaseActivity {
 
                         @Override
                         public void onError(@NonNull Throwable e) {
+                            disMissLoadingDialog();
                             Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
                             e.printStackTrace();
                         }
 
                         @Override
                         public void onComplete() {
-
+                            disMissLoadingDialog();
                         }
                     });
         }
 
         public void getWeatherType() {
+            showLoadingDialog();
             weatherApi.getApiWeatherType()
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(new Observer<WeatherType>() {
                         @Override
                         public void onSubscribe(@NonNull Disposable d) {
-
+                            mDisposable=d;
                         }
 
                         @Override
@@ -141,13 +157,14 @@ public class TestApiActivity extends BaseActivity {
 
                         @Override
                         public void onError(@NonNull Throwable e) {
+                            disMissLoadingDialog();
                             Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
                             e.printStackTrace();
                         }
 
                         @Override
                         public void onComplete() {
-
+                            disMissLoadingDialog();
                         }
                     });
         }

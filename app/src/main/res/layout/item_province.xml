@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+
+        <variable
+            name="dataStr"
+            type="String" />
+
+        <variable
+            name="handler"
+            type="com.shichen.mobapisample.PickTargetCityActivity.PickTargetCityHandler" />
+    </data>
+
+    <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:onClick="@{() -> handler.pickProvince(dataStr)}"
+        android:paddingBottom="@dimen/normal_top_blank_block"
+        android:paddingTop="@dimen/normal_top_blank_block"
+        android:text="@{dataStr}"
+        android:textColor="@color/colorAccent"
+        android:textSize="@dimen/normalTextSize">
+
+    </TextView>
+</layout>

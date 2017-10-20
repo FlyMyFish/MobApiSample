@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="normalTextSize">16sp</dimen>
+    <dimen name="normal_top_blank_block">10dp</dimen>
+</resources>

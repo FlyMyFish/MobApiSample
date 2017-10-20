@@ -123,4 +123,22 @@ public class SupportCity extends BaseResult {
             }
         }
     }
+
+    public List<ResultBean.CityBean> getCityListByProvince(String province) {
+        for (int i = 0; i < result.size(); i++) {
+            if (result.get(i).getProvince().equals(province)) {
+                return result.get(i).getCity();
+            }
+        }
+        return null;
+    }
+
+    public List<ResultBean.CityBean.DistrictBean> getDistrictListByCity(List<ResultBean.CityBean> cityList, String city) {
+        for (int i = 0; i < cityList.size(); i++) {
+            if (cityList.get(i).getCity().equals(city)) {
+                return cityList.get(i).getDistrict();
+            }
+        }
+        return null;
+    }
 }
