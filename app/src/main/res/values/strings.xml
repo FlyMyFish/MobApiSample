@@ -15,4 +15,5 @@
     <string name="province">省</string>
     <string name="city">市</string>
     <string name="district">县</string>
+    <string name="change">切换</string>
 </resources>

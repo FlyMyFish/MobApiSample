@@ -32,17 +32,17 @@ public class PickTargetCityActivity extends BaseActivity {
         binding.setProvinceList(supportCity.getResult());
         binding.setHandler(new PickTargetCityHandler());
         targetCity = new TargetCity();
-        Toolbar toolbar=(Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar=binding.toolbar;
         setSupportActionBar(toolbar);
-        //设置返回键可用
-        getSupportActionBar().setHomeButtonEnabled(true);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
             }
         });
+        //设置返回键可用
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     private List<SupportCity.ResultBean.CityBean> cityList;

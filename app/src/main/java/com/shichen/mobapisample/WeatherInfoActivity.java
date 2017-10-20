@@ -9,6 +9,8 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.shichen.mobapisample.bean.TargetCity;
@@ -29,24 +31,38 @@ import io.reactivex.schedulers.Schedulers;
  * @author shichen 754314442@qq.com
  */
 
-public class WeatherInfoActivity extends BaseActivity{
+public class WeatherInfoActivity extends BaseActivity {
     private ActivityWeatherInfoBinding binding;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding= DataBindingUtil.setContentView(this,R.layout.activity_weather_info);
-        sharePreferenceUtils=new SharePreferenceUtils(getApplicationContext());
-        Toolbar toolbar=(Toolbar) findViewById(R.id.toolbar);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_weather_info);
+        sharePreferenceUtils = new SharePreferenceUtils(getApplicationContext());
+        Toolbar toolbar = binding.toolbar;
         setSupportActionBar(toolbar);
-        //设置返回键可用
-        getSupportActionBar().setHomeButtonEnabled(true);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
             }
         });
+        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.item_pick_city:
+                        startActivity(new Intent(WeatherInfoActivity.this, PickTargetCityActivity.class));
+                        break;
+                    default:
+                        break;
+                }
+                return false;
+            }
+        });
+        getSupportActionBar().setHomeButtonEnabled(true);
+        //设置返回键可用
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     private SharePreferenceUtils sharePreferenceUtils;
@@ -57,30 +73,30 @@ public class WeatherInfoActivity extends BaseActivity{
         initData();
     }
 
-    private void initData(){
-        String targetCityStr=sharePreferenceUtils.getData(Config.TARGET_CITY);
-        if (!TextUtils.isEmpty(targetCityStr)){
-            TargetCity targetCity=mGson.fromJson(targetCityStr,TargetCity.class);
+    private void initData() {
+        String targetCityStr = sharePreferenceUtils.getData(Config.TARGET_CITY);
+        if (!TextUtils.isEmpty(targetCityStr)) {
+            TargetCity targetCity = mGson.fromJson(targetCityStr, TargetCity.class);
             binding.setCity(targetCity);
             getWeatherInfo(targetCity);
-        }else {
-            AlertDialog.Builder builder=new AlertDialog.Builder(this);
+        } else {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle(getString(R.string.kindly_reminder))
                     .setMessage(getString(R.string.need_pick_city))
                     .setPositiveButton(R.string.ensure, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            startActivity(new Intent(WeatherInfoActivity.this,PickTargetCityActivity.class));
+                            startActivity(new Intent(WeatherInfoActivity.this, PickTargetCityActivity.class));
                         }
                     })
                     .create().show();
         }
     }
 
-    private void getWeatherInfo(TargetCity targetCity){
+    private void getWeatherInfo(TargetCity targetCity) {
         showLoadingDialog(getString(R.string.weather_info));
         getRetrofit().create(IWeatherApi.class)
-                .getWeatherInfoByCityAndProvince(targetCity.getCity(),targetCity.getProvince())
+                .getWeatherInfoByCityAndProvince(targetCity.getCity(), targetCity.getProvince())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<WeatherInfo>() {
@@ -92,6 +108,7 @@ public class WeatherInfoActivity extends BaseActivity{
                     @Override
                     public void onNext(@NonNull WeatherInfo weatherInfo) {
                         binding.setWeatherInfo(weatherInfo.toString());
+                        Log.d("WeatherInfo",weatherInfo.toString());
                     }
 
                     @Override
@@ -105,5 +122,11 @@ public class WeatherInfoActivity extends BaseActivity{
                         disMissLoadingDialog();
                     }
                 });
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_weather_info, menu);
+        return true;
     }
 }
