@@ -63,6 +63,7 @@ public class WeatherInfoActivity extends BaseActivity {
         getSupportActionBar().setHomeButtonEnabled(true);
         //设置返回键可用
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        binding.imgWeather.setImageDrawable(new WeatherTypeDrawable(getApplicationContext(),binding.imgWeather));
     }
 
     private SharePreferenceUtils sharePreferenceUtils;
