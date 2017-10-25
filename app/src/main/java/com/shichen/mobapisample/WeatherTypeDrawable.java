@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.ColorFilter;
 import android.graphics.Paint;
+import android.graphics.Path;
 import android.graphics.PixelFormat;
 import android.graphics.RectF;
 import android.graphics.drawable.Animatable;
@@ -13,6 +14,12 @@ import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.Animation;
+import android.view.animation.Transformation;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by shichen on 2017/10/20.
@@ -24,11 +31,26 @@ public class WeatherTypeDrawable extends Drawable implements Animatable {
     private Context context;
     private View parent;
     private Paint cloudPaint;
+    private Paint linePaint;
+    private List<Double> randomList = new ArrayList<>();
 
     public WeatherTypeDrawable(Context context, View parent) {
         this.context = context;
         this.parent = parent;
         initCloudPaint();
+        initLinePaint();
+        initRainDownAnim();
+        for (int i = 0; i < 15; i++) {
+            randomList.add(Math.random());
+        }
+        start();
+    }
+
+    private void initLinePaint() {
+        linePaint = new Paint();
+        linePaint.setAntiAlias(true);
+        linePaint.setColor(Color.WHITE);
+        linePaint.setStyle(Paint.Style.FILL);
     }
 
     private void initCloudPaint() {
@@ -40,12 +62,13 @@ public class WeatherTypeDrawable extends Drawable implements Animatable {
 
     @Override
     public void start() {
-
+        rainDownAnim.reset();
+        parent.startAnimation(rainDownAnim);
     }
 
     @Override
     public void stop() {
-
+        parent.clearAnimation();
     }
 
     @Override
@@ -57,6 +80,44 @@ public class WeatherTypeDrawable extends Drawable implements Animatable {
     public void draw(@NonNull Canvas canvas) {
         RectF rectF = new RectF(getBounds());
         drawCloud(canvas, rectF.width(), 0, 0);
+        drawSun(canvas, rectF.width(), 0, 0);
+        drawRain(canvas, rectF.width(), 0, 0);
+    }
+
+    private void drawRain(Canvas canvas, float widthF, float transLateX, float transLateY) {
+        for (int i = 0; i < 15; i++) {
+            drawRainPoint(canvas, widthF, Float.valueOf(String.valueOf(randomList.get(i) * widthF)), widthF * rainPosition);
+        }
+    }
+
+    private void drawRainPoint(Canvas canvas, float widthF, float xF, float yF) {
+        float totalH = widthF / 4 / 8;
+        float radiusF = totalH / 8;
+        RectF rectF = new RectF();
+        rectF.set(xF, yF + totalH - radiusF * 2, xF + radiusF * 2, yF + totalH);
+        canvas.drawArc(rectF, 180, -180, false, linePaint);
+        Path path = new Path();
+        path.moveTo(xF + radiusF, yF);
+        path.lineTo(xF, yF + totalH - radiusF);
+        path.lineTo(xF + radiusF * 2, yF + totalH - radiusF);
+        path.close();
+        canvas.drawPath(path, linePaint);
+    }
+
+    private void drawSun(Canvas canvas, float widthF, float transLateX, float transLateY) {
+        canvas.drawCircle(widthF / 8 + transLateX, widthF / 4 + transLateY, widthF / 12, cloudPaint);
+        float lineW = widthF / 12 / 12;
+        float lineH = widthF / 4 / 8;
+        for (int i = 0; i < 12; i++) {
+            Path path = new Path();
+            path.moveTo(widthF / 8 - lineW / 2 + transLateX, widthF / 8 + transLateY);
+            path.lineTo(widthF / 8 + lineW / 2 + transLateX, widthF / 8 + transLateY);
+            path.lineTo(widthF / 8 + lineW / 2 + transLateX, widthF / 8 + lineH + transLateY);
+            path.lineTo(widthF / 8 - lineW / 2 + transLateX, widthF / 8 + lineH + transLateY);
+            path.close();
+            canvas.drawPath(path, linePaint);
+            canvas.rotate(30, widthF / 8 + transLateX, widthF / 4 + transLateY);
+        }
     }
 
     private void drawCloud(Canvas canvas, float widthF, float transLateX, float transLateY) {
@@ -83,5 +144,24 @@ public class WeatherTypeDrawable extends Drawable implements Animatable {
     @Override
     public int getOpacity() {
         return PixelFormat.TRANSLUCENT;
+    }
+
+    private Animation rainDownAnim;
+
+    private float rainPosition;
+
+    private void initRainDownAnim() {
+        Animation animation = new Animation() {
+            @Override
+            protected void applyTransformation(float interpolatedTime, Transformation t) {
+                rainPosition = interpolatedTime;
+                invalidateSelf();
+            }
+        };
+        animation.setRepeatCount(Animation.INFINITE);
+        animation.setRepeatMode(Animation.RESTART);
+        animation.setDuration(1000);
+        animation.setInterpolator(new AccelerateInterpolator());
+        rainDownAnim = animation;
     }
 }
