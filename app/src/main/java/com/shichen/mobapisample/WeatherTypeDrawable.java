@@ -32,7 +32,6 @@ public class WeatherTypeDrawable extends Drawable implements Animatable {
     private View parent;
     private Paint cloudPaint;
     private Paint linePaint;
-    private List<Double> randomList = new ArrayList<>();
 
     public WeatherTypeDrawable(Context context, View parent) {
         this.context = context;
@@ -40,9 +39,6 @@ public class WeatherTypeDrawable extends Drawable implements Animatable {
         initCloudPaint();
         initLinePaint();
         initRainDownAnim();
-        for (int i = 0; i < 15; i++) {
-            randomList.add(Math.random());
-        }
         start();
     }
 
@@ -85,13 +81,10 @@ public class WeatherTypeDrawable extends Drawable implements Animatable {
     }
 
     private void drawRain(Canvas canvas, float widthF, float transLateX, float transLateY) {
-        for (int i = 0; i < 15; i++) {
-            drawRainPoint(canvas, widthF, Float.valueOf(String.valueOf(randomList.get(i) * widthF)), widthF * rainPosition);
-        }
+        drawRainPoint(canvas, widthF / 16, widthF * widthPer, widthF * rainPosition);
     }
 
-    private void drawRainPoint(Canvas canvas, float widthF, float xF, float yF) {
-        float totalH = widthF / 4 / 8;
+    private void drawRainPoint(Canvas canvas, float totalH, float xF, float yF) {
         float radiusF = totalH / 8;
         RectF rectF = new RectF();
         rectF.set(xF, yF + totalH - radiusF * 2, xF + radiusF * 2, yF + totalH);
@@ -150,6 +143,8 @@ public class WeatherTypeDrawable extends Drawable implements Animatable {
 
     private float rainPosition;
 
+    private float widthPer = 0.5f;
+
     private void initRainDownAnim() {
         Animation animation = new Animation() {
             @Override
@@ -158,6 +153,22 @@ public class WeatherTypeDrawable extends Drawable implements Animatable {
                 invalidateSelf();
             }
         };
+        animation.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+                widthPer = Float.valueOf(String.valueOf(Math.random()));
+            }
+        });
         animation.setRepeatCount(Animation.INFINITE);
         animation.setRepeatMode(Animation.RESTART);
         animation.setDuration(1000);

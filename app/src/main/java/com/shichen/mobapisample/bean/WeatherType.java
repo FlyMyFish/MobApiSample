@@ -43,4 +43,20 @@ public class WeatherType extends BaseResult {
     public void setRetCode(String retCode) {
         this.retCode = retCode;
     }
+
+    public static final String BIG_CLOUD = "多云";
+    public static final String SMALL_CLOUD = "少云";
+    public static final String BIG_SUN = "晴";
+    public static final String BLACK_CLOUD = "阴";
+    public static final String SMALL_RAIN = "小雨";
+    public static final String NORMAL_RAIN = "雨";
+    public static final String THUNDER_CIRCLE_RAIN = "雷阵雨";
+    public static final String MIDDLE_RAIN = "中雨";
+    public static final String CIRCLE_RAIN = "阵雨";
+    public static final String ZERO_CIRCLE_RAIN = "零散阵雨";
+    public static final String ZERO_THUNDER_RAIN = "零散雷雨";
+    public static final String SMALL_SNOW = "小雪";
+    public static final String RAIN_ADD_SNOW = "雨夹雪";
+    public static final String CIRCLE_SNOW = "阵雪";
+    public static final String HAZE = "霾";
 }

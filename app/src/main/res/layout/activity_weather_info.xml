@@ -5,7 +5,7 @@
 
         <variable
             name="weatherInfo"
-            type="String" />
+            type="com.shichen.mobapisample.bean.WeatherInfo" />
 
         <variable
             name="city"
@@ -34,23 +34,9 @@
                 app:title="@{city.city}" />
         </android.support.design.widget.AppBarLayout>
 
-        <FrameLayout
+        <com.shichen.mobapisample.WeatherView
+            app:weatherInfo="@{weatherInfo}"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <ImageView
-                android:id="@+id/img_weather"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-
-            <TextView
-                android:visibility="gone"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scrollbars="vertical"
-                android:text="@{weatherInfo}"
-                android:textColor="@color/colorAccent"
-                android:textSize="@dimen/normalTextSize" />
-        </FrameLayout>
+            android:layout_height="match_parent" />
     </LinearLayout>
 </layout>
