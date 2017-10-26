@@ -200,7 +200,7 @@ public class WeatherView extends FrameLayout {
     }
 
     private void addRainView() {
-        Observable.interval(500, TimeUnit.MILLISECONDS)
+        Observable.interval(100, TimeUnit.MILLISECONDS)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<Long>() {

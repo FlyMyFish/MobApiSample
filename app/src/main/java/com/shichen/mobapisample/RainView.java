@@ -8,6 +8,7 @@ import android.graphics.Path;
 import android.graphics.RectF;
 import android.graphics.drawable.Animatable;
 import android.view.View;
+import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.Transformation;
 
@@ -36,7 +37,7 @@ public class RainView extends View implements Animatable {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        drawRainPoint(canvas, getWidth() * 4, 0, getHeight() * rainPosition);
+        drawRainPoint(canvas, getWidth() * 4, 0, getHeight()  * rainPosition- getWidth() * 4);
     }
 
     private void drawRainPoint(Canvas canvas, float totalH, float xF, float yF) {
@@ -81,9 +82,10 @@ public class RainView extends View implements Animatable {
 
             }
         });
-        animation.setDuration(2000);
+        animation.setDuration(1500);
         animation.setRepeatCount(0);
         animation.setRepeatMode(Animation.RESTART);
+        animation.setInterpolator(new AccelerateInterpolator());
         rainDropAnim = animation;
     }
 
