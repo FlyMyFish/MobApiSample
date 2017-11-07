@@ -1,14 +1,17 @@
 package com.shichen.mobapisample.utils;
 
 import android.databinding.BindingAdapter;
+import android.graphics.drawable.Drawable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.widget.ImageView;
 
-import com.shichen.mobapisample.CityListAdapter;
-import com.shichen.mobapisample.DistrictListAdapter;
-import com.shichen.mobapisample.PickTargetCityActivity;
-import com.shichen.mobapisample.ProvinceListAdapter;
-import com.shichen.mobapisample.WeatherView;
+
+import com.shichen.mobapisample.weatherpart.CityListAdapter;
+import com.shichen.mobapisample.weatherpart.DistrictListAdapter;
+import com.shichen.mobapisample.weatherpart.PickTargetCityActivity;
+import com.shichen.mobapisample.weatherpart.ProvinceListAdapter;
+import com.shichen.mobapisample.weatherview.WeatherView;
 import com.shichen.mobapisample.bean.SupportCity;
 import com.shichen.mobapisample.bean.WeatherInfo;
 
@@ -42,5 +45,10 @@ public class PickCityUtility {
     @BindingAdapter({"weatherInfo"})
     public static void setWeatherInfo(WeatherView weatherView, WeatherInfo weatherInfo) {
         weatherView.setWeatherInfo(weatherInfo);
+    }
+
+    @BindingAdapter({"weatherDrawable"})
+    public static void setDrawable(ImageView imageView, Drawable drawable){
+        imageView.setImageDrawable(drawable);
     }
 }

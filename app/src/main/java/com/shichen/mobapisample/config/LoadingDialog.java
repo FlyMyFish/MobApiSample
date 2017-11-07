@@ -1,4 +1,4 @@
-package com.shichen.mobapisample;
+package com.shichen.mobapisample.config;
 
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -10,6 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.shichen.mobapisample.R;
 
 /**
  * Created by shichen on 2017/10/20.

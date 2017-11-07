@@ -1,4 +1,4 @@
-package com.shichen.mobapisample;
+package com.shichen.mobapisample.config;
 
 /**
  * Created by shichen on 2017/10/20.

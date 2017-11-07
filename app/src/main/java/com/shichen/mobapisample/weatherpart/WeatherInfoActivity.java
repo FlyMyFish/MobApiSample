@@ -1,4 +1,4 @@
-package com.shichen.mobapisample;
+package com.shichen.mobapisample.weatherpart;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -13,8 +13,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.shichen.mobapisample.R;
 import com.shichen.mobapisample.bean.TargetCity;
 import com.shichen.mobapisample.bean.WeatherInfo;
+import com.shichen.mobapisample.config.BaseActivity;
+import com.shichen.mobapisample.config.Config;
 import com.shichen.mobapisample.databinding.ActivityWeatherInfoBinding;
 import com.shichen.mobapisample.utils.SharePreferenceUtils;
 import com.shichen.mobapisample.weatherapi.IWeatherApi;
@@ -102,13 +105,12 @@ public class WeatherInfoActivity extends BaseActivity {
                 .subscribe(new Observer<WeatherInfo>() {
                     @Override
                     public void onSubscribe(@NonNull Disposable d) {
-
+                        mDisposable=d;
                     }
 
                     @Override
                     public void onNext(@NonNull WeatherInfo weatherInfo) {
                         binding.setWeatherInfo(weatherInfo);
-                        Log.d("WeatherInfo", weatherInfo.toString());
                     }
 
                     @Override
@@ -128,5 +130,11 @@ public class WeatherInfoActivity extends BaseActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_weather_info, menu);
         return true;
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        binding.wvMain.onPause();
     }
 }

@@ -1,4 +1,4 @@
-package com.shichen.mobapisample;
+package com.shichen.mobapisample.weatherview;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -77,11 +77,11 @@ public class WeatherTypeDrawable extends Drawable implements Animatable {
         RectF rectF = new RectF(getBounds());
         drawCloud(canvas, rectF.width(), 0, 0);
         drawSun(canvas, rectF.width(), 0, 0);
-        drawRain(canvas, rectF.width(), 0, 0);
+        drawRain(canvas, rectF.width(), rectF.width() / 2, rectF.height());
     }
 
-    private void drawRain(Canvas canvas, float widthF, float transLateX, float transLateY) {
-        drawRainPoint(canvas, widthF / 16, widthF * widthPer, widthF * rainPosition);
+    private void drawRain(Canvas canvas, float widthF, float positionX, float positionY) {
+        drawRainPoint(canvas, widthF / 16, positionX / 2, positionY * rainPosition);
     }
 
     private void drawRainPoint(Canvas canvas, float totalH, float xF, float yF) {
@@ -143,7 +143,6 @@ public class WeatherTypeDrawable extends Drawable implements Animatable {
 
     private float rainPosition;
 
-    private float widthPer = 0.5f;
 
     private void initRainDownAnim() {
         Animation animation = new Animation() {
@@ -153,22 +152,6 @@ public class WeatherTypeDrawable extends Drawable implements Animatable {
                 invalidateSelf();
             }
         };
-        animation.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-                widthPer = Float.valueOf(String.valueOf(Math.random()));
-            }
-        });
         animation.setRepeatCount(Animation.INFINITE);
         animation.setRepeatMode(Animation.RESTART);
         animation.setDuration(1000);

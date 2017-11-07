@@ -1,4 +1,4 @@
-package com.shichen.mobapisample;
+package com.shichen.mobapisample.config;
 
 import android.content.Context;
 import android.graphics.Canvas;

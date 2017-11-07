@@ -1,4 +1,4 @@
-package com.shichen.mobapisample;
+package com.shichen.mobapisample.config;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;

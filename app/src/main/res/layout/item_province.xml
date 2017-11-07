@@ -9,7 +9,7 @@
 
         <variable
             name="handler"
-            type="com.shichen.mobapisample.PickTargetCityActivity.PickTargetCityHandler" />
+            type="com.shichen.mobapisample.weatherpart.PickTargetCityActivity.PickTargetCityHandler" />
     </data>
 
     <TextView xmlns:android="http://schemas.android.com/apk/res/android"

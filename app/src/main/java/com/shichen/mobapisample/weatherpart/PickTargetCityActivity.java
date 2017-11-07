@@ -1,4 +1,4 @@
-package com.shichen.mobapisample;
+package com.shichen.mobapisample.weatherpart;
 
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -6,8 +6,11 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
+import com.shichen.mobapisample.R;
 import com.shichen.mobapisample.bean.SupportCity;
 import com.shichen.mobapisample.bean.TargetCity;
+import com.shichen.mobapisample.config.BaseActivity;
+import com.shichen.mobapisample.config.Config;
 import com.shichen.mobapisample.databinding.ActivityPickTargetCityBinding;
 import com.shichen.mobapisample.utils.SharePreferenceUtils;
 

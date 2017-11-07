@@ -1,12 +1,15 @@
-package com.shichen.mobapisample;
+package com.shichen.mobapisample.config;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
+import com.shichen.mobapisample.R;
 import com.shichen.mobapisample.bean.SupportCity;
 import com.shichen.mobapisample.utils.SharePreferenceUtils;
 import com.shichen.mobapisample.weatherapi.IWeatherApi;
+import com.shichen.mobapisample.weatherpart.TestApiActivity;
+import com.shichen.mobapisample.weatherpart.WeatherInfoActivity;
 
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;

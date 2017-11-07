@@ -1,4 +1,4 @@
-package com.shichen.mobapisample;
+package com.shichen.mobapisample.weatherpart;
 
 import android.content.DialogInterface;
 import android.databinding.DataBindingUtil;
@@ -10,9 +10,11 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.shichen.mobapisample.R;
 import com.shichen.mobapisample.bean.SupportCity;
 import com.shichen.mobapisample.bean.WeatherInfo;
 import com.shichen.mobapisample.bean.WeatherType;
+import com.shichen.mobapisample.config.BaseActivity;
 import com.shichen.mobapisample.databinding.ActivityTestApiBinding;
 import com.shichen.mobapisample.weatherapi.IWeatherApi;
 

@@ -34,9 +34,11 @@
                 app:title="@{city.city}" />
         </android.support.design.widget.AppBarLayout>
 
-        <com.shichen.mobapisample.WeatherView
-            app:weatherInfo="@{weatherInfo}"
+        <com.shichen.mobapisample.weatherview.WeatherView
+            android:id="@+id/wv_main"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            app:weatherInfo="@{weatherInfo}" />
+
     </LinearLayout>
 </layout>

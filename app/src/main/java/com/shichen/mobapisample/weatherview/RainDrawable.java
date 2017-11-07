@@ -1,10 +1,11 @@
-package com.shichen.mobapisample;
+package com.shichen.mobapisample.weatherview;
 
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.ColorFilter;
 import android.graphics.Paint;
+import android.graphics.Path;
 import android.graphics.PixelFormat;
 import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
@@ -18,12 +19,12 @@ import android.view.View;
  * @author shichen 754314442@qq.com
  */
 
-public class CloudDrawable extends Drawable {
+public class RainDrawable extends Drawable {
     private Context context;
     private View parent;
     private Paint cloudPaint;
 
-    public CloudDrawable(Context context, View parent) {
+    public RainDrawable(Context context, View parent) {
         this.context = context;
         this.parent = parent;
         initCloudPaint();
@@ -39,18 +40,20 @@ public class CloudDrawable extends Drawable {
     @Override
     public void draw(@NonNull Canvas canvas) {
         RectF rectF = new RectF(getBounds());
-        drawCloud(canvas, rectF.width(), 0, 0);
+        drawRainPoint(canvas, rectF.height(), 0, 0);
     }
 
-    private void drawCloud(Canvas canvas, float widthF, float transLateX, float transLateY) {
-        canvas.drawCircle(0 + transLateX, 0 + transLateY, widthF / 8, cloudPaint);
-        canvas.drawCircle(widthF / 16 + transLateX, 0 + transLateY, widthF / 9, cloudPaint);
-        canvas.drawCircle(widthF / 4 + transLateX, 0 + transLateY, widthF / 6, cloudPaint);
-        canvas.drawCircle(widthF / 12 * 5 + transLateX, 0 + transLateY, widthF / 7, cloudPaint);
-        canvas.drawCircle(widthF / 2 + transLateX, widthF / 10 + transLateY, widthF / 16, cloudPaint);
-        canvas.drawCircle(widthF / 12 * 5 + widthF / 10 + transLateX, 0 + transLateY, widthF / 10, cloudPaint);
-        canvas.drawCircle(widthF / 4 * 3 - widthF / 16 + transLateX, -widthF / 32 + transLateY, widthF / 9, cloudPaint);
-        canvas.drawCircle(widthF + transLateX, -widthF / 32 + transLateY, widthF / 4, cloudPaint);
+    private void drawRainPoint(Canvas canvas, float totalH, float xF, float yF) {
+        float radiusF = totalH / 8;
+        RectF rectF = new RectF();
+        rectF.set(xF, yF + totalH - radiusF * 2, xF + radiusF * 2, yF + totalH);
+        canvas.drawArc(rectF, 180, -180, false, cloudPaint);
+        Path path = new Path();
+        path.moveTo(xF + radiusF, yF);
+        path.lineTo(xF, yF + totalH - radiusF);
+        path.lineTo(xF + radiusF * 2, yF + totalH - radiusF);
+        path.close();
+        canvas.drawPath(path, cloudPaint);
     }
 
     @Override

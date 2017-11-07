@@ -5,7 +5,7 @@
 
         <variable
             name="mHandler"
-            type="com.shichen.mobapisample.TestApiActivity.TestApiHandler" />
+            type="com.shichen.mobapisample.weatherpart.TestApiActivity.TestApiHandler" />
     </data>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
