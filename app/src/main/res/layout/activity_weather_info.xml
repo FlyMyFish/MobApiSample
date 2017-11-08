@@ -4,6 +4,10 @@
     <data>
 
         <variable
+            name="weatherBean"
+            type="com.shichen.mobapisample.bean.WeatherInfo.WeatherBean" />
+
+        <variable
             name="weatherInfo"
             type="com.shichen.mobapisample.bean.WeatherInfo" />
 
@@ -34,11 +38,218 @@
                 app:title="@{city.city}" />
         </android.support.design.widget.AppBarLayout>
 
-        <com.shichen.mobapisample.weatherview.WeatherView
-            android:id="@+id/wv_main"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:weatherInfo="@{weatherInfo}" />
+            android:layout_height="match_parent">
+
+            <com.shichen.mobapisample.weatherview.WeatherView
+                android:id="@+id/wv_main"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:weatherInfo="@{weatherInfo}" />
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="@dimen/normal_top_blank_block"
+                android:layout_marginLeft="@dimen/normal_top_blank_block"
+                android:layout_marginRight="@dimen/normal_top_blank_block"
+                android:layout_marginTop="150dp"
+                android:background="@drawable/shape_no_stroke_translate_solid_round"
+                android:padding="@dimen/normal_top_blank_block">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/tv_weather"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@{weatherBean.weather}"
+                        android:textColor="@color/colorWhite"
+                        android:textSize="@dimen/normalTextSize" />
+
+                    <TextView
+                        android:id="@+id/tv_temperature"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/tv_weather"
+                        android:text="@{weatherBean.temperature}"
+                        android:textColor="@color/colorWhite"
+                        android:textSize="36sp" />
+
+                    <LinearLayout
+                        android:id="@+id/ll_weather_index"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/tv_temperature"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/tv_airCondition"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@{weatherBean.airCondition}"
+                            android:textColor="@color/colorWhite"
+                            android:textSize="@dimen/normalTextSize" />
+
+                        <View
+                            android:id="@+id/v_slide_airCondition"
+                            android:layout_width="1dp"
+                            android:layout_height="20dp"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="5dp"
+                            android:background="@color/colorWhite" />
+
+                        <TextView
+                            android:id="@+id/tv_wind"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@{weatherBean.wind}"
+                            android:textColor="@color/colorWhite"
+                            android:textSize="@dimen/normalTextSize" />
+
+                        <View
+                            android:id="@+id/v_slide_wind"
+                            android:layout_width="1dp"
+                            android:layout_height="20dp"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="5dp"
+                            android:background="@color/colorWhite" />
+
+                        <TextView
+                            android:id="@+id/tv_humidity"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@{weatherBean.humidity}"
+                            android:textColor="@color/colorWhite"
+                            android:textSize="@dimen/normalTextSize" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/ll_weather_index"
+                        android:layout_marginTop="45dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:id="@+id/ll_weather_washIndex"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center_horizontal"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/wash_index"
+                                android:textColor="@color/colorWhite"
+                                android:textSize="12sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@{weatherBean.washIndex}"
+                                android:textColor="@color/colorWhite"
+                                android:textSize="@dimen/normalTextSize" />
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="1dp"
+                            android:layout_height="45dp"
+                            android:background="@color/colorWhite" />
+
+                        <LinearLayout
+                            android:id="@+id/ll_weather_dressingIndex"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/ll_weather_washIndex"
+                            android:layout_weight="1"
+                            android:gravity="center_horizontal"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/dressing_index"
+                                android:textColor="@color/colorWhite"
+                                android:textSize="12sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@{weatherBean.dressingIndex}"
+                                android:textColor="@color/colorWhite"
+                                android:textSize="@dimen/normalTextSize" />
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="1dp"
+                            android:layout_height="45dp"
+                            android:background="@color/colorWhite" />
+
+                        <LinearLayout
+                            android:id="@+id/ll_weather_exerciseIndex"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/ll_weather_dressingIndex"
+                            android:layout_weight="1"
+                            android:gravity="center_horizontal"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/exercise_index"
+                                android:textColor="@color/colorWhite"
+                                android:textSize="12sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@{weatherBean.exerciseIndex}"
+                                android:textColor="@color/colorWhite"
+                                android:textSize="@dimen/normalTextSize" />
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="1dp"
+                            android:layout_height="45dp"
+                            android:background="@color/colorWhite" />
+
+                        <LinearLayout
+                            android:id="@+id/ll_weather_coldIndex"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/ll_weather_exerciseIndex"
+                            android:layout_weight="1"
+                            android:gravity="center_horizontal"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/cold_index"
+                                android:textColor="@color/colorWhite"
+                                android:textSize="12sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@{weatherBean.coldIndex}"
+                                android:textColor="@color/colorWhite"
+                                android:textSize="@dimen/normalTextSize" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                </RelativeLayout>
+            </ScrollView>
+        </RelativeLayout>
 
     </LinearLayout>
 </layout>

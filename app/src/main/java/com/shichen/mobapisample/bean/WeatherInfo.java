@@ -27,7 +27,7 @@ public class WeatherInfo extends BaseResult{
     /**
      * 返回结果集
      */
-    private List<ResultBean> result;
+    private List<WeatherBean> result;
 
     public String getMsg() {
         return msg;
@@ -45,15 +45,15 @@ public class WeatherInfo extends BaseResult{
         this.retCode = retCode;
     }
 
-    public List<ResultBean> getResult() {
+    public List<WeatherBean> getResult() {
         return result;
     }
 
-    public void setResult(List<ResultBean> result) {
+    public void setResult(List<WeatherBean> result) {
         this.result = result;
     }
 
-    public static class ResultBean {
+    public static class WeatherBean {
         /**
          * airCondition : 良
          * city : 北京

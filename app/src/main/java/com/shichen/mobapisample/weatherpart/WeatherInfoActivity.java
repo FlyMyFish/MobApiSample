@@ -105,12 +105,13 @@ public class WeatherInfoActivity extends BaseActivity {
                 .subscribe(new Observer<WeatherInfo>() {
                     @Override
                     public void onSubscribe(@NonNull Disposable d) {
-                        mDisposable=d;
+                        mDisposable = d;
                     }
 
                     @Override
                     public void onNext(@NonNull WeatherInfo weatherInfo) {
                         binding.setWeatherInfo(weatherInfo);
+                        binding.setWeatherBean(weatherInfo.getResult().get(0));
                     }
 
                     @Override

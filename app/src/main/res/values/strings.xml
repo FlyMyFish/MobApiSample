@@ -16,4 +16,8 @@
     <string name="city">市</string>
     <string name="district">县</string>
     <string name="change">切换</string>
+    <string name="wash_index">晾洗指数</string>
+    <string name="dressing_index">穿衣指南</string>
+    <string name="exercise_index">运动指数</string>
+    <string name="cold_index">感冒系数</string>
 </resources>

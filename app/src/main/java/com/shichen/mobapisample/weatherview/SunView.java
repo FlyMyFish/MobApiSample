@@ -79,7 +79,7 @@ public class SunView extends View implements Animatable {
             }
         };
         animation.setInterpolator(new LinearInterpolator());
-        animation.setDuration(5000);
+        animation.setDuration(50000);
         animation.setRepeatMode(Animation.RESTART);
         animation.setRepeatCount(-1);
         circleAnim = animation;

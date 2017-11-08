@@ -46,9 +46,4 @@ public class PickCityUtility {
     public static void setWeatherInfo(WeatherView weatherView, WeatherInfo weatherInfo) {
         weatherView.setWeatherInfo(weatherInfo);
     }
-
-    @BindingAdapter({"weatherDrawable"})
-    public static void setDrawable(ImageView imageView, Drawable drawable){
-        imageView.setImageDrawable(drawable);
-    }
 }
