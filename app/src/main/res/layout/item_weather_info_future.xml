@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+
+        <variable
+            name="futureBean"
+            type="com.shichen.mobapisample.bean.WeatherInfo.WeatherBean.FutureBean" />
+    </data>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:orientation="vertical">
+        <!--{"date":"2015-09-09",
+        "dayTime":"阵雨",
+        "night":"阴",
+        "temperature":"24°C/18°C",
+        "week":"星期三",
+        "wind":"无持续风向小于3级"}-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{futureBean.date}"
+                android:textColor="@color/colorWhite"
+                android:textSize="18sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{futureBean.week}"
+                android:textColor="@color/colorWhite"
+                android:textSize="18sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+
+            <LinearLayout
+                android:id="@+id/ll_daytime_weather"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/daytime"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{futureBean.dayTime}"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="@dimen/normalTextSize" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="34sp"
+                android:background="@color/colorWhite" />
+
+            <LinearLayout
+                android:id="@+id/ll_night_weather"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/night"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{futureBean.night}"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="@dimen/normalTextSize" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="34sp"
+                android:background="@color/colorWhite" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@{futureBean.temperature}"
+                android:textColor="@color/colorWhite"
+                android:textSize="24sp" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@{futureBean.wind}"
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/normalTextSize" />
+    </LinearLayout>
+</layout>

@@ -1,17 +1,15 @@
 package com.shichen.mobapisample.utils;
 
 import android.databinding.BindingAdapter;
-import android.graphics.drawable.Drawable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.widget.ImageView;
-
 
 import com.shichen.mobapisample.weatherpart.CityListAdapter;
 import com.shichen.mobapisample.weatherpart.DistrictListAdapter;
 import com.shichen.mobapisample.weatherpart.PickTargetCityActivity;
 import com.shichen.mobapisample.weatherpart.ProvinceListAdapter;
-import com.shichen.mobapisample.weatherview.WeatherView;
+import com.shichen.mobapisample.weatherpart.WeatherInfoAdapter;
+import com.shichen.mobapisample.weatherview.WeatherImageView;
 import com.shichen.mobapisample.bean.SupportCity;
 import com.shichen.mobapisample.bean.WeatherInfo;
 
@@ -43,7 +41,13 @@ public class PickCityUtility {
     }
 
     @BindingAdapter({"weatherInfo"})
-    public static void setWeatherInfo(WeatherView weatherView, WeatherInfo weatherInfo) {
+    public static void setWeatherInfo(WeatherImageView weatherView, WeatherInfo weatherInfo) {
         weatherView.setWeatherInfo(weatherInfo);
+    }
+
+    @BindingAdapter({"weatherBean"})
+    public static void setWeatherBean(RecyclerView recyclerView, WeatherInfo.WeatherBean weatherBean) {
+        recyclerView.setLayoutManager(new LinearLayoutManager(recyclerView.getContext(), LinearLayoutManager.VERTICAL, false));
+        recyclerView.setAdapter(new WeatherInfoAdapter(recyclerView.getContext(), weatherBean));
     }
 }

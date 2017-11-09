@@ -20,4 +20,7 @@
     <string name="dressing_index">穿衣指南</string>
     <string name="exercise_index">运动指数</string>
     <string name="cold_index">感冒系数</string>
+    <string name="daytime">白天</string>
+    <string name="night">夜间</string>
+    <string name="future_weather">未来天气</string>
 </resources>

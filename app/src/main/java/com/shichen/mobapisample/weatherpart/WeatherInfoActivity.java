@@ -8,7 +8,6 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -63,9 +62,6 @@ public class WeatherInfoActivity extends BaseActivity {
                 return false;
             }
         });
-        getSupportActionBar().setHomeButtonEnabled(true);
-        //设置返回键可用
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     private SharePreferenceUtils sharePreferenceUtils;
@@ -131,11 +127,5 @@ public class WeatherInfoActivity extends BaseActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_weather_info, menu);
         return true;
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        binding.wvMain.onPause();
     }
 }
