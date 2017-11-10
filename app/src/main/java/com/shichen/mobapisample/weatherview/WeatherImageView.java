@@ -78,6 +78,7 @@ public class WeatherImageView extends SurfaceView implements SurfaceHolder.Callb
 
     /**
      * 配置天气信息
+     *
      * @param weatherInfo 天气信息
      */
     public void setWeatherInfo(WeatherInfo weatherInfo) {
@@ -104,31 +105,39 @@ public class WeatherImageView extends SurfaceView implements SurfaceHolder.Callb
                 break;
             case WeatherType.BLACK_CLOUD:
                 weatherConfig.haveCloud = true;
+                weatherConfig.blackCloud = true;
                 break;
             case WeatherType.CIRCLE_RAIN:
                 weatherConfig.haveSun = true;
                 weatherConfig.haveCloud = true;
                 weatherConfig.haveRain = true;
+                weatherConfig.blackCloud = true;
                 break;
             case WeatherType.CIRCLE_SNOW:
                 weatherConfig.haveCloud = true;
                 weatherConfig.haveSun = true;
                 weatherConfig.haveSnow = true;
+                weatherConfig.blackCloud = true;
                 break;
             case WeatherType.HAZE:
                 weatherConfig.haveHaze = true;
+                weatherConfig.haveCloud = true;
+                weatherConfig.haveSun = true;
                 break;
             case WeatherType.MIDDLE_RAIN:
                 weatherConfig.haveRain = true;
                 weatherConfig.haveCloud = true;
+                weatherConfig.blackCloud = true;
                 break;
             case WeatherType.NORMAL_RAIN:
                 weatherConfig.haveRain = true;
                 weatherConfig.haveCloud = true;
+                weatherConfig.blackCloud = true;
                 break;
             case WeatherType.RAIN_ADD_SNOW:
                 weatherConfig.haveCloud = true;
                 weatherConfig.haveRain = true;
+                weatherConfig.blackCloud = true;
                 weatherConfig.haveSnow = true;
                 break;
             case WeatherType.SMALL_CLOUD:
@@ -138,23 +147,28 @@ public class WeatherImageView extends SurfaceView implements SurfaceHolder.Callb
             case WeatherType.SMALL_RAIN:
                 weatherConfig.haveCloud = true;
                 weatherConfig.haveRain = true;
+                weatherConfig.blackCloud = true;
                 break;
             case WeatherType.THUNDER_CIRCLE_RAIN:
                 weatherConfig.haveSun = true;
+                weatherConfig.blackCloud = true;
                 weatherConfig.haveCloud = true;
                 weatherConfig.haveRain = true;
                 break;
             case WeatherType.ZERO_CIRCLE_RAIN:
                 weatherConfig.haveSun = true;
+                weatherConfig.blackCloud = true;
                 weatherConfig.haveCloud = true;
                 weatherConfig.haveRain = true;
                 break;
             case WeatherType.ZERO_THUNDER_RAIN:
                 weatherConfig.haveSun = true;
+                weatherConfig.blackCloud = true;
                 weatherConfig.haveCloud = true;
                 weatherConfig.haveRain = true;
                 break;
             case WeatherType.SMALL_SNOW:
+                weatherConfig.blackCloud = true;
                 weatherConfig.haveCloud = true;
                 weatherConfig.haveSnow = true;
                 break;
@@ -212,8 +226,15 @@ public class WeatherImageView extends SurfaceView implements SurfaceHolder.Callb
             mCanvas.drawColor(Color.parseColor("#3CA0D0"));
             if (weatherConfig.haveHaze) {
                 mPaint.setColor(0xFFCCCCCC);
+            } else {
+                mPaint.setColor(0xFFFFFFFF);
             }
             if (weatherConfig.haveSun) {
+                if (weatherConfig.blackCloud) {
+                    mPaint.setColor(0xFF44555F);
+                } else {
+                    mPaint.setColor(0xFFFFFFFF);
+                }
                 drawSun(mCanvas, getWidth());
             }
             if (weatherConfig.haveRain) {
@@ -223,6 +244,11 @@ public class WeatherImageView extends SurfaceView implements SurfaceHolder.Callb
                 drawSnow(mCanvas);
             }
             if (weatherConfig.haveCloud) {
+                if (weatherConfig.blackCloud) {
+                    mPaint.setColor(0xFF44555F);
+                } else {
+                    mPaint.setColor(0xFFFFFFFF);
+                }
                 drawCloud(mCanvas, getWidth(), translateX, translateY);
             }
         } catch (Exception e) {
@@ -331,6 +357,7 @@ public class WeatherImageView extends SurfaceView implements SurfaceHolder.Callb
         private boolean haveRain = false;
         private boolean haveSnow = false;
         private boolean haveHaze = false;
+        private boolean blackCloud = false;
 
         private void reset() {
             this.haveHaze = false;
@@ -338,6 +365,7 @@ public class WeatherImageView extends SurfaceView implements SurfaceHolder.Callb
             this.haveSun = false;
             this.haveSnow = false;
             this.haveRain = false;
+            this.blackCloud = false;
         }
     }
 }
