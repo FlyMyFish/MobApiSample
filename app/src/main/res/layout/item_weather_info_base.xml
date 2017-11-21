@@ -6,6 +6,9 @@
         <variable
             name="weatherBean"
             type="com.shichen.mobapisample.bean.WeatherInfo.WeatherBean" />
+        <variable
+            name="handler"
+            type="com.shichen.mobapisample.weatherpart.WeatherInfoActivity.Handler"/>
     </data>
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -51,7 +54,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@{weatherBean.airCondition}"
-                android:textColor="@color/colorWhite"
+                android:textColor="@color/colorAccent"
+                android:onClick="@{() -> handler.airConditionClick()}"
                 android:textSize="@dimen/normalTextSize" />
 
             <View

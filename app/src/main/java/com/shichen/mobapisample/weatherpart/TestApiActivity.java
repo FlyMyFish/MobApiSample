@@ -62,7 +62,7 @@ public class TestApiActivity extends BaseActivity {
                     .subscribe(new Observer<SupportCity>() {
                         @Override
                         public void onSubscribe(@NonNull Disposable disposable) {
-                            mDisposable=disposable;
+                            disposableList.add(disposable);
                         }
 
                         @Override
@@ -101,7 +101,7 @@ public class TestApiActivity extends BaseActivity {
                     .subscribe(new Observer<WeatherInfo>() {
                         @Override
                         public void onSubscribe(@NonNull Disposable d) {
-                            mDisposable=d;
+                            disposableList.add(d);
                         }
 
                         @Override
@@ -140,7 +140,7 @@ public class TestApiActivity extends BaseActivity {
                     .subscribe(new Observer<WeatherType>() {
                         @Override
                         public void onSubscribe(@NonNull Disposable d) {
-                            mDisposable=d;
+                            disposableList.add(d);
                         }
 
                         @Override

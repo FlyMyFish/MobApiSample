@@ -4,4 +4,12 @@
     <color name="colorPrimaryDark">#086FA1</color>
     <color name="colorAccent">#FF7F00</color>
     <color name="colorWhite">#FFFFFF</color>
+    <color name="polluteStageOne">#0289c3</color>
+    <color name="polluteStageTwo">#76c0ef</color>
+    <color name="polluteStageThree">#74c141</color>
+    <color name="polluteStageFour">#f09837</color>
+    <color name="polluteStageFive">#fe4502</color>
+    <color name="polluteStageSix">#bf0d1d</color>
+    <color name="colorGray">#cccccc</color>
+    <color name="colorTextGray">#999999</color>
 </resources>

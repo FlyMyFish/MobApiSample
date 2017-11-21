@@ -2,9 +2,13 @@ package com.shichen.mobapisample.config;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
 import com.google.gson.Gson;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import io.reactivex.disposables.Disposable;
 import retrofit2.Retrofit;
@@ -44,7 +48,9 @@ public class BaseActivity extends AppCompatActivity {
         }
         if (!loadingDialog.isAdded()) {
             loadingDialog.setMsg(msg);
-            loadingDialog.show(getSupportFragmentManager(), LoadingDialog.class.getSimpleName());
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.add(loadingDialog, LoadingDialog.class.getSimpleName());
+            transaction.commitAllowingStateLoss();
         }
     }
 
@@ -53,7 +59,9 @@ public class BaseActivity extends AppCompatActivity {
             loadingDialog = new LoadingDialog();
         }
         if (!loadingDialog.isAdded()) {
-            loadingDialog.show(getSupportFragmentManager(), LoadingDialog.class.getSimpleName());
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.add(loadingDialog, LoadingDialog.class.getSimpleName());
+            transaction.commitAllowingStateLoss();
         }
     }
 
@@ -63,13 +71,17 @@ public class BaseActivity extends AppCompatActivity {
         }
     }
 
-    protected Disposable mDisposable;
+    protected List<Disposable> disposableList = new ArrayList<>();
 
     @Override
     protected void onPause() {
         super.onPause();
-        if (mDisposable != null) {
-            mDisposable.dispose();
+        if (disposableList.size() > 0) {
+            for (int i = 0; i < disposableList.size(); i++) {
+                if (!disposableList.get(i).isDisposed()) {
+                    disposableList.get(i).dispose();
+                }
+            }
         }
     }
 

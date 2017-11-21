@@ -11,14 +11,17 @@ import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.shichen.mobapisample.R;
+import com.shichen.mobapisample.bean.AirQuality;
 import com.shichen.mobapisample.bean.TargetCity;
 import com.shichen.mobapisample.bean.WeatherInfo;
 import com.shichen.mobapisample.config.BaseActivity;
 import com.shichen.mobapisample.config.Config;
 import com.shichen.mobapisample.databinding.ActivityWeatherInfoBinding;
 import com.shichen.mobapisample.utils.SharePreferenceUtils;
+import com.shichen.mobapisample.weatherapi.IAirQualityApi;
 import com.shichen.mobapisample.weatherapi.IWeatherApi;
 
 import io.reactivex.Observer;
@@ -26,6 +29,9 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * Created by shichen on 2017/10/20.
@@ -62,6 +68,7 @@ public class WeatherInfoActivity extends BaseActivity {
                 return false;
             }
         });
+        binding.setHandler(new Handler());
     }
 
     private SharePreferenceUtils sharePreferenceUtils;
@@ -101,7 +108,7 @@ public class WeatherInfoActivity extends BaseActivity {
                 .subscribe(new Observer<WeatherInfo>() {
                     @Override
                     public void onSubscribe(@NonNull Disposable d) {
-                        mDisposable = d;
+                        disposableList.add(d);
                     }
 
                     @Override
@@ -127,5 +134,54 @@ public class WeatherInfoActivity extends BaseActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_weather_info, menu);
         return true;
+    }
+
+    public class Handler {
+        public void airConditionClick() {
+            getAirCondition();
+        }
+    }
+
+    private void getAirCondition() {
+        String targetCityStr = sharePreferenceUtils.getData(Config.TARGET_CITY);
+        if (!TextUtils.isEmpty(targetCityStr)) {
+            showLoadingDialog("获取空气质量信息");
+            TargetCity targetCity = mGson.fromJson(targetCityStr, TargetCity.class);
+            new Retrofit.Builder()
+                    .baseUrl("http://apicloud.mob.com/environment/")
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                    .build()
+                    .create(IAirQualityApi.class)
+                    .getAirQuality(targetCity.getCity(), targetCity.getProvince())
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Observer<AirQuality>() {
+                        @Override
+                        public void onSubscribe(Disposable d) {
+                            disposableList.add(d);
+                        }
+
+                        @Override
+                        public void onNext(AirQuality airQuality) {
+                            Intent intent = new Intent(WeatherInfoActivity.this, AirConditionActivity.class);
+                            Bundle bundle = new Bundle();
+                            bundle.putSerializable(AirConditionActivity.AIR_QUALITY_DATA, airQuality);
+                            intent.putExtras(bundle);
+                            startActivity(intent);
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            disMissLoadingDialog();
+                            e.printStackTrace();
+                        }
+
+                        @Override
+                        public void onComplete() {
+                            disMissLoadingDialog();
+                        }
+                    });
+        }
     }
 }

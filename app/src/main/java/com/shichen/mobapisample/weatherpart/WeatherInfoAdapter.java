@@ -23,10 +23,12 @@ public class WeatherInfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     private final int WEATHER_INFO_FUTURE = 1;
     private Context context;
     private WeatherInfo.WeatherBean weatherBean;
+    private WeatherInfoActivity.Handler handler;
 
-    public WeatherInfoAdapter(Context context, WeatherInfo.WeatherBean weatherBean) {
+    public WeatherInfoAdapter(Context context, WeatherInfo.WeatherBean weatherBean, WeatherInfoActivity.Handler handler) {
         this.context = context;
         this.weatherBean = weatherBean;
+        this.handler = handler;
     }
 
     @Override
@@ -53,6 +55,7 @@ public class WeatherInfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 WeatherInfoBase mHolder = (WeatherInfoBase) holder;
                 mHolder.getBinding().setWeatherBean(weatherBean);
                 mHolder.getBinding().executePendingBindings();
+                mHolder.getBinding().setHandler(handler);
             }
             if (holder instanceof WeatherInfoFuture) {
                 WeatherInfoFuture mHolder = (WeatherInfoFuture) holder;

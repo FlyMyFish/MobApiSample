@@ -28,6 +28,9 @@
         <activity
             android:name=".weatherpart.PickTargetCityActivity"
             android:launchMode="standard" />
+        <activity
+            android:name=".weatherpart.AirConditionActivity"
+            android:launchMode="standard" />
     </application>
 
 </manifest>

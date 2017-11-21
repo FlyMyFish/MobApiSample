@@ -4,10 +4,14 @@ import android.databinding.BindingAdapter;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
+import com.shichen.mobapisample.bean.AirQuality;
 import com.shichen.mobapisample.weatherpart.CityListAdapter;
+import com.shichen.mobapisample.weatherpart.DateQualityAdapter;
 import com.shichen.mobapisample.weatherpart.DistrictListAdapter;
+import com.shichen.mobapisample.weatherpart.HourQualityAdapter;
 import com.shichen.mobapisample.weatherpart.PickTargetCityActivity;
 import com.shichen.mobapisample.weatherpart.ProvinceListAdapter;
+import com.shichen.mobapisample.weatherpart.WeatherInfoActivity;
 import com.shichen.mobapisample.weatherpart.WeatherInfoAdapter;
 import com.shichen.mobapisample.weatherview.WeatherImageView;
 import com.shichen.mobapisample.bean.SupportCity;
@@ -45,9 +49,21 @@ public class PickCityUtility {
         weatherView.setWeatherInfo(weatherInfo);
     }
 
-    @BindingAdapter({"weatherBean"})
-    public static void setWeatherBean(RecyclerView recyclerView, WeatherInfo.WeatherBean weatherBean) {
+    @BindingAdapter({"weatherBean", "handler"})
+    public static void setWeatherBean(RecyclerView recyclerView, WeatherInfo.WeatherBean weatherBean, WeatherInfoActivity.Handler handler) {
         recyclerView.setLayoutManager(new LinearLayoutManager(recyclerView.getContext(), LinearLayoutManager.VERTICAL, false));
-        recyclerView.setAdapter(new WeatherInfoAdapter(recyclerView.getContext(), weatherBean));
+        recyclerView.setAdapter(new WeatherInfoAdapter(recyclerView.getContext(), weatherBean, handler));
+    }
+
+    @BindingAdapter({"hourData"})
+    public static void setHourData(RecyclerView recyclerView, AirQuality.AirData airQuality) {
+        recyclerView.setLayoutManager(new LinearLayoutManager(recyclerView.getContext(), LinearLayoutManager.HORIZONTAL, false));
+        recyclerView.setAdapter(new HourQualityAdapter(recyclerView.getContext(), airQuality));
+    }
+
+    @BindingAdapter({"futureData"})
+    public static void setFutureData(RecyclerView recyclerView, AirQuality.AirData airQuality) {
+        recyclerView.setLayoutManager(new LinearLayoutManager(recyclerView.getContext(), LinearLayoutManager.HORIZONTAL, false));
+        recyclerView.setAdapter(new DateQualityAdapter(recyclerView.getContext(), airQuality));
     }
 }

@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="city"
+            type="com.shichen.mobapisample.bean.TargetCity" />
+
+        <variable
+            name="airQuality"
+            type="com.shichen.mobapisample.bean.AirQuality.AirData" />
+    </data>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <android.support.design.widget.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                app:subtitle="@{city.district}"
+                app:title="@{city.city}" />
+        </android.support.design.widget.AppBarLayout>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+
+                <com.shichen.mobapisample.weatherview.AirPolluteView
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    app:currentPollute="@{airQuality.aqi}"
+                    app:maxPollute="300"
+                    app:qualityStr="@{airQuality.quality}" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/normal_top_blank_block">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/main_pollute_point"
+                        android:textColor="@color/colorTextGray"
+                        android:textSize="@dimen/normalTextSize" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:text="@string/pollute_unit"
+                        android:textColor="@color/colorTextGray"
+                        android:textSize="@dimen/tipTextSize" />
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <com.shichen.mobapisample.weatherview.PolluteIndexView
+                        android:layout_width="0dp"
+                        android:layout_height="60dp"
+                        android:layout_margin="@dimen/normal_top_blank_block"
+                        android:layout_weight="1"
+                        app:chineseName="细颗粒物"
+                        app:currentIndex="@{airQuality.pm25}"
+                        app:englishName="PM2.5"
+                        app:maxIndex="350" />
+
+                    <com.shichen.mobapisample.weatherview.PolluteIndexView
+                        android:layout_width="0dp"
+                        android:layout_height="60dp"
+                        android:layout_margin="@dimen/normal_top_blank_block"
+                        android:layout_weight="1"
+                        app:chineseName="可吸入颗粒物"
+                        app:currentIndex="@{airQuality.pm10}"
+                        app:englishName="PM10"
+                        app:maxIndex="500" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <com.shichen.mobapisample.weatherview.PolluteIndexView
+                        android:layout_width="0dp"
+                        android:layout_height="60dp"
+                        android:layout_margin="@dimen/normal_top_blank_block"
+                        android:layout_weight="1"
+                        app:chineseName="二氧化硫"
+                        app:currentIndex="@{airQuality.so2}"
+                        app:englishName="SO2"
+                        app:maxIndex="1200" />
+
+                    <com.shichen.mobapisample.weatherview.PolluteIndexView
+                        android:layout_width="0dp"
+                        android:layout_height="60dp"
+                        android:layout_margin="@dimen/normal_top_blank_block"
+                        android:layout_weight="1"
+                        app:chineseName="二氧化氮"
+                        app:currentIndex="@{airQuality.no2}"
+                        app:englishName="NO2"
+                        app:maxIndex="3000" />
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/normal_top_blank_block"
+                    android:text="@string/quality_hour_data"
+                    android:textColor="@color/colorTextGray"
+                    android:textSize="@dimen/normalTextSize" />
+
+                <android.support.v7.widget.RecyclerView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/normal_top_blank_block"
+                    app:hourData="@{airQuality}" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/normal_top_blank_block"
+                    android:text="@string/quality_date_data"
+                    android:textColor="@color/colorTextGray"
+                    android:textSize="@dimen/normalTextSize" />
+
+                <android.support.v7.widget.RecyclerView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/normal_top_blank_block"
+                    app:futureData="@{airQuality}" />
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+</layout>

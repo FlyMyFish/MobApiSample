@@ -45,7 +45,7 @@ public class MainActivity extends BaseActivity {
                 .subscribe(new Observer<SupportCity>() {
                     @Override
                     public void onSubscribe(@NonNull Disposable d) {
-                        mDisposable = d;
+                        disposableList.add(d);
                     }
 
                     @Override

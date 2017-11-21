@@ -14,6 +14,9 @@
         <variable
             name="city"
             type="com.shichen.mobapisample.bean.TargetCity" />
+        <variable
+            name="handler"
+            type="com.shichen.mobapisample.weatherpart.WeatherInfoActivity.Handler"/>
     </data>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -57,6 +60,7 @@
                 android:layout_marginTop="150dp"
                 android:background="@drawable/shape_no_stroke_translate_solid_round"
                 android:padding="@dimen/normal_top_blank_block"
+                app:handler="@{handler}"
                 app:weatherBean="@{weatherBean}" />
 
         </RelativeLayout>

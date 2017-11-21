@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="PolluteIndexView">
+        <attr name="maxIndex" format="integer" />
+        <attr name="currentIndex" format="integer" />
+        <attr name="chineseName" format="string" />
+        <attr name="englishName" format="string" />
+    </declare-styleable>
+    <declare-styleable name="AirPolluteView">
+        <attr name="maxPollute" format="integer" />
+        <attr name="currentPollute" format="integer" />
+        <attr name="qualityStr" format="string" />
+    </declare-styleable>
+    <declare-styleable name="VerticalAirPolluteView">
+        <attr name="maxPolluteIndex" format="integer" />
+        <attr name="currentPolluteIndex" format="integer" />
+        <attr name="msg" format="string" />
+    </declare-styleable>
+</resources>

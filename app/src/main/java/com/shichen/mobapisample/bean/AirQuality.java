@@ -11,7 +11,7 @@ import java.util.List;
  * @author shichen 754314442@qq.com
  */
 
-public class AirQuality extends BaseResult implements Serializable{
+public class AirQuality extends BaseResult implements Serializable {
 
     /**
      * msg : success
@@ -49,7 +49,7 @@ public class AirQuality extends BaseResult implements Serializable{
         this.result = result;
     }
 
-    public static class AirData implements Serializable{
+    public static class AirData implements Serializable {
         /**
          * aqi : 198
          * city : 郑州
@@ -186,7 +186,7 @@ public class AirQuality extends BaseResult implements Serializable{
             this.hourData = hourData;
         }
 
-        public static class FetureAirData implements Serializable{
+        public static class FetureAirData implements Serializable {
             /**
              * aqi : 66
              * date : 2017-11-18
@@ -222,9 +222,21 @@ public class AirQuality extends BaseResult implements Serializable{
             public void setQuality(String quality) {
                 this.quality = quality;
             }
+
+            public String getMsg() {
+                if (date != null) {
+                    if (date.length() > 9) {
+                        return date.substring(5, 10);
+                    } else {
+                        return "";
+                    }
+                } else {
+                    return "";
+                }
+            }
         }
 
-        public static class HourAirData implements Serializable{
+        public static class HourAirData implements Serializable {
             /**
              * aqi : 198
              * dateTime : 2017-11-17 07:00:00
@@ -248,6 +260,18 @@ public class AirQuality extends BaseResult implements Serializable{
 
             public void setDateTime(String dateTime) {
                 this.dateTime = dateTime;
+            }
+
+            public String getMsg() {
+                if (dateTime != null) {
+                    if (dateTime.length() > 17) {
+                        return dateTime.substring(10, 16);
+                    } else {
+                        return "";
+                    }
+                } else {
+                    return "";
+                }
             }
         }
     }

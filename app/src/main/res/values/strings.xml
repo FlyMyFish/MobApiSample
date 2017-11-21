@@ -23,4 +23,9 @@
     <string name="daytime">白天</string>
     <string name="night">夜间</string>
     <string name="future_weather">未来天气</string>
+    <string name="city_data_null">没有获取到您所在的城市，请返回上个页面选择</string>
+    <string name="main_pollute_point">主要污染物</string>
+    <string name="pollute_unit">单位:μg/m³</string>
+    <string name="quality_hour_data">24小时</string>
+    <string name="quality_date_data">日期排列</string>
 </resources>

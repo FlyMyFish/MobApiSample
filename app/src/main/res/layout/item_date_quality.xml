@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+
+        <variable
+            name="fetureAirData"
+            type="com.shichen.mobapisample.bean.AirQuality.AirData.FetureAirData" />
+    </data>
+
+    <com.shichen.mobapisample.weatherview.VerticalAirPolluteView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="40dp"
+        android:layout_height="150dp"
+        android:orientation="vertical"
+        app:currentPolluteIndex="@{fetureAirData.aqi}"
+        app:maxPolluteIndex="300"
+        app:msg="@{fetureAirData.msg}">
+
+    </com.shichen.mobapisample.weatherview.VerticalAirPolluteView>
+</layout>
