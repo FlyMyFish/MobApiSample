@@ -46,6 +46,16 @@ public class WeatherImageView extends SurfaceView implements SurfaceHolder.Callb
     private float density;
     private WeatherInfo weatherInfo;
     private WeatherConfig weatherConfig;
+    private int parentTransitionX;
+    private int parentTransitionY;
+
+    public void setParentTransitionX(int parentTransitionX) {
+        this.parentTransitionX = parentTransitionX;
+    }
+
+    public void setParentTransitionY(int parentTransitionY) {
+        this.parentTransitionY = parentTransitionY;
+    }
 
     public WeatherImageView(Context context) {
         this(context, null);
@@ -222,6 +232,7 @@ public class WeatherImageView extends SurfaceView implements SurfaceHolder.Callb
     private void draw() {
         try {
             mCanvas = mHolder.lockCanvas();
+            mCanvas.translate(parentTransitionX, parentTransitionY);
             // SurfaceView背景
             mCanvas.drawColor(Color.parseColor("#3CA0D0"));
             if (weatherConfig.haveHaze) {
@@ -250,8 +261,8 @@ public class WeatherImageView extends SurfaceView implements SurfaceHolder.Callb
                     mPaint.setColor(0xFFFFFFFF);
                 }
                 drawCloud(mCanvas, getWidth(), translateX, translateY);
-                drawCity(mCanvas, getWidth(), getHeight());
             }
+            drawCity(mCanvas, getWidth(), getHeight());
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -374,7 +385,7 @@ public class WeatherImageView extends SurfaceView implements SurfaceHolder.Callb
 
     private void drawCity(Canvas canvas, float widthF, float heightF) {
         Path path = new Path();
-        path.moveTo(startX, heightF);
+        path.moveTo(startX, heightF + 100.0f);
         path.lineTo(startX, heightF - 420.0f);
         path.lineTo(startX + 20, heightF - 420.0f);
         path.lineTo(startX + 20, heightF - 420.0f - 40.0f);
@@ -392,18 +403,18 @@ public class WeatherImageView extends SurfaceView implements SurfaceHolder.Callb
         path.lineTo(startX + 20 + 20 + 20 + 20 + 40 + 20 + 20 + 20 + 20, heightF - 420.0f - 40.0f);
         path.lineTo(startX + 20 + 20 + 20 + 20 + 40 + 20 + 20 + 20 + 20, heightF - 420.0f);
         path.lineTo(startX + 20 + 20 + 20 + 20 + 40 + 20 + 20 + 20 + 20 + 20, heightF - 420.0f);
-        path.lineTo(startX + 20 + 20 + 20 + 20 + 40 + 20 + 20 + 20 + 20 + 20, heightF);
+        path.lineTo(startX + 20 + 20 + 20 + 20 + 40 + 20 + 20 + 20 + 20 + 20, heightF + 100.0f);
         path.close();
         canvas.drawPath(path, mPaint);
         Path build2 = new Path();
-        build2.moveTo(startX + 20 + 20 + 20 + 20 + 40 + 40, heightF);
+        build2.moveTo(startX + 20 + 20 + 20 + 20 + 40 + 40, heightF + 100.0f);
         build2.lineTo(startX + 20 + 20 + 20 + 20 + 40 + 40, heightF - 210.0f);
         build2.lineTo(startX + 20 + 20 + 20 + 20 + 40 + 40 + 240, heightF - 210.0f);
-        build2.lineTo(startX + 20 + 20 + 20 + 20 + 40 + 40 + 240, heightF);
+        build2.lineTo(startX + 20 + 20 + 20 + 20 + 40 + 40 + 240, heightF + 100.0f);
         build2.close();
         canvas.drawPath(build2, mPaint);
         Path build3 = new Path();
-        build3.moveTo(startX + 20 + 20 + 20 + 20 + 40 + 20 + 20 + 20 + 20 + 20 + 40, heightF);
+        build3.moveTo(startX + 20 + 20 + 20 + 20 + 40 + 20 + 20 + 20 + 20 + 20 + 40, heightF + 100.0f);
         build3.lineTo(startX + 20 + 20 + 20 + 20 + 40 + 20 + 20 + 20 + 20 + 20 + 40, heightF - 240.0f);
         build3.lineTo(startX + 20 + 20 + 20 + 20 + 40 + 20 + 20 + 20 + 20 + 20 + 40 + 15, heightF - 240.0f);
         build3.lineTo(startX + 20 + 20 + 20 + 20 + 40 + 20 + 20 + 20 + 20 + 20 + 40 + 15, heightF - 260.0f);
@@ -412,11 +423,11 @@ public class WeatherImageView extends SurfaceView implements SurfaceHolder.Callb
         build3.lineTo(startX + 20 + 20 + 20 + 20 + 40 + 20 + 20 + 20 + 20 + 20 + 40 + 15 + 20 + 30, heightF - 280.0f);
         build3.lineTo(startX + 20 + 20 + 20 + 20 + 40 + 20 + 20 + 20 + 20 + 20 + 40 + 15 + 20 + 30, heightF - 260.0f);
         build3.lineTo(startX + 20 + 20 + 20 + 20 + 40 + 20 + 20 + 20 + 20 + 20 + 40 + 15 + 20 + 30 + 20, heightF - 260.0f);
-        build3.lineTo(startX + 20 + 20 + 20 + 20 + 40 + 20 + 20 + 20 + 20 + 20 + 40 + 15 + 20 + 30 + 20, heightF);
+        build3.lineTo(startX + 20 + 20 + 20 + 20 + 40 + 20 + 20 + 20 + 20 + 20 + 40 + 15 + 20 + 30 + 20, heightF + 100.0f);
         build3.close();
         canvas.drawPath(build3, mPaint);
         Path build4 = new Path();
-        build4.moveTo(startX + 385, heightF);
+        build4.moveTo(startX + 385, heightF + 100.0f);
         build4.lineTo(startX + 385, heightF - 240.0f);
         build4.lineTo(startX + 385 + 20, heightF - 240.0f);
         build4.lineTo(startX + 385 + 20, heightF - 240.0f - 120.0f);
@@ -436,19 +447,19 @@ public class WeatherImageView extends SurfaceView implements SurfaceHolder.Callb
         build4.lineTo(startX + 385 + 20 + 40 + 20 + 30 + 30 + 120 + 80 + 20 + 10, heightF - 150.0f);
         build4.lineTo(startX + 385 + 20 + 40 + 20 + 30 + 30 + 120 + 80 + 20 + 10 + 60, heightF - 150.0f);
         build4.lineTo(startX + 385 + 20 + 40 + 20 + 30 + 30 + 120 + 80 + 20 + 10 + 60, heightF - 120.0f);
-        build4.lineTo(startX + 385 + 20 + 40 + 20 + 30 + 30 + 120 + 80 + 20 + 10 + 60, heightF);
+        build4.lineTo(startX + 385 + 20 + 40 + 20 + 30 + 30 + 120 + 80 + 20 + 10 + 60, heightF + 100.0f);
         //815
         build4.close();
         canvas.drawPath(build4, mPaint);
         Path build5 = new Path();
-        build5.moveTo(startX + 755, heightF);
+        build5.moveTo(startX + 755, heightF + 100.0f);
         build5.lineTo(startX + 755, heightF - 100.0f);
         build5.lineTo(startX + 755 + 160, heightF - 100.0f);
-        build5.lineTo(startX + 755 + 160, heightF);
+        build5.lineTo(startX + 755 + 160, heightF + 100.0f);
         build2.close();
         canvas.drawPath(build5, mPaint);
         Path build6 = new Path();
-        build6.moveTo(startX + 815 + 40, heightF);
+        build6.moveTo(startX + 815 + 40, heightF + 100.0f);
         build6.lineTo(startX + 815 + 40, heightF - 135.0f);
         build6.lineTo(startX + 815 + 40 + 50, heightF - 135.0f);
         build6.lineTo(startX + 815 + 40 + 50, heightF - 135.0f - 450.0f);
@@ -464,11 +475,28 @@ public class WeatherImageView extends SurfaceView implements SurfaceHolder.Callb
         build6.lineTo(startX + 815 + 40 + 50 + 20 + 80 - 10 + 40 + 20 + 120, heightF - 135.0f - 450.0f - 90.0f - 20.0f - 20.0f - 15.0f - 15.0f);
         build6.lineTo(startX + 815 + 40 + 50 + 20 + 80 - 10 + 40 + 20 + 120, heightF - 135.0f - 450.0f - 90.0f - 20.0f - 20.0f - 15.0f);
         build6.lineTo(startX + 815 + 40 + 50 + 20 + 80 - 10 + 40 + 20 + 120 + 20, heightF - 135.0f - 450.0f - 90.0f - 20.0f - 20.0f - 15.0f);
+        build6.lineTo(startX + 815 + 40 + 50 + 20 + 80 - 10 + 40 + 20 + 120 + 20, heightF - 135.0f - 450.0f - 90.0f - 20.0f - 20.0f);
         build6.lineTo(startX + 815 + 40 + 50 + 20 + 80 - 10 + 40 + 20 + 120 + 20 + 10, heightF - 135.0f - 450.0f - 90.0f - 20.0f - 20.0f);
         build6.lineTo(startX + 815 + 40 + 50 + 20 + 80 - 10 + 40 + 20 + 120 + 20 + 10, heightF - 135.0f - 450.0f - 90.0f - 20.0f - 20.0f);
         build6.lineTo(startX + 815 + 40 + 50 + 20 + 80 - 10 + 40 + 20 + 120 + 20 + 10, heightF - 135.0f - 450.0f - 90.0f);
         build6.lineTo(startX + 815 + 40 + 50 + 20 + 80 - 10 + 40 + 20 + 120 + 20 + 10 + 30, heightF - 135.0f - 450.0f - 90.0f);
-        build6.lineTo(startX + 815 + 40 + 50 + 20 + 80 - 10 + 40 + 20 + 120 + 20 + 10 + 30, heightF);
+        build6.lineTo(startX + 815 + 40 + 50 + 20 + 80 - 10 + 40 + 20 + 120 + 20 + 10 + 30, heightF - 135.0f - 450.0f - 90.0f - 120.0f);
+        build6.lineTo(startX + 815 + 40 + 50 + 20 + 80 - 10 + 40 + 20 + 120 + 20 + 10 + 30 + 20, heightF - 135.0f - 450.0f - 90.0f - 120.0f);
+        build6.lineTo(startX + 815 + 40 + 50 + 20 + 80 - 10 + 40 + 20 + 120 + 20 + 10 + 30 + 20, heightF - 135.0f - 450.0f - 90.0f - 120.0f - 200.0f);
+        build6.lineTo(startX + 815 + 40 + 50 + 20 + 80 - 10 + 40 + 20 + 120 + 20 + 10 + 30 + 20 + 60, heightF - 135.0f - 450.0f - 90.0f - 120.0f - 200.0f);
+        build6.lineTo(startX + 815 + 40 + 50 + 20 + 80 - 10 + 40 + 20 + 120 + 20 + 10 + 30 + 20 + 60, heightF - 135.0f - 450.0f - 90.0f - 120.0f - 200.0f - 70.0f);
+        build6.lineTo(startX + 815 + 40 + 50 + 20 + 80 - 10 + 40 + 20 + 120 + 20 + 10 + 30 + 20 + 60 + 40, heightF - 135.0f - 450.0f - 90.0f - 120.0f - 200.0f - 70.0f - 30.0f);
+        build6.lineTo(startX + 815 + 40 + 50 + 20 + 80 - 10 + 40 + 20 + 120 + 20 + 10 + 30 + 20 + 60 + 40 + 40, heightF - 135.0f - 450.0f - 90.0f - 120.0f - 200.0f - 70.0f - 30.0f);
+        build6.lineTo(startX + 815 + 40 + 50 + 20 + 80 - 10 + 40 + 20 + 120 + 20 + 10 + 30 + 20 + 60 + 40 + 40, heightF - 135.0f - 450.0f - 90.0f - 120.0f - 200.0f - 70.0f - 30.0f - 40.0f);
+        build6.lineTo(startX + 815 + 40 + 50 + 20 + 80 - 10 + 40 + 20 + 120 + 20 + 10 + 30 + 20 + 60 + 40 + 40 + 120, heightF - 135.0f - 450.0f - 90.0f - 120.0f - 200.0f - 70.0f - 30.0f - 40.0f);
+        build6.lineTo(startX + 815 + 40 + 50 + 20 + 80 - 10 + 40 + 20 + 120 + 20 + 10 + 30 + 20 + 60 + 40 + 40 + 120, heightF - 135.0f - 450.0f - 90.0f - 120.0f - 200.0f - 70.0f - 30.0f);
+        build6.lineTo(startX + 815 + 40 + 50 + 20 + 80 - 10 + 40 + 20 + 120 + 20 + 10 + 30 + 20 + 60 + 40 + 40 + 120 + 40, heightF - 135.0f - 450.0f - 90.0f - 120.0f - 200.0f - 70.0f - 30.0f);
+        build6.lineTo(startX + 815 + 40 + 50 + 20 + 80 - 10 + 40 + 20 + 120 + 20 + 10 + 30 + 20 + 60 + 40 + 40 + 120 + 40 + 30, heightF - 135.0f - 450.0f - 90.0f - 120.0f - 200.0f - 70.0f);
+        build6.lineTo(startX + 815 + 40 + 50 + 20 + 80 - 10 + 40 + 20 + 120 + 20 + 10 + 30 + 20 + 60 + 40 + 40 + 120 + 40 + 30, heightF - 135.0f - 450.0f - 90.0f - 120.0f - 200.0f);
+        build6.lineTo(startX + 815 + 40 + 50 + 20 + 80 - 10 + 40 + 20 + 120 + 20 + 10 + 30 + 20 + 60 + 40 + 40 + 120 + 40 + 30 + 90, heightF - 135.0f - 450.0f - 90.0f - 120.0f - 200.0f);
+        build6.lineTo(startX + 815 + 40 + 50 + 20 + 80 - 10 + 40 + 20 + 120 + 20 + 10 + 30 + 20 + 60 + 40 + 40 + 120 + 40 + 30 + 90, heightF - 135.0f - 450.0f);
+        build6.lineTo(startX + 815 + 40 + 50 + 20 + 80 - 10 + 40 + 20 + 120 + 20 + 10 + 30 + 20 + 60 + 40 + 40 + 120 + 40 + 30 + 90 + 250, heightF - 135.0f - 450.0f);
+        build6.lineTo(startX + 815 + 40 + 50 + 20 + 80 - 10 + 40 + 20 + 120 + 20 + 10 + 30 + 20 + 60 + 40 + 40 + 120 + 40 + 30 + 90 + 250, heightF + 100.0f);
         build6.close();
         canvas.drawPath(build6, mPaint);
     }

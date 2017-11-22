@@ -3,11 +3,16 @@ package com.shichen.mobapisample.weatherpart;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -39,8 +44,9 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * @author shichen 754314442@qq.com
  */
 
-public class WeatherInfoActivity extends BaseActivity {
+public class WeatherInfoActivity extends BaseActivity implements SensorEventListener {
     private ActivityWeatherInfoBinding binding;
+    private SensorManager sensorManager;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -69,6 +75,7 @@ public class WeatherInfoActivity extends BaseActivity {
             }
         });
         binding.setHandler(new Handler());
+        sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
     }
 
     private SharePreferenceUtils sharePreferenceUtils;
@@ -77,6 +84,15 @@ public class WeatherInfoActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
         initData();
+        sensorManager.registerListener(this,
+                sensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION),
+                SensorManager.SENSOR_DELAY_GAME);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        sensorManager.unregisterListener(this);
     }
 
     private void initData() {
@@ -183,5 +199,47 @@ public class WeatherInfoActivity extends BaseActivity {
                         }
                     });
         }
+    }
+
+    /**
+     * 定义水平仪能处理的最大倾斜角，超过该角度，直接位于边界。
+     */
+    private int MAX_ANGLE = 60;
+
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+        float[] values = event.values;
+        // 获取触发event的传感器类型
+        int sensorType = event.sensor.getType();
+        switch (sensorType) {
+            case Sensor.TYPE_ORIENTATION:
+                // 获取与Y轴的夹角
+                float yAngle = values[1];
+                // 获取与Z轴的夹角
+                float zAngle = values[2];
+                // 如果与Z轴的倾斜角还在最大角度之内
+                if (Math.abs(zAngle) <= MAX_ANGLE) {
+                    int scrollX = (int) (50 * zAngle / MAX_ANGLE);
+                    Log.d("SensorChanged", "scrollX=" + scrollX);
+                    binding.wvMain.setParentTransitionX(scrollX);
+                } else if (zAngle > MAX_ANGLE) {
+                    binding.wvMain.scrollTo(50, 0);
+                }
+                if (Math.abs(yAngle) <= MAX_ANGLE) {
+                    int scrollY = (int) (50 * yAngle / MAX_ANGLE);
+                    Log.d("SensorChanged", "scrollY=" + scrollY);
+                    binding.wvMain.setParentTransitionY(scrollY);
+                } else if (yAngle > MAX_ANGLE) {
+                    binding.wvMain.scrollTo(0, 50);
+                }
+                break;
+            default:
+                break;
+        }
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
     }
 }
