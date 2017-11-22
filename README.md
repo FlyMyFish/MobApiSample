@@ -5,5 +5,5 @@
 ## 2017-11-22添加了空气质量信息页面
 ![airQuality.gif](https://github.com/FlyMyFish/MobApiSample/blob/master/app/samplepic/airQuality.gif)  
 
-## 2017-11-22添加了城市北京，并结合传感器优化动画效果
+## 2017-11-22添加了城市背景，并结合传感器优化动画效果
 ![citybg.gif](https://github.com/FlyMyFish/MobApiSample/blob/master/app/samplepic/citybg.gif)
