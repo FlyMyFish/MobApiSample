@@ -220,14 +220,12 @@ public class WeatherInfoActivity extends BaseActivity implements SensorEventList
                 // 如果与Z轴的倾斜角还在最大角度之内
                 if (Math.abs(zAngle) <= MAX_ANGLE) {
                     int scrollX = (int) (50 * zAngle / MAX_ANGLE);
-                    Log.d("SensorChanged", "scrollX=" + scrollX);
                     binding.wvMain.setParentTransitionX(scrollX);
                 } else if (zAngle > MAX_ANGLE) {
                     binding.wvMain.scrollTo(50, 0);
                 }
                 if (Math.abs(yAngle) <= MAX_ANGLE) {
                     int scrollY = (int) (50 * yAngle / MAX_ANGLE);
-                    Log.d("SensorChanged", "scrollY=" + scrollY);
                     binding.wvMain.setParentTransitionY(scrollY);
                 } else if (yAngle > MAX_ANGLE) {
                     binding.wvMain.scrollTo(0, 50);
