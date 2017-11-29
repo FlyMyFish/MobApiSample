@@ -21,6 +21,8 @@ import java.util.List;
 
 /**
  * Created by shichen on 2017/10/20.
+ * RecyclerView使用DataBinding时所需要的自定义Binding
+ * 自定义View使用DataBinding时所需要的自定义Binding
  *
  * @author shichen 754314442@qq.com
  */

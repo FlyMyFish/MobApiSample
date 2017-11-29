@@ -1,8 +1,8 @@
 package com.shichen.mobapisample.weatherpart;
 
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
@@ -17,6 +17,7 @@ import com.shichen.mobapisample.config.BaseActivity;
 import com.shichen.mobapisample.config.Config;
 import com.shichen.mobapisample.databinding.ActivityAirConditionBinding;
 import com.shichen.mobapisample.utils.SharePreferenceUtils;
+import com.shichen.mobapisample.weatherview.AirPolluteView;
 
 /**
  * Created by shichen on 2017/11/20.
@@ -36,6 +37,7 @@ public class AirConditionActivity extends BaseActivity {
         if (getIntent().getExtras() != null) {
             if (getIntent().getExtras().containsKey(AIR_QUALITY_DATA)) {
                 binding.setAirQuality(((AirQuality) getIntent().getExtras().getSerializable(AIR_QUALITY_DATA)).getResult().get(0));
+                binding.tvAirQualityStr.setTextColor(AirPolluteView.getColor(300, ((AirQuality) getIntent().getExtras().getSerializable(AIR_QUALITY_DATA)).getResult().get(0).getAqi()));
             }
         }
         sharePreferenceUtils = new SharePreferenceUtils(getApplicationContext());
@@ -44,7 +46,7 @@ public class AirConditionActivity extends BaseActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                onBackPressed();
             }
         });
         //设置返回键可用

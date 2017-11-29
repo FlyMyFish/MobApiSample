@@ -40,13 +40,26 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-
-                <com.shichen.mobapisample.weatherview.AirPolluteView
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="200dp"
-                    app:currentPollute="@{airQuality.aqi}"
-                    app:maxPollute="300"
-                    app:qualityStr="@{airQuality.quality}" />
+                    android:layout_height="200dp">
+
+                    <com.shichen.mobapisample.weatherview.AirPolluteView
+                        android:layout_width="match_parent"
+                        android:layout_height="200dp"
+                        app:currentPollute="@{airQuality.aqi}"
+                        app:maxPollute="300"
+                        app:qualityStr="@{airQuality.quality}" />
+
+                    <TextView
+                        android:id="@+id/tv_air_quality_str"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:textSize="25sp"
+                        android:text="@{airQuality.quality}"
+                        android:transitionName="tv_air_condition_" />
+                </RelativeLayout>
 
                 <RelativeLayout
                     android:layout_width="match_parent"

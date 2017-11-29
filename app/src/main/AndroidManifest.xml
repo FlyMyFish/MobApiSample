@@ -20,9 +20,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".weatherpart.TestApiActivity"
-            android:launchMode="standard" />
-        <activity
             android:name=".weatherpart.WeatherInfoActivity"
             android:launchMode="standard" />
         <activity

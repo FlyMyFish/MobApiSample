@@ -110,6 +110,7 @@ public class VerticalAirPolluteView extends View {
         LinearGradient linearGradient = new LinearGradient(width / 2, height - strokeWidth - blankSize, width / 2, 0, arcColors, null, Shader.TileMode.CLAMP);
         mainPaint.setStrokeWidth(indexViewSize);
         mainPaint.setShader(linearGradient);
-        canvas.drawLine(width / 2, height - strokeWidth - blankSize, width / 2, height - strokeWidth - currentPolluteIndex - blankSize, mainPaint);
+        float percent = Float.valueOf(currentPolluteIndex) / Float.valueOf(maxPolluteIndex);
+        canvas.drawLine(width / 2, height - strokeWidth - blankSize, width / 2, height - strokeWidth - (height - strokeWidth - blankSize) * percent - blankSize, mainPaint);
     }
 }

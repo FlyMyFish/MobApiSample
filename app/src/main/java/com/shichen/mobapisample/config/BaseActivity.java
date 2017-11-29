@@ -48,8 +48,10 @@ public class BaseActivity extends AppCompatActivity {
         }
         if (!loadingDialog.isAdded()) {
             loadingDialog.setMsg(msg);
+            //该方法解决FragmentDialog引发异常
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             transaction.add(loadingDialog, LoadingDialog.class.getSimpleName());
+            //重要的方法.commitAllowingStateLoss()
             transaction.commitAllowingStateLoss();
         }
     }
@@ -71,8 +73,14 @@ public class BaseActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * RxJava订阅列表
+     */
     protected List<Disposable> disposableList = new ArrayList<>();
 
+    /**
+     * Activity暂停时取消所有订阅，以免内存泄漏
+     */
     @Override
     protected void onPause() {
         super.onPause();

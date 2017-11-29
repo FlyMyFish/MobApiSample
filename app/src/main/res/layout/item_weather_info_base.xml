@@ -53,9 +53,10 @@
                 android:id="@+id/tv_airCondition"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:transitionName="tv_air_condition_"
                 android:text="@{weatherBean.airCondition}"
                 android:textColor="@color/colorAccent"
-                android:onClick="@{() -> handler.airConditionClick()}"
+                android:onClick="@{handler.airConditionClick}"
                 android:textSize="@dimen/normalTextSize" />
 
             <View

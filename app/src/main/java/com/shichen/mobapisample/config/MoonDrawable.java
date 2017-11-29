@@ -20,6 +20,7 @@ import android.view.animation.Transformation;
 /**
  * Created by shichen on 2017/10/19.
  *
+ * 卫星旋转加载动画
  * @author shichen 754314442@qq.com
  */
 
@@ -69,16 +70,26 @@ public class MoonDrawable extends Drawable implements Animatable{
         drawMoon(canvas,widthF,heightF, rotate);
     }
 
+    /**
+     * 基座
+     * @param canvas
+     * @param cx
+     * @param cy
+     * @param radiusSize
+     */
     private void drawBase(Canvas canvas, float cx, float cy, float radiusSize) {
         canvas.drawCircle(cx, cy, radiusSize, mPaint);
     }
 
     private void drawMoon(Canvas canvas, float widthF, float heightF, float angle) {
+        //锅与基座的链接块
         RectF blockBound = new RectF(widthF / 2 - heightF / 16, heightF - heightF / 8 - heightF / 8 / 4 * 3, widthF / 2 + heightF / 16, heightF - heightF / 8 - heightF / 8 / 4);
         canvas.rotate(angle, widthF / 2, heightF);
         canvas.drawRect(blockBound, mPaint);
+        //锅
         RectF moonBody=new RectF(widthF/4,heightF/4,widthF/4*3,heightF/4*3);
         canvas.drawArc(moonBody,0,180,true,mPaint);
+        //左侧支架
         Path leftLine=new Path();
         leftLine.moveTo(widthF/4,heightF/2-heightF/64);
         leftLine.lineTo(widthF/4+widthF/32,heightF/2-heightF/64);
@@ -86,6 +97,7 @@ public class MoonDrawable extends Drawable implements Animatable{
         leftLine.lineTo(widthF/2-widthF/64,heightF/4-heightF/64);
         leftLine.close();
         canvas.drawPath(leftLine,mPaint);
+        //右侧支架
         Path rightLine=new Path();
         rightLine.moveTo(widthF/4*3,heightF/2-heightF/64);
         rightLine.lineTo(widthF/4*3-widthF/32,heightF/2-heightF/64);
@@ -93,6 +105,7 @@ public class MoonDrawable extends Drawable implements Animatable{
         rightLine.lineTo(widthF/2+widthF/64,heightF/4-heightF/64);
         rightLine.close();
         canvas.drawPath(rightLine,mPaint);
+        //中间支架
         Path middleLine=new Path();
         middleLine.moveTo(widthF/2-widthF/128,heightF/4-heightF/64);
         middleLine.lineTo(widthF/2+widthF/128,heightF/4-heightF/64);
@@ -100,6 +113,7 @@ public class MoonDrawable extends Drawable implements Animatable{
         middleLine.lineTo(widthF/2-widthF/128,heightF/2-heightF/64);
         middleLine.close();
         canvas.drawPath(middleLine,mPaint);
+        //连接支架的线
         Path holderLine=new Path();
         holderLine.moveTo(widthF/2-widthF/16,heightF/4+heightF/32);
         holderLine.lineTo(widthF/2-widthF/16,heightF/4+heightF/16);

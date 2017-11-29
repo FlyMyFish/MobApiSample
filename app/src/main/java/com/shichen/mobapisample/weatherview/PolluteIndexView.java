@@ -18,12 +18,20 @@ import com.shichen.mobapisample.R;
 /**
  * Created by shichen on 2017/11/20.
  *
+ * 横向污染物指数控件
+ *
  * @author shichen 754314442@qq.com
  */
 
 public class PolluteIndexView extends View {
     private Context context;
+    /**
+     * 污染物中文名
+     */
     private String chineseName;
+    /**
+     * 污染物符号名
+     */
     private String englishName;
 
     public PolluteIndexView(Context context) {
@@ -42,13 +50,26 @@ public class PolluteIndexView extends View {
         initPaint();
     }
 
+    /**
+     * 最大值
+     */
     private int maxIndex = 100;
-    //最大值
+    /**
+     * 当前值
+     */
     private int currentIndex;
-    //当前值
 
+    /**
+     * 数值条形画笔
+     */
     private Paint mPaint;
+    /**
+     * 数值背景画笔
+     */
     private Paint bgPaint;
+    /**
+     * 控件中的文字的画笔
+     */
     private Paint textPaint;
 
     private void initPaint() {
@@ -87,6 +108,7 @@ public class PolluteIndexView extends View {
 
     /**
      * 指数的中文英文名称
+     *
      * @param canvas
      */
     private void drawName(Canvas canvas) {
@@ -107,6 +129,7 @@ public class PolluteIndexView extends View {
 
     /**
      * 指数的数值
+     *
      * @param canvas
      * @param width
      */
@@ -131,6 +154,7 @@ public class PolluteIndexView extends View {
 
     /**
      * 背景以及数值控件
+     *
      * @param canvas
      * @param width
      * @param height

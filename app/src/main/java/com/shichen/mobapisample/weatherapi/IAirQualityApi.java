@@ -8,7 +8,8 @@ import retrofit2.http.Query;
 
 /**
  * Created by shichen on 2017/11/17.
- *
+ * 获取指定城市的空气质量数据
+ * http://apicloud.mob.com/environment/query?key=appkey&city=通州&province=北京
  * @author shichen 754314442@qq.com
  */
 

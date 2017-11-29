@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 
 /**
  * Created by shichen on 2017/10/20.
+ * Share缓存文件工具类
  *
  * @author shichen 754314442@qq.com
  */

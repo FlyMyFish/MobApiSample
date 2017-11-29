@@ -9,14 +9,14 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.util.Pair;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 import com.shichen.mobapisample.R;
 import com.shichen.mobapisample.bean.AirQuality;
@@ -153,12 +153,12 @@ public class WeatherInfoActivity extends BaseActivity implements SensorEventList
     }
 
     public class Handler {
-        public void airConditionClick() {
-            getAirCondition();
+        public void airConditionClick(View view) {
+            getAirCondition(view);
         }
     }
 
-    private void getAirCondition() {
+    private void getAirCondition(final View view) {
         String targetCityStr = sharePreferenceUtils.getData(Config.TARGET_CITY);
         if (!TextUtils.isEmpty(targetCityStr)) {
             showLoadingDialog("获取空气质量信息");
@@ -181,10 +181,13 @@ public class WeatherInfoActivity extends BaseActivity implements SensorEventList
                         @Override
                         public void onNext(AirQuality airQuality) {
                             Intent intent = new Intent(WeatherInfoActivity.this, AirConditionActivity.class);
+                            ActivityOptionsCompat activityOptionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(WeatherInfoActivity.this
+                                    ,new Pair<>(view,"tv_air_condition_"));
                             Bundle bundle = new Bundle();
                             bundle.putSerializable(AirConditionActivity.AIR_QUALITY_DATA, airQuality);
                             intent.putExtras(bundle);
-                            startActivity(intent);
+                            startActivity(intent,activityOptionsCompat.toBundle());
+                            //tv_air_condition
                         }
 
                         @Override
@@ -204,7 +207,7 @@ public class WeatherInfoActivity extends BaseActivity implements SensorEventList
     /**
      * 定义水平仪能处理的最大倾斜角，超过该角度，直接位于边界。
      */
-    private int MAX_ANGLE = 60;
+    private final static int MAX_ANGLE = 60;
 
     @Override
     public void onSensorChanged(SensorEvent event) {

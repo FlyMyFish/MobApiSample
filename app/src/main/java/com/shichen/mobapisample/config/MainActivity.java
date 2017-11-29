@@ -2,16 +2,13 @@ package com.shichen.mobapisample.config;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Toast;
 
 import com.shichen.mobapisample.R;
 import com.shichen.mobapisample.bean.SupportCity;
 import com.shichen.mobapisample.utils.SharePreferenceUtils;
 import com.shichen.mobapisample.weatherapi.IWeatherApi;
-import com.shichen.mobapisample.weatherpart.TestApiActivity;
 import com.shichen.mobapisample.weatherpart.WeatherInfoActivity;
 
 import io.reactivex.Observer;
@@ -34,9 +31,17 @@ public class MainActivity extends BaseActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         initCityData();
     }
 
+    /**
+     * 初始化省市县信息
+     */
     private void initCityData() {
         final SharePreferenceUtils sharePreferenceUtils = new SharePreferenceUtils(getApplicationContext());
         getRetrofit().create(IWeatherApi.class)

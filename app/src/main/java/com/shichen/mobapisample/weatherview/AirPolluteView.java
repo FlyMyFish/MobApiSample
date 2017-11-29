@@ -138,14 +138,14 @@ public class AirPolluteView extends View {
         //测量
         int textSize = Math.min(height, width) / 8;
         textPaint.setTextSize(textSize);
-        textPaint.setColor(getColor());
+        textPaint.setColor(getColor(maxPollute, currentPollute));
         Rect rect = new Rect();
         textPaint.getTextBounds(qualityStr, 0, qualityStr.length(), rect);
         //文字高度
         float textHeight = rect.height();
         float textWidth = textPaint.measureText(qualityStr);
         //空气质量文字描述
-        canvas.drawText(qualityStr, width / 2 - textWidth / 2, height / 2 + textHeight / 2, textPaint);
+        //canvas.drawText(qualityStr, width / 2 - textWidth / 2, height / 2 + textHeight / 2, textPaint);
         //以下是空气质量数值
         textPaint.setTextSize(textSize / 2 * 3);
         canvas.drawText(String.valueOf(currentPollute), width / 2 - textPaint.measureText(String.valueOf(currentPollute)) / 2, height / 2 - textHeight, textPaint);
@@ -156,7 +156,13 @@ public class AirPolluteView extends View {
      *
      * @return 通过渐变计算得到的颜色值
      */
-    private int getColor() {
+    public static int getColor(int maxPollute, int currentPollute) {
+        int[] arcColors = new int[]{0xFF0289c3,
+                0xFF76c0ef,
+                0xFF74c141,
+                0xFFf09837,
+                0xFFfe4502,
+                0xFFbf0d1d};
         //currentPollute,maxPollute
         int unit = maxPollute / 6;
         int startColor, endColor;
