@@ -9,4 +9,4 @@
 .externalNativeBuild
 .idea
 /app/build
-app/
+app/release
