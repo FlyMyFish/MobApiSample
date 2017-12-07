@@ -80,6 +80,12 @@ public class WeatherInfo extends BaseResult{
          * 空气质量
          */
         private String airCondition;
+
+        public static final String AIR_CONDITION_YOU="优";
+        public static final String AIR_CONDITION_LIANG="良";
+        public static final String AIR_CONDITION_MILD_POLLUTE="轻度污染";
+        public static final String AIR_CONDITION_MODERATE_POLLUTE="中度污染";
+        public static final String AIR_CONDITION_SERIOUS_POLLUTE="重度污染";
         /**
          * 城市
          */
@@ -384,6 +390,32 @@ public class WeatherInfo extends BaseResult{
             public void setWind(String wind) {
                 this.wind = wind;
             }
+        }
+    }
+
+    /**
+     * 所有指数的颜色
+     */
+    private static int[] arcColors = new int[]{0xFF0289c3,
+            0xFF76c0ef,
+            0xFF74c141,
+            0xFFf09837,
+            0xFFfe4502,
+            0xFFbf0d1d};
+
+    public static int parseColor(String airCondition) {
+        if (airCondition.equals(WeatherInfo.WeatherBean.AIR_CONDITION_YOU)) {
+            return arcColors[1];
+        } else if (airCondition.equals(WeatherInfo.WeatherBean.AIR_CONDITION_LIANG)) {
+            return arcColors[2];
+        } else if (airCondition.equals(WeatherInfo.WeatherBean.AIR_CONDITION_MILD_POLLUTE)) {
+            return arcColors[3];
+        } else if (airCondition.equals(WeatherInfo.WeatherBean.AIR_CONDITION_MODERATE_POLLUTE)) {
+            return arcColors[4];
+        } else if (airCondition.equals(WeatherInfo.WeatherBean.AIR_CONDITION_SERIOUS_POLLUTE)) {
+            return arcColors[5];
+        } else {
+            return 0xFFFFFFFF;
         }
     }
 }

@@ -55,6 +55,7 @@ public class WeatherInfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 mHolder.getBinding().setWeatherBean(weatherBean);
                 mHolder.getBinding().executePendingBindings();
                 mHolder.getBinding().setHandler(handler);
+                mHolder.getBinding().tvAirCondition.setTextColor(WeatherInfo.parseColor(weatherBean.getAirCondition()));
             }
             if (holder instanceof WeatherInfoFuture) {
                 WeatherInfoFuture mHolder = (WeatherInfoFuture) holder;

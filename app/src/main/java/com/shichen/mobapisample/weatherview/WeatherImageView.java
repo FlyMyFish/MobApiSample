@@ -48,6 +48,8 @@ public class WeatherImageView extends SurfaceView implements SurfaceHolder.Callb
     private int parentTransitionX;
     private int parentTransitionY;
 
+    private int airPolluteColor = 0xFFFFFFFF;
+
     public void setParentTransitionX(int parentTransitionX) {
         this.parentTransitionX = parentTransitionX;
     }
@@ -184,6 +186,7 @@ public class WeatherImageView extends SurfaceView implements SurfaceHolder.Callb
             default:
                 break;
         }
+        airPolluteColor = WeatherInfo.parseColor(weatherInfo.getResult().get(0).getAirCondition());
         if (weatherConfig.haveSun) {
             if (sunDraw == null) {
                 sunDraw = new SunDraw();
@@ -263,6 +266,9 @@ public class WeatherImageView extends SurfaceView implements SurfaceHolder.Callb
                     cityDraw.setColorDark(false);
                 }
             }
+            if (cityDraw != null) {
+                cityDraw.setAirPaintColor(airPolluteColor);
+            }
             if (weatherConfig.haveSun) {
                 if (weatherConfig.blackCloud || weatherConfig.haveHaze) {
                     mPaint.setColor(0xFF44555F);
@@ -273,6 +279,9 @@ public class WeatherImageView extends SurfaceView implements SurfaceHolder.Callb
                 }
                 sunDraw.draw(mCanvas, getWidth(), rotate);
             }
+            if (sunDraw != null) {
+                sunDraw.setAirPaintColor(airPolluteColor);
+            }
             if (cityDraw != null) {
                 if (weatherConfig.blackCloud) {
                     cityDraw.setColorDark(true);
@@ -280,6 +289,9 @@ public class WeatherImageView extends SurfaceView implements SurfaceHolder.Callb
                     cityDraw.setColorDark(false);
                 }
                 cityDraw.draw(mCanvas, getHeight(), -120);
+            }
+            if (cityDraw != null) {
+                cityDraw.setAirPaintColor(airPolluteColor);
             }
             if (weatherConfig.haveRain) {
                 drawRain(mCanvas);
@@ -296,6 +308,9 @@ public class WeatherImageView extends SurfaceView implements SurfaceHolder.Callb
                     cloudDraw.setColorDark(false);
                 }
                 cloudDraw.draw(mCanvas, getWidth(), translateX, translateY);
+            }
+            if (cloudDraw != null) {
+                cloudDraw.setAirPaintColor(airPolluteColor);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -320,14 +335,14 @@ public class WeatherImageView extends SurfaceView implements SurfaceHolder.Callb
     private void drawRain(Canvas canvas) {
         int rainDropSpeed = 30;
         for (int i = 0; i < rainX.size(); i++) {
-            rainPointDrawList.get(i).draw(canvas, getWidth() / 16, rainX.get(i), (timeTag - rainDropSpeed * i) * rainDropSpeed % getHeight());
+            rainPointDrawList.get(i).setAirPaintColor(airPolluteColor).draw(canvas, getWidth() / 16, rainX.get(i), (timeTag - rainDropSpeed * i) * rainDropSpeed % getHeight());
         }
     }
 
     private void drawSnow(Canvas canvas) {
         int snowDropSpeed = 20;
         for (int i = 0; i < rainX.size(); i++) {
-            snowPointDrawList.get(i).draw(canvas, getWidth() / 32, rainX.get(i), (timeTag - snowDropSpeed * i) * snowDropSpeed % getHeight(), density);
+            snowPointDrawList.get(i).setAirPaintColor(airPolluteColor).draw(canvas, getWidth() / 32, rainX.get(i), (timeTag - snowDropSpeed * i) * snowDropSpeed % getHeight(), density);
         }
     }
 
@@ -352,6 +367,11 @@ public class WeatherImageView extends SurfaceView implements SurfaceHolder.Callb
     private static class SunDraw {
         private Paint mPaint;
         private boolean colorDark = false;
+        private int airPaintColor = 0xFFFFFFFF;
+
+        public void setAirPaintColor(int airPaintColor) {
+            this.airPaintColor = airPaintColor;
+        }
 
         private void setColorDark(boolean colorDark) {
             this.colorDark = colorDark;
@@ -368,7 +388,7 @@ public class WeatherImageView extends SurfaceView implements SurfaceHolder.Callb
             if (colorDark) {
                 mPaint.setColor(0xFF44555F);
             } else {
-                mPaint.setColor(0xFFFFFFFF);
+                mPaint.setColor(airPaintColor);
             }
             final int sunLineCount = 12;
             canvas.drawCircle(widthF / 8, widthF / 4, widthF / 12, mPaint);
@@ -394,6 +414,11 @@ public class WeatherImageView extends SurfaceView implements SurfaceHolder.Callb
     private static class CloudDraw {
         private Paint mPaint;
         private boolean colorDark = false;
+        private int airPaintColor = 0xFFFFFFFF;
+
+        public void setAirPaintColor(int airPaintColor) {
+            this.airPaintColor = airPaintColor;
+        }
 
         private void setColorDark(boolean colorDark) {
             this.colorDark = colorDark;
@@ -410,7 +435,7 @@ public class WeatherImageView extends SurfaceView implements SurfaceHolder.Callb
             if (colorDark) {
                 mPaint.setColor(0xFF44555F);
             } else {
-                mPaint.setColor(0xFFFFFFFF);
+                mPaint.setColor(airPaintColor);
             }
             canvas.drawCircle(0 + transLateX, 0 + transLateY, widthF / 8, mPaint);
             canvas.drawCircle(widthF / 16 + transLateX, 0 + transLateY, widthF / 9, mPaint);
@@ -426,6 +451,12 @@ public class WeatherImageView extends SurfaceView implements SurfaceHolder.Callb
     private static class RainPointDraw {
         private Paint mPaint;
         private boolean colorDark = false;
+        private int airPaintColor = 0xFFFFFFFF;
+
+        public RainPointDraw setAirPaintColor(int airPaintColor) {
+            this.airPaintColor = airPaintColor;
+            return this;
+        }
 
         private RainPointDraw() {
             mPaint = new Paint();
@@ -439,7 +470,7 @@ public class WeatherImageView extends SurfaceView implements SurfaceHolder.Callb
             if (colorDark) {
                 mPaint.setColor(0xFF44555F);
             } else {
-                mPaint.setColor(0xFFFFFFFF);
+                mPaint.setColor(airPaintColor);
             }
             float radiusF = totalH / 8;
             RectF rectF = new RectF();
@@ -457,6 +488,12 @@ public class WeatherImageView extends SurfaceView implements SurfaceHolder.Callb
     private static class SnowPointDraw {
         private Paint mPaint;
         private boolean colorDark = false;
+        private int airPaintColor = 0xFFFFFFFF;
+
+        public SnowPointDraw setAirPaintColor(int airPaintColor) {
+            this.airPaintColor = airPaintColor;
+            return this;
+        }
 
         private SnowPointDraw() {
             mPaint = new Paint();
@@ -470,7 +507,7 @@ public class WeatherImageView extends SurfaceView implements SurfaceHolder.Callb
             if (colorDark) {
                 mPaint.setColor(0xFF44555F);
             } else {
-                mPaint.setColor(0xFFFFFFFF);
+                mPaint.setColor(airPaintColor);
             }
             float r = totalH / 2;
             float cx = totalH / 2 + xF;
@@ -497,6 +534,11 @@ public class WeatherImageView extends SurfaceView implements SurfaceHolder.Callb
     private static class CityDraw {
         private Paint mPaint;
         private boolean colorDark = false;
+        private int airPaintColor = 0xFFFFFFFF;
+
+        public void setAirPaintColor(int airPaintColor) {
+            this.airPaintColor = airPaintColor;
+        }
 
         private void setColorDark(boolean colorDark) {
             this.colorDark = colorDark;
@@ -513,7 +555,7 @@ public class WeatherImageView extends SurfaceView implements SurfaceHolder.Callb
             if (colorDark) {
                 mPaint.setColor(0xFF44555F);
             } else {
-                mPaint.setColor(0xFFFFFFFF);
+                mPaint.setColor(airPaintColor);
             }
             Path path = new Path();
             path.moveTo(startX, heightF + 100.0f);

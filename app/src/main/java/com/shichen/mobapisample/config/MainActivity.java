@@ -44,7 +44,7 @@ public class MainActivity extends BaseActivity {
      */
     private void initCityData() {
         final SharePreferenceUtils sharePreferenceUtils = new SharePreferenceUtils(getApplicationContext());
-        getRetrofit().create(IWeatherApi.class)
+        getWeatherRetrofit().create(IWeatherApi.class)
                 .getApiSupportCity()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

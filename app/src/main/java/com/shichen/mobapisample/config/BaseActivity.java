@@ -29,10 +29,32 @@ public class BaseActivity extends AppCompatActivity {
 
     private Retrofit retrofit;
 
-    protected Retrofit getRetrofit() {
+    protected Retrofit getWeatherRetrofit() {
         if (retrofit == null) {
             retrofit = new Retrofit.Builder()
                     .baseUrl("http://apicloud.mob.com/v1/weather/")
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                    .build();
+        }
+        return retrofit;
+    }
+
+    protected Retrofit getAirConditionRetrofit() {
+        if (retrofit == null) {
+            retrofit = new Retrofit.Builder()
+                    .baseUrl("http://apicloud.mob.com/environment/")
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                    .build();
+        }
+        return retrofit;
+    }
+
+    protected Retrofit getCookBookRetrofit() {
+        if (retrofit == null) {
+            retrofit = new Retrofit.Builder()
+                    .baseUrl("http://apicloud.mob.com/v1/cook/")
                     .addConverterFactory(GsonConverterFactory.create())
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                     .build();

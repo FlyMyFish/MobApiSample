@@ -117,7 +117,7 @@ public class WeatherInfoActivity extends BaseActivity implements SensorEventList
 
     private void getWeatherInfo(TargetCity targetCity) {
         showLoadingDialog(getString(R.string.weather_info));
-        getRetrofit().create(IWeatherApi.class)
+        getWeatherRetrofit().create(IWeatherApi.class)
                 .getWeatherInfoByCityAndProvince(targetCity.getCity(), targetCity.getProvince())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -163,11 +163,7 @@ public class WeatherInfoActivity extends BaseActivity implements SensorEventList
         if (!TextUtils.isEmpty(targetCityStr)) {
             showLoadingDialog("获取空气质量信息");
             TargetCity targetCity = mGson.fromJson(targetCityStr, TargetCity.class);
-            new Retrofit.Builder()
-                    .baseUrl("http://apicloud.mob.com/environment/")
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                    .build()
+            getAirConditionRetrofit()
                     .create(IAirQualityApi.class)
                     .getAirQuality(targetCity.getCity(), targetCity.getProvince())
                     .subscribeOn(Schedulers.io())
@@ -182,11 +178,11 @@ public class WeatherInfoActivity extends BaseActivity implements SensorEventList
                         public void onNext(AirQuality airQuality) {
                             Intent intent = new Intent(WeatherInfoActivity.this, AirConditionActivity.class);
                             ActivityOptionsCompat activityOptionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(WeatherInfoActivity.this
-                                    ,new Pair<>(view,"tv_air_condition_"));
+                                    , new Pair<>(view, "tv_air_condition_"));
                             Bundle bundle = new Bundle();
                             bundle.putSerializable(AirConditionActivity.AIR_QUALITY_DATA, airQuality);
                             intent.putExtras(bundle);
-                            startActivity(intent,activityOptionsCompat.toBundle());
+                            startActivity(intent, activityOptionsCompat.toBundle());
                             //tv_air_condition
                         }
 
