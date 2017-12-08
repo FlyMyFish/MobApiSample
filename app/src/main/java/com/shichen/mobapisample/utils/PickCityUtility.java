@@ -5,6 +5,11 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import com.shichen.mobapisample.bean.AirQuality;
+import com.shichen.mobapisample.bean.CookBook;
+import com.shichen.mobapisample.bean.CookBookTab;
+import com.shichen.mobapisample.cookbookpart.CookBookListAdapter;
+import com.shichen.mobapisample.cookbookpart.CookBookMenuActivity;
+import com.shichen.mobapisample.cookbookpart.CookBookMenuAdapter;
 import com.shichen.mobapisample.weatherpart.CityListAdapter;
 import com.shichen.mobapisample.weatherpart.DateQualityAdapter;
 import com.shichen.mobapisample.weatherpart.DistrictListAdapter;
@@ -67,5 +72,17 @@ public class PickCityUtility {
     public static void setFutureData(RecyclerView recyclerView, AirQuality.AirData airQuality) {
         recyclerView.setLayoutManager(new LinearLayoutManager(recyclerView.getContext(), LinearLayoutManager.HORIZONTAL, false));
         recyclerView.setAdapter(new DateQualityAdapter(recyclerView.getContext(), airQuality));
+    }
+
+    @BindingAdapter({"childsBeanX", "handler"})
+    public static void setChildsBeanX(RecyclerView recyclerView, CookBookTab.CookBookBean.ChildsBeanX childsBeanX, CookBookMenuActivity.Handler handler) {
+        recyclerView.setLayoutManager(new LinearLayoutManager(recyclerView.getContext(), LinearLayoutManager.VERTICAL, false));
+        recyclerView.setAdapter(new CookBookMenuAdapter(childsBeanX, recyclerView.getContext(), handler));
+    }
+
+    @BindingAdapter({"cookBook"})
+    public static void setCookBook(RecyclerView recyclerView, CookBook cookBook) {
+        recyclerView.setLayoutManager(new LinearLayoutManager(recyclerView.getContext(), LinearLayoutManager.VERTICAL, false));
+        recyclerView.setAdapter(new CookBookListAdapter(recyclerView.getContext(), cookBook));
     }
 }

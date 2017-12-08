@@ -5,5 +5,10 @@
         android:id="@+id/item_pick_city"
         android:orderInCategory="50"
         android:title="@string/change"
-        app:showAsAction="always" />
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/item_cook_book"
+        android:orderInCategory="60"
+        android:title="@string/cook_book"
+        app:showAsAction="never" />
 </menu>

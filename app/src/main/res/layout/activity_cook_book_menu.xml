@@ -2,9 +2,22 @@
 <layout>
 
     <data>
+
+        <variable
+            name="cookBook"
+            type="com.shichen.mobapisample.bean.CookBook"/>
+
         <variable
             name="cookBookTab"
-            type="com.shichen.mobapisample.bean.CookBookTab"/>
+            type="com.shichen.mobapisample.bean.CookBookTab" />
+
+        <variable
+            name="childsBeanX"
+            type="com.shichen.mobapisample.bean.CookBookTab.CookBookBean.ChildsBeanX" />
+
+        <variable
+            name="handler"
+            type="com.shichen.mobapisample.cookbookpart.CookBookMenuActivity.Handler"/>
     </data>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -19,15 +32,42 @@
             android:layout_height="wrap_content"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
+
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                app:title="@string/cook_book" />
+
+            <android.support.design.widget.TabLayout
+                android:id="@+id/tabCookBook"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:tabBackground="@drawable/selector_tab_background"
+                app:tabIndicatorColor="@color/colorAccent"
+                app:tabMode="scrollable"
+                app:tabSelectedTextColor="@color/colorWhite"
+                app:tabTextColor="@color/colorPrimary" />
         </android.support.design.widget.AppBarLayout>
 
-        <android.support.v7.widget.RecyclerView
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_cook_book"
+                android:layout_width="72dp"
+                android:layout_height="wrap_content"
+                android:background="@color/colorWhite"
+                app:handler="@{handler}"
+                app:childsBeanX="@{childsBeanX}" />
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_cook_list"
+                app:cookBook="@{cookBook}"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
     </LinearLayout>
 </layout>

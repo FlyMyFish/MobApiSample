@@ -24,6 +24,7 @@ import com.shichen.mobapisample.bean.TargetCity;
 import com.shichen.mobapisample.bean.WeatherInfo;
 import com.shichen.mobapisample.config.BaseActivity;
 import com.shichen.mobapisample.config.Config;
+import com.shichen.mobapisample.cookbookpart.CookBookMenuActivity;
 import com.shichen.mobapisample.databinding.ActivityWeatherInfoBinding;
 import com.shichen.mobapisample.utils.SharePreferenceUtils;
 import com.shichen.mobapisample.weatherapi.IAirQualityApi;
@@ -67,6 +68,9 @@ public class WeatherInfoActivity extends BaseActivity implements SensorEventList
                 switch (item.getItemId()) {
                     case R.id.item_pick_city:
                         startActivity(new Intent(WeatherInfoActivity.this, PickTargetCityActivity.class));
+                        break;
+                    case R.id.item_cook_book:
+                        startActivity(new Intent(WeatherInfoActivity.this, CookBookMenuActivity.class));
                         break;
                     default:
                         break;

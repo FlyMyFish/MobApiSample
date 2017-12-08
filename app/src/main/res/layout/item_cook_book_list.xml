@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+
+        <variable
+            name="listBean"
+            type="com.shichen.mobapisample.bean.CookBook.ResultBean.ListBean" />
+    </data>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorWhite"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/img_food"
+            android:layout_width="65dp"
+            android:layout_height="48dp"
+            android:layout_margin="@dimen/normal_top_blank_block"
+            android:scaleType="centerCrop" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/normal_top_blank_block"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{listBean.name}"
+                android:textColor="@color/colorAccent"
+                android:layout_marginBottom="@dimen/normal_top_blank_block"
+                android:textSize="@dimen/normalTextSize" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{listBean.ctgTitles}"
+                android:textColor="@color/colorAccent"
+                android:textSize="@dimen/tipTextSize" />
+        </LinearLayout>
+    </LinearLayout>
+</layout>
