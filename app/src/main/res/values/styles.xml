@@ -39,4 +39,17 @@
         //点击空白处时是否销毁Activity
         <item name="android:windowCloseOnTouchOutside">true</item>
     </style>
+    <!--SearchView样式-->
+    <style name="Base.Widget.AppCompat.SearchView" parent="android:Widget">
+        <item name="android:layout">@layout/abc_search_view</item>
+        <item name="android:queryBackground">@drawable/abc_textfield_search_material</item>
+        <item name="android:submitBackground">@drawable/abc_textfield_search_material</item>
+        <item name="android:closeIcon">@drawable/abc_ic_clear_material</item>
+        <item name="android:searchIcon">@drawable/abc_ic_search_api_material</item>
+        <item name="android:searchHintIcon">@drawable/abc_ic_search_api_material</item>
+        <item name="android:goIcon">@drawable/abc_ic_go_search_api_material</item>
+        <item name="android:voiceIcon">@drawable/abc_ic_voice_search_api_material</item>
+        <item name="android:commitIcon">@drawable/abc_ic_commit_search_api_mtrl_alpha</item>
+        <item name="android:suggestionRowLayout">@layout/abc_search_dropdown_item_icons_2line</item>
+    </style>
 </resources>

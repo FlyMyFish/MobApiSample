@@ -29,4 +29,7 @@
     <string name="quality_hour_data">24小时</string>
     <string name="quality_date_data">日期排列</string>
     <string name="cook_book">做菜</string>
+    <string name="cook_method">步骤</string>
+    <string name="ingredients_str">配料</string>
+    <string name="summary_str">佳肴</string>
 </resources>

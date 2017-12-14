@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:bind="http://schemas.android.com/tools">
 
     <data>
 
         <variable
             name="cookBook"
-            type="com.shichen.mobapisample.bean.CookBook"/>
+            type="com.shichen.mobapisample.bean.CookBook" />
 
         <variable
             name="cookBookTab"
@@ -17,7 +17,7 @@
 
         <variable
             name="handler"
-            type="com.shichen.mobapisample.cookbookpart.CookBookMenuActivity.Handler"/>
+            type="com.shichen.mobapisample.cookbookpart.CookBookMenuActivity.Handler" />
     </data>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -61,13 +61,28 @@
                 android:layout_width="72dp"
                 android:layout_height="wrap_content"
                 android:background="@color/colorWhite"
-                app:handler="@{handler}"
-                app:childsBeanX="@{childsBeanX}" />
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/rv_cook_list"
-                app:cookBook="@{cookBook}"
+                app:childsBeanX="@{childsBeanX}"
+                app:handler="@{handler}" />
+
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <SearchView
+                    android:id="@+id/search_cook"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:focusable="false"
+                    android:focusableInTouchMode="true" />
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rv_cook_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cookBook="@{cookBook}"
+                    app:handler="@{handler}" />
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 </layout>

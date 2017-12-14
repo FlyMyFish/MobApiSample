@@ -4,6 +4,7 @@ import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
@@ -21,10 +22,12 @@ import com.shichen.mobapisample.utils.RequestOptionsUtils;
 public class CookBookListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private Context context;
     private CookBook cookBook;
+    private CookBookMenuActivity.Handler handler;
 
-    public CookBookListAdapter(Context context, CookBook cookBook) {
+    public CookBookListAdapter(Context context, CookBook cookBook, CookBookMenuActivity.Handler handler) {
         this.context = context;
         this.cookBook = cookBook;
+        this.handler = handler;
     }
 
     @Override
@@ -34,10 +37,17 @@ public class CookBookListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         if (holder instanceof DataView) {
-            DataView mHolder = (DataView) holder;
+            final DataView mHolder = (DataView) holder;
+            mHolder.binding.setHandler(handler);
             mHolder.binding.setListBean(cookBook.getResult().getList().get(position));
+            mHolder.binding.llItemParent.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    handler.cookBookClick(cookBook.getResult().getList().get(position), mHolder.binding.imgFood);
+                }
+            });
             Glide.with(context).load(cookBook.getResult().getList().get(position).getThumbnail()).apply(RequestOptionsUtils.rectOption()).into(mHolder.binding.imgFood);
         }
     }

@@ -16,6 +16,8 @@ public class MyApplication extends Application {
     public void onCreate() {
         super.onCreate();
         setupLeakCanary();
+        CrashHandler crashHandler = CrashHandler.getInstance();
+        crashHandler.init(this);
     }
 
     protected RefWatcher setupLeakCanary() {

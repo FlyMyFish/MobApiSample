@@ -11,6 +11,7 @@ import android.graphics.RectF;
 import android.graphics.SweepGradient;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -140,15 +141,18 @@ public class AirPolluteView extends View {
         textPaint.setTextSize(textSize);
         textPaint.setColor(getColor(maxPollute, currentPollute));
         Rect rect = new Rect();
-        textPaint.getTextBounds(qualityStr, 0, qualityStr.length(), rect);
-        //文字高度
-        float textHeight = rect.height();
-        float textWidth = textPaint.measureText(qualityStr);
-        //空气质量文字描述
-        //canvas.drawText(qualityStr, width / 2 - textWidth / 2, height / 2 + textHeight / 2, textPaint);
-        //以下是空气质量数值
-        textPaint.setTextSize(textSize / 2 * 3);
-        canvas.drawText(String.valueOf(currentPollute), width / 2 - textPaint.measureText(String.valueOf(currentPollute)) / 2, height / 2 - textHeight, textPaint);
+        if (!TextUtils.isEmpty(qualityStr)) {
+            textPaint.getTextBounds(qualityStr, 0, qualityStr.length(), rect);
+            //文字高度
+            float textHeight = rect.height();
+            float textWidth = textPaint.measureText(qualityStr);
+
+            //空气质量文字描述
+            //canvas.drawText(qualityStr, width / 2 - textWidth / 2, height / 2 + textHeight / 2, textPaint);
+            //以下是空气质量数值
+            textPaint.setTextSize(textSize / 2 * 3);
+            canvas.drawText(String.valueOf(currentPollute), width / 2 - textPaint.measureText(String.valueOf(currentPollute)) / 2, height / 2 - textHeight, textPaint);
+        }
     }
 
     /**

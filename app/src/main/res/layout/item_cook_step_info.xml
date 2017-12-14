@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="recipeBean"
+            type="com.shichen.mobapisample.bean.CookBook.ResultBean.ListBean.RecipeBean" />
+    </data>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardElevation="@dimen/cardview_default_elevation">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorPrimary"
+                android:padding="@dimen/normal_top_blank_block"
+                android:text="@string/ingredients_str"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/tipTextSize" />
+        </android.support.v7.widget.CardView>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/normal_top_blank_block"
+            android:text="@{recipeBean.ingredients}"
+            android:textColor="@color/colorAccent"
+            android:textSize="@dimen/tipTextSize" />
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardElevation="@dimen/cardview_default_elevation">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorPrimary"
+                android:padding="@dimen/normal_top_blank_block"
+                android:text="@string/summary_str"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/tipTextSize" />
+        </android.support.v7.widget.CardView>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/normal_top_blank_block"
+            android:text="@{recipeBean.sumary}"
+            android:textColor="@color/colorAccent"
+            android:textSize="@dimen/tipTextSize" />
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/cardview_default_elevation"
+            app:cardElevation="@dimen/cardview_default_elevation">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorPrimary"
+                android:padding="@dimen/normal_top_blank_block"
+                android:text="@string/cook_method"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/tipTextSize" />
+        </android.support.v7.widget.CardView>
+    </LinearLayout>
+</layout>

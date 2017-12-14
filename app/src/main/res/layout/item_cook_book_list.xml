@@ -6,9 +6,13 @@
         <variable
             name="listBean"
             type="com.shichen.mobapisample.bean.CookBook.ResultBean.ListBean" />
+        <variable
+            name="handler"
+            type="com.shichen.mobapisample.cookbookpart.CookBookMenuActivity.Handler"/>
     </data>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/ll_item_parent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorWhite"
@@ -16,6 +20,7 @@
 
         <ImageView
             android:id="@+id/img_food"
+            android:transitionName="img_food_pic_"
             android:layout_width="65dp"
             android:layout_height="48dp"
             android:layout_margin="@dimen/normal_top_blank_block"

@@ -15,7 +15,7 @@ public class AirQuality extends BaseResult implements Serializable {
 
     /**
      * msg : success
-     * result : [{"aqi":198,"city":"郑州","district":"郑州","fetureData":[{"aqi":66,"date":"2017-11-18","quality":"良"},{"aqi":74,"date":"2017-11-19","quality":"良"},{"aqi":73,"date":"2017-11-20","quality":"良"},{"aqi":88,"date":"2017-11-21","quality":"良"},{"aqi":66,"date":"2017-11-22","quality":"良"}],"hourData":[{"aqi":198,"dateTime":"2017-11-17 07:00:00"},{"aqi":196,"dateTime":"2017-11-17 06:00:00"},{"aqi":196,"dateTime":"2017-11-17 05:00:00"},{"aqi":195,"dateTime":"2017-11-17 04:00:00"},{"aqi":198,"dateTime":"2017-11-17 03:00:00"},{"aqi":201,"dateTime":"2017-11-17 02:00:00"},{"aqi":199,"dateTime":"2017-11-17 01:00:00"},{"aqi":198,"dateTime":"2017-11-17 00:00:00"},{"aqi":196,"dateTime":"2017-11-16 23:00:00"},{"aqi":193,"dateTime":"2017-11-16 22:00:00"},{"aqi":198,"dateTime":"2017-11-16 21:00:00"},{"aqi":202,"dateTime":"2017-11-16 20:00:00"},{"aqi":204,"dateTime":"2017-11-16 19:00:00"},{"aqi":212,"dateTime":"2017-11-16 18:00:00"},{"aqi":216,"dateTime":"2017-11-16 17:00:00"},{"aqi":218,"dateTime":"2017-11-16 16:00:00"},{"aqi":214,"dateTime":"2017-11-16 15:00:00"},{"aqi":209,"dateTime":"2017-11-16 14:00:00"},{"aqi":190,"dateTime":"2017-11-16 13:00:00"},{"aqi":163,"dateTime":"2017-11-16 12:00:00"},{"aqi":137,"dateTime":"2017-11-16 11:00:00"},{"aqi":120,"dateTime":"2017-11-16 10:00:00"},{"aqi":113,"dateTime":"2017-11-16 09:00:00"},{"aqi":110,"dateTime":"2017-11-16 08:00:00"}],"no2":72,"pm10":200,"pm25":148,"province":"河南","quality":"中度污染","so2":26,"updateTime":"2017-11-17 08:00:00"}]
+     * result : [{"aqi":67,"city":"重庆","district":"重庆","fetureData":[{"aqi":80,"date":"2017-12-14","quality":"良"},{"aqi":63,"date":"2017-12-15","quality":"良"},{"aqi":59,"date":"2017-12-16","quality":"良"},{"aqi":52,"date":"2017-12-17","quality":"良"},{"aqi":77,"date":"2017-12-18","quality":"良"},{"aqi":91,"date":"2017-12-19","quality":"良"}],"hourData":[{"aqi":67,"dateTime":"2017-12-13 07:00:00"},{"aqi":65,"dateTime":"2017-12-13 06:00:00"},{"aqi":67,"dateTime":"2017-12-13 05:00:00"},{"aqi":69,"dateTime":"2017-12-13 04:00:00"},{"aqi":74,"dateTime":"2017-12-13 03:00:00"},{"aqi":80,"dateTime":"2017-12-13 02:00:00"},{"aqi":85,"dateTime":"2017-12-13 01:00:00"},{"aqi":92,"dateTime":"2017-12-13 00:00:00"},{"aqi":100,"dateTime":"2017-12-12 23:00:00"},{"aqi":109,"dateTime":"2017-12-12 22:00:00"},{"aqi":119,"dateTime":"2017-12-12 21:00:00"},{"aqi":127,"dateTime":"2017-12-12 20:00:00"},{"aqi":135,"dateTime":"2017-12-12 19:00:00"},{"aqi":144,"dateTime":"2017-12-12 18:00:00"},{"aqi":139,"dateTime":"2017-12-12 17:00:00"},{"aqi":145,"dateTime":"2017-12-12 16:00:00"},{"aqi":140,"dateTime":"2017-12-12 15:00:00"},{"aqi":147,"dateTime":"2017-12-12 14:00:00"},{"aqi":148,"dateTime":"2017-12-12 13:00:00"},{"aqi":147,"dateTime":"2017-12-12 12:00:00"},{"aqi":138,"dateTime":"2017-12-12 11:00:00"},{"aqi":135,"dateTime":"2017-12-12 10:00:00"},{"aqi":127,"dateTime":"2017-12-12 09:00:00"},{"aqi":115,"dateTime":"2017-12-12 08:00:00"}],"no2":39,"pm10":72,"pm25":48,"province":"重庆","quality":"良","so2":8,"updateTime":"2017-12-13 08:00:00"}]
      * retCode : 200
      */
     @SerializedName("msg")
@@ -51,20 +51,19 @@ public class AirQuality extends BaseResult implements Serializable {
 
     public static class AirData implements Serializable {
         /**
-         * aqi : 198
-         * city : 郑州
-         * district : 郑州
-         * fetureData : [{"aqi":66,"date":"2017-11-18","quality":"良"},{"aqi":74,"date":"2017-11-19","quality":"良"},{"aqi":73,"date":"2017-11-20","quality":"良"},{"aqi":88,"date":"2017-11-21","quality":"良"},{"aqi":66,"date":"2017-11-22","quality":"良"}]
-         * hourData : [{"aqi":198,"dateTime":"2017-11-17 07:00:00"},{"aqi":196,"dateTime":"2017-11-17 06:00:00"},{"aqi":196,"dateTime":"2017-11-17 05:00:00"},{"aqi":195,"dateTime":"2017-11-17 04:00:00"},{"aqi":198,"dateTime":"2017-11-17 03:00:00"},{"aqi":201,"dateTime":"2017-11-17 02:00:00"},{"aqi":199,"dateTime":"2017-11-17 01:00:00"},{"aqi":198,"dateTime":"2017-11-17 00:00:00"},{"aqi":196,"dateTime":"2017-11-16 23:00:00"},{"aqi":193,"dateTime":"2017-11-16 22:00:00"},{"aqi":198,"dateTime":"2017-11-16 21:00:00"},{"aqi":202,"dateTime":"2017-11-16 20:00:00"},{"aqi":204,"dateTime":"2017-11-16 19:00:00"},{"aqi":212,"dateTime":"2017-11-16 18:00:00"},{"aqi":216,"dateTime":"2017-11-16 17:00:00"},{"aqi":218,"dateTime":"2017-11-16 16:00:00"},{"aqi":214,"dateTime":"2017-11-16 15:00:00"},{"aqi":209,"dateTime":"2017-11-16 14:00:00"},{"aqi":190,"dateTime":"2017-11-16 13:00:00"},{"aqi":163,"dateTime":"2017-11-16 12:00:00"},{"aqi":137,"dateTime":"2017-11-16 11:00:00"},{"aqi":120,"dateTime":"2017-11-16 10:00:00"},{"aqi":113,"dateTime":"2017-11-16 09:00:00"},{"aqi":110,"dateTime":"2017-11-16 08:00:00"}]
-         * no2 : 72
-         * pm10 : 200
-         * pm25 : 148
-         * province : 河南
-         * quality : 中度污染
-         * so2 : 26
-         * updateTime : 2017-11-17 08:00:00
+         * aqi : 67
+         * city : 重庆
+         * district : 重庆
+         * fetureData : [{"aqi":80,"date":"2017-12-14","quality":"良"},{"aqi":63,"date":"2017-12-15","quality":"良"},{"aqi":59,"date":"2017-12-16","quality":"良"},{"aqi":52,"date":"2017-12-17","quality":"良"},{"aqi":77,"date":"2017-12-18","quality":"良"},{"aqi":91,"date":"2017-12-19","quality":"良"}]
+         * hourData : [{"aqi":67,"dateTime":"2017-12-13 07:00:00"},{"aqi":65,"dateTime":"2017-12-13 06:00:00"},{"aqi":67,"dateTime":"2017-12-13 05:00:00"},{"aqi":69,"dateTime":"2017-12-13 04:00:00"},{"aqi":74,"dateTime":"2017-12-13 03:00:00"},{"aqi":80,"dateTime":"2017-12-13 02:00:00"},{"aqi":85,"dateTime":"2017-12-13 01:00:00"},{"aqi":92,"dateTime":"2017-12-13 00:00:00"},{"aqi":100,"dateTime":"2017-12-12 23:00:00"},{"aqi":109,"dateTime":"2017-12-12 22:00:00"},{"aqi":119,"dateTime":"2017-12-12 21:00:00"},{"aqi":127,"dateTime":"2017-12-12 20:00:00"},{"aqi":135,"dateTime":"2017-12-12 19:00:00"},{"aqi":144,"dateTime":"2017-12-12 18:00:00"},{"aqi":139,"dateTime":"2017-12-12 17:00:00"},{"aqi":145,"dateTime":"2017-12-12 16:00:00"},{"aqi":140,"dateTime":"2017-12-12 15:00:00"},{"aqi":147,"dateTime":"2017-12-12 14:00:00"},{"aqi":148,"dateTime":"2017-12-12 13:00:00"},{"aqi":147,"dateTime":"2017-12-12 12:00:00"},{"aqi":138,"dateTime":"2017-12-12 11:00:00"},{"aqi":135,"dateTime":"2017-12-12 10:00:00"},{"aqi":127,"dateTime":"2017-12-12 09:00:00"},{"aqi":115,"dateTime":"2017-12-12 08:00:00"}]
+         * no2 : 39
+         * pm10 : 72
+         * pm25 : 48
+         * province : 重庆
+         * quality : 良
+         * so2 : 8
+         * updateTime : 2017-12-13 08:00:00
          */
-
         @SerializedName("aqi")
         private int aqi;
         @SerializedName("city")
@@ -186,10 +185,10 @@ public class AirQuality extends BaseResult implements Serializable {
             this.hourData = hourData;
         }
 
-        public static class FetureAirData implements Serializable {
+        public static class FetureAirData implements Serializable{
             /**
-             * aqi : 66
-             * date : 2017-11-18
+             * aqi : 80
+             * date : 2017-12-14
              * quality : 良
              */
             @SerializedName("aqi")
@@ -238,8 +237,8 @@ public class AirQuality extends BaseResult implements Serializable {
 
         public static class HourAirData implements Serializable {
             /**
-             * aqi : 198
-             * dateTime : 2017-11-17 07:00:00
+             * aqi : 67
+             * dateTime : 2017-12-13 07:00:00
              */
             @SerializedName("aqi")
             private int aqi;

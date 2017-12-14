@@ -31,6 +31,9 @@
         <activity
             android:name=".cookbookpart.CookBookMenuActivity"
             android:launchMode="standard" />
+        <activity
+            android:name=".cookbookpart.ViewCookBookActivity"
+            android:launchMode="standard" />
     </application>
 
 </manifest>

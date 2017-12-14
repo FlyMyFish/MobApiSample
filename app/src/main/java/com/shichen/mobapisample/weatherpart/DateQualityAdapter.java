@@ -41,6 +41,12 @@ public class DateQualityAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     @Override
     public int getItemCount() {
+        if (airQuality==null){
+            return 0;
+        }
+        if (airQuality.getFetureData()==null){
+            return 0;
+        }
         return airQuality.getFetureData().size();
     }
 
