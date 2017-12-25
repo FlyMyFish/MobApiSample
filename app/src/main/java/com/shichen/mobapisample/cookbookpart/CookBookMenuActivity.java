@@ -11,6 +11,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.SearchView;
 
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.shichen.mobapisample.R;
 import com.shichen.mobapisample.bean.CookBook;
 import com.shichen.mobapisample.bean.CookBookTab;
@@ -101,6 +104,20 @@ public class CookBookMenuActivity extends BaseActivity {
                 return false;
             }
         });
+        binding.refreshLayout.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(RefreshLayout refreshlayout) {
+                refreshlayout.finishRefresh(2000);
+                //传入false表示刷新失败
+            }
+        });
+        binding.refreshLayout.setOnLoadmoreListener(new OnLoadmoreListener() {
+            @Override
+            public void onLoadmore(RefreshLayout refreshlayout) {
+                refreshlayout.finishLoadmore(2000);
+                //传入false表示加载失败
+            }
+        });
     }
 
     private void bindTab(final CookBookTab cookBookTab) {
@@ -145,7 +162,7 @@ public class CookBookMenuActivity extends BaseActivity {
     }
 
     private void searchCookBookList(CookBookTab.CookBookBean.ChildsBeanX.ChildsBean childsBean, String keyWord) {
-        handler.mChildsBean=childsBean;
+        handler.mChildsBean = childsBean;
         if (childsBean == null) {
             return;
         }

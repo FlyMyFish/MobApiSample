@@ -1,5 +1,6 @@
 package com.shichen.mobapisample.weatherpart;
 
+import android.annotation.TargetApi;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
@@ -7,16 +8,17 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.util.Pair;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 
 import com.shichen.mobapisample.R;
 import com.shichen.mobapisample.bean.AirQuality;
@@ -24,20 +26,18 @@ import com.shichen.mobapisample.bean.TargetCity;
 import com.shichen.mobapisample.bean.WeatherInfo;
 import com.shichen.mobapisample.config.BaseActivity;
 import com.shichen.mobapisample.config.Config;
-import com.shichen.mobapisample.cookbookpart.CookBookMenuActivity;
 import com.shichen.mobapisample.databinding.ActivityWeatherInfoBinding;
 import com.shichen.mobapisample.utils.SharePreferenceUtils;
 import com.shichen.mobapisample.weatherapi.IAirQualityApi;
 import com.shichen.mobapisample.weatherapi.IWeatherApi;
+import com.shichen.mobapisample.weatherview.WeatherImageView;
 
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
-import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
-import retrofit2.converter.gson.GsonConverterFactory;
+import qiu.niorgai.StatusBarCompat;
 
 /**
  * Created by shichen on 2017/10/20.
@@ -54,32 +54,21 @@ public class WeatherInfoActivity extends BaseActivity implements SensorEventList
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_weather_info);
         sharePreferenceUtils = new SharePreferenceUtils(getApplicationContext());
-        Toolbar toolbar = binding.toolbar;
-        setSupportActionBar(toolbar);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
-        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.item_pick_city:
-                        startActivity(new Intent(WeatherInfoActivity.this, PickTargetCityActivity.class));
-                        break;
-                    case R.id.item_cook_book:
-                        startActivity(new Intent(WeatherInfoActivity.this, CookBookMenuActivity.class));
-                        break;
-                    default:
-                        break;
-                }
-                return false;
-            }
-        });
         binding.setHandler(new Handler());
         sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
+        //判断当前设备版本号是否为4.4以上，如果是，则通过调用setTranslucentStatus让状态栏变透明
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            StatusBarCompat.translucentStatusBar(this);
+        }
+    }
+
+    public int getStatusBarHeight() {
+        int result = 0;
+        int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
+        if (resourceId > 0) {
+            result = getResources().getDimensionPixelSize(resourceId);
+        }
+        return result;
     }
 
     private SharePreferenceUtils sharePreferenceUtils;
@@ -135,6 +124,7 @@ public class WeatherInfoActivity extends BaseActivity implements SensorEventList
                     public void onNext(@NonNull WeatherInfo weatherInfo) {
                         binding.setWeatherInfo(weatherInfo);
                         binding.setWeatherBean(weatherInfo.getResult().get(0));
+                        binding.layoutMain.setBackgroundColor(WeatherImageView.parseColor(weatherInfo.getResult().get(0).getAirCondition()));
                     }
 
                     @Override
@@ -159,6 +149,10 @@ public class WeatherInfoActivity extends BaseActivity implements SensorEventList
     public class Handler {
         public void airConditionClick(View view) {
             getAirCondition(view);
+        }
+
+        public void pickCity(View view) {
+            startActivity(new Intent(WeatherInfoActivity.this, PickTargetCityActivity.class));
         }
     }
 

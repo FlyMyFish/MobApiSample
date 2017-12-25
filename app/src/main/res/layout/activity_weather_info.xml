@@ -14,56 +14,36 @@
         <variable
             name="city"
             type="com.shichen.mobapisample.bean.TargetCity" />
+
         <variable
             name="handler"
-            type="com.shichen.mobapisample.weatherpart.WeatherInfoActivity.Handler"/>
+            type="com.shichen.mobapisample.weatherpart.WeatherInfoActivity.Handler" />
     </data>
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <com.shichen.mobapisample.weatherview.WeatherInfoLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/layout_main"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorPrimaryDark"
         android:orientation="vertical">
-
-        <android.support.design.widget.AppBarLayout
-            android:id="@+id/appbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
-
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-                app:subtitle="@{city.district}"
-                app:title="@{city.city}" />
-        </android.support.design.widget.AppBarLayout>
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:background="#3CA0D0"
+            android:fitsSystemWindows="true">
 
             <com.shichen.mobapisample.weatherview.WeatherImageView
                 android:id="@+id/wv_main"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="240dp"
                 app:weatherInfo="@{weatherInfo}" />
-
-            <android.support.v7.widget.RecyclerView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginBottom="@dimen/normal_top_blank_block"
-                android:layout_marginLeft="@dimen/normal_top_blank_block"
-                android:layout_marginRight="@dimen/normal_top_blank_block"
-                android:layout_marginTop="150dp"
-                android:background="@drawable/shape_no_stroke_translate_solid_round"
-                android:padding="@dimen/normal_top_blank_block"
-                app:handler="@{handler}"
-                app:weatherBean="@{weatherBean}" />
-
         </RelativeLayout>
 
-    </LinearLayout>
+        <android.support.v7.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:handler="@{handler}"
+            app:weatherBean="@{weatherBean}" />
+    </com.shichen.mobapisample.weatherview.WeatherInfoLayout>
 </layout>
