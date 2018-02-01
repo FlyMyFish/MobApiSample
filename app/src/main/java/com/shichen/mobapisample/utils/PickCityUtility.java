@@ -2,7 +2,6 @@ package com.shichen.mobapisample.utils;
 
 import android.databinding.BindingAdapter;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.LinearSnapHelper;
 import android.support.v7.widget.RecyclerView;
 
 import com.shichen.mobapisample.bean.AirQuality;
@@ -20,7 +19,7 @@ import com.shichen.mobapisample.weatherpart.PickTargetCityActivity;
 import com.shichen.mobapisample.weatherpart.ProvinceListAdapter;
 import com.shichen.mobapisample.weatherpart.WeatherInfoActivity;
 import com.shichen.mobapisample.weatherpart.WeatherInfoAdapter;
-import com.shichen.mobapisample.weatherview.WeatherImageView;
+import com.shichen.mobapisample.weatherview.WeatherImageSurfaceView;
 import com.shichen.mobapisample.bean.SupportCity;
 import com.shichen.mobapisample.bean.WeatherInfo;
 
@@ -54,7 +53,7 @@ public class PickCityUtility {
     }
 
     @BindingAdapter({"weatherInfo"})
-    public static void setWeatherInfo(WeatherImageView weatherView, WeatherInfo weatherInfo) {
+    public static void setWeatherInfo(WeatherImageSurfaceView weatherView, WeatherInfo weatherInfo) {
         weatherView.setWeatherInfo(weatherInfo);
     }
 

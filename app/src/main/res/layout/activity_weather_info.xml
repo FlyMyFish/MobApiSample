@@ -25,20 +25,14 @@
         android:id="@+id/layout_main"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
         android:orientation="vertical">
 
-        <RelativeLayout
+        <com.shichen.mobapisample.weatherview.WeatherImageSurfaceView
+            android:id="@+id/wv_main"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#3CA0D0"
-            android:fitsSystemWindows="true">
-
-            <com.shichen.mobapisample.weatherview.WeatherImageView
-                android:id="@+id/wv_main"
-                android:layout_width="match_parent"
-                android:layout_height="240dp"
-                app:weatherInfo="@{weatherInfo}" />
-        </RelativeLayout>
+            android:layout_height="240dp"
+            app:weatherInfo="@{weatherInfo}" />
 
         <android.support.v7.widget.RecyclerView
             android:layout_width="match_parent"

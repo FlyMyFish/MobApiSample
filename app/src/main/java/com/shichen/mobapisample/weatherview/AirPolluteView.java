@@ -49,8 +49,8 @@ public class AirPolluteView extends View {
         mBlur = new BlurMaskFilter(20, BlurMaskFilter.Blur.NORMAL);
         this.context = context;
         TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.AirPolluteView);
-        maxPollute = ta.getInt(R.styleable.AirPolluteView_maxPollute, 300);
-        currentPollute = ta.getInt(R.styleable.AirPolluteView_currentPollute, 300);
+        maxPollute = ta.getInt(R.styleable.AirPolluteView_maxPollute, 500);
+        currentPollute = ta.getInt(R.styleable.AirPolluteView_currentPollute, 500);
         qualityStr = ta.getString(R.styleable.AirPolluteView_qualityStr);
     }
 

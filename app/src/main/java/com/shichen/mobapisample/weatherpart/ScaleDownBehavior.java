@@ -7,7 +7,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 
-import com.shichen.mobapisample.weatherview.WeatherImageView;
+import com.shichen.mobapisample.weatherview.WeatherImageSurfaceView;
 
 /**
  * Created by shichen on 2017/12/25.
@@ -15,18 +15,18 @@ import com.shichen.mobapisample.weatherview.WeatherImageView;
  * @author shichen 754314442@qq.com
  */
 
-public class ScaleDownBehavior extends CoordinatorLayout.Behavior<WeatherImageView>{
+public class ScaleDownBehavior extends CoordinatorLayout.Behavior<WeatherImageSurfaceView>{
     public ScaleDownBehavior(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
     @Override
-    public boolean layoutDependsOn(CoordinatorLayout parent, WeatherImageView child, View dependency) {
+    public boolean layoutDependsOn(CoordinatorLayout parent, WeatherImageSurfaceView child, View dependency) {
         return dependency instanceof RecyclerView;
     }
 
     @Override
-    public boolean onDependentViewChanged(CoordinatorLayout parent, WeatherImageView child, View dependency) {
+    public boolean onDependentViewChanged(CoordinatorLayout parent, WeatherImageSurfaceView child, View dependency) {
         if (dependency instanceof RecyclerView){
             RecyclerView dependencyT=(RecyclerView) dependency;
             Log.d("ScrollY",dependencyT.getScrollY()+"");

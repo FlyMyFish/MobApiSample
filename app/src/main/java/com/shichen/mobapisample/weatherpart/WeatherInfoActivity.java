@@ -1,6 +1,5 @@
 package com.shichen.mobapisample.weatherpart;
 
-import android.annotation.TargetApi;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
@@ -16,9 +15,8 @@ import android.support.v4.util.Pair;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 
 import com.shichen.mobapisample.R;
 import com.shichen.mobapisample.bean.AirQuality;
@@ -26,11 +24,12 @@ import com.shichen.mobapisample.bean.TargetCity;
 import com.shichen.mobapisample.bean.WeatherInfo;
 import com.shichen.mobapisample.config.BaseActivity;
 import com.shichen.mobapisample.config.Config;
+import com.shichen.mobapisample.cookbookpart.CookBookMenuActivity;
 import com.shichen.mobapisample.databinding.ActivityWeatherInfoBinding;
 import com.shichen.mobapisample.utils.SharePreferenceUtils;
 import com.shichen.mobapisample.weatherapi.IAirQualityApi;
 import com.shichen.mobapisample.weatherapi.IWeatherApi;
-import com.shichen.mobapisample.weatherview.WeatherImageView;
+import com.shichen.mobapisample.weatherview.WeatherImageSurfaceView;
 
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -122,9 +121,15 @@ public class WeatherInfoActivity extends BaseActivity implements SensorEventList
 
                     @Override
                     public void onNext(@NonNull WeatherInfo weatherInfo) {
+                        if (weatherInfo == null) {
+                            return;
+                        }
+                        if (weatherInfo.getResult() == null) {
+                            return;
+                        }
                         binding.setWeatherInfo(weatherInfo);
                         binding.setWeatherBean(weatherInfo.getResult().get(0));
-                        binding.layoutMain.setBackgroundColor(WeatherImageView.parseColor(weatherInfo.getResult().get(0).getAirCondition()));
+                        binding.layoutMain.setBackgroundColor(WeatherImageSurfaceView.parseColor(weatherInfo.getResult().get(0).getAirCondition()));
                     }
 
                     @Override
@@ -143,6 +148,21 @@ public class WeatherInfoActivity extends BaseActivity implements SensorEventList
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_weather_info, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        super.onOptionsItemSelected(item);
+        switch (item.getItemId()) {
+            case R.id.item_pick_city:
+                break;
+            case R.id.item_cook_book:
+                startActivity(new Intent(WeatherInfoActivity.this, CookBookMenuActivity.class));
+                break;
+            default:
+                break;
+        }
         return true;
     }
 

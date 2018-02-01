@@ -85,7 +85,7 @@ public class WeatherInfo extends BaseResult{
         public static final String AIR_CONDITION_LIANG="良";
         public static final String AIR_CONDITION_MILD_POLLUTE="轻度污染";
         public static final String AIR_CONDITION_MODERATE_POLLUTE="中度污染";
-        public static final String AIR_CONDITION_SERIOUS_POLLUTE="重度污染";
+        public static final String AIR_CONDITION_SERIOUS_POLLUTE="严重污染";
         /**
          * 城市
          */

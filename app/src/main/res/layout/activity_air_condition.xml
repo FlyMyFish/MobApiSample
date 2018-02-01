@@ -48,7 +48,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="200dp"
                         app:currentPollute="@{airQuality.aqi}"
-                        app:maxPollute="300"
+                        app:maxPollute="500"
                         app:qualityStr="@{airQuality.quality}" />
 
                     <TextView
