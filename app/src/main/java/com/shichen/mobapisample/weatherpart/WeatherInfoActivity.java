@@ -29,7 +29,6 @@ import com.shichen.mobapisample.databinding.ActivityWeatherInfoBinding;
 import com.shichen.mobapisample.utils.SharePreferenceUtils;
 import com.shichen.mobapisample.weatherapi.IAirQualityApi;
 import com.shichen.mobapisample.weatherapi.IWeatherApi;
-import com.shichen.mobapisample.weatherview.WeatherImageSurfaceView;
 
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -129,7 +128,7 @@ public class WeatherInfoActivity extends BaseActivity implements SensorEventList
                         }
                         binding.setWeatherInfo(weatherInfo);
                         binding.setWeatherBean(weatherInfo.getResult().get(0));
-                        binding.layoutMain.setBackgroundColor(WeatherImageSurfaceView.parseColor(weatherInfo.getResult().get(0).getAirCondition()));
+                        binding.layoutMain.setBackgroundColor(binding.wvMain.parseColor(weatherInfo));
                     }
 
                     @Override

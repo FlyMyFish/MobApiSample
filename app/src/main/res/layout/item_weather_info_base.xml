@@ -6,15 +6,16 @@
         <variable
             name="weatherBean"
             type="com.shichen.mobapisample.bean.WeatherInfo.WeatherBean" />
+
         <variable
             name="handler"
-            type="com.shichen.mobapisample.weatherpart.WeatherInfoActivity.Handler"/>
+            type="com.shichen.mobapisample.weatherpart.WeatherInfoActivity.Handler" />
     </data>
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_margin="@dimen/normal_top_blank_block"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/normal_top_blank_block">
 
         <TextView
             android:id="@+id/tv_weather"
@@ -38,8 +39,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:text="@{weatherBean.city}"
             android:onClick="@{handler.pickCity}"
+            android:text="@{weatherBean.city}"
             android:textColor="@color/colorWhite"
             android:textSize="@dimen/normalTextSize" />
 
@@ -55,11 +56,11 @@
                 android:id="@+id/tv_airCondition"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:transitionName="tv_air_condition_"
+                android:onClick="@{handler.airConditionClick}"
                 android:text="@{weatherBean.airCondition}"
                 android:textColor="@color/colorAccent"
-                android:onClick="@{handler.airConditionClick}"
-                android:textSize="@dimen/normalTextSize" />
+                android:textSize="@dimen/normalTextSize"
+                android:transitionName="tv_air_condition_" />
 
             <View
                 android:id="@+id/v_slide_airCondition"
@@ -218,6 +219,7 @@
             android:padding="5dp"
             android:text="@string/future_weather"
             android:textColor="@color/colorWhite"
-            android:textSize="18sp" />
+            android:textSize="16sp"
+            android:textStyle="bold" />
     </RelativeLayout>
 </layout>
