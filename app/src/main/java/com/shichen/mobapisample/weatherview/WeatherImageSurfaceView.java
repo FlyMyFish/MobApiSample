@@ -6,12 +6,12 @@ import android.graphics.Color;
 import android.graphics.LinearGradient;
 import android.graphics.Paint;
 import android.graphics.Path;
-import android.graphics.RadialGradient;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Shader;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
@@ -448,7 +448,7 @@ public class WeatherImageSurfaceView extends SurfaceView implements SurfaceHolde
         private Paint mPaint;
         private boolean colorDark = false;
         private int airPaintColor = 0xFFFFFFFF;
-        Calendar c = Calendar.getInstance();
+        Calendar c;
 
         public void setAirPaintColor(int airPaintColor) {
             this.airPaintColor = airPaintColor;
@@ -471,13 +471,15 @@ public class WeatherImageSurfaceView extends SurfaceView implements SurfaceHolde
             } else {
                 mPaint.setColor(airPaintColor);
             }
+            c=Calendar.getInstance();
             int hour = c.get(Calendar.HOUR_OF_DAY);
             mPaint.setColor(parseSunColor(hour));
             final int sunLineCount = 12;
             float lineW = widthF / 12 / 12;
             float lineH = widthF / 4 / 8;
-            float cx = widthF / 8 + widthF * (Math.abs(12.0f - (float) hour) / 6);
-            float cy = widthF / 4 + widthF / 4 * (Math.abs(12.0f - (float) hour) / 6);
+            float cx = widthF / 8 + widthF / 3 * 2 * (Math.abs((float) hour-7.0f) / 12);
+            Log.d("SunDraw", "cx=" + cx);
+            float cy = widthF / 8 + widthF / 4 * (Math.abs(12.0f - (float) hour) / 6);
             float rb = widthF / 8;
             float rs = widthF / 8 - lineH;
             canvas.drawCircle(cx, cy, widthF / 12, mPaint);
@@ -566,7 +568,7 @@ public class WeatherImageSurfaceView extends SurfaceView implements SurfaceHolde
             } else {
                 mPaint.setColor(airPaintColor);
             }
-            float radiusF = totalH / 8;
+            float radiusF = totalH / 12;
             RectF rectF = new RectF();
             rectF.set(xF, yF + totalH - radiusF * 2, xF + radiusF * 2, yF + totalH);
             canvas.drawArc(rectF, 180, -180, false, mPaint);
