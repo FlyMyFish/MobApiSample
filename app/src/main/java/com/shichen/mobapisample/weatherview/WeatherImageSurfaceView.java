@@ -43,13 +43,11 @@ public class WeatherImageSurfaceView extends SurfaceView implements SurfaceHolde
      * SurfaceHolder是SurfaceView控制器，用来操作SurfaceView
      */
     private SurfaceHolder mHolder;
-    private Canvas mCanvas;
     private boolean mIsDrawing;
     private Paint mPaint;
     private float radius;
     private int timeTag;
     private float density;
-    private WeatherInfo weatherInfo;
     private WeatherConfig weatherConfig;
     private int parentTransitionX;
     private int parentTransitionY;
@@ -100,7 +98,6 @@ public class WeatherImageSurfaceView extends SurfaceView implements SurfaceHolde
      * @param weatherInfo 天气信息
      */
     public void setWeatherInfo(WeatherInfo weatherInfo) {
-        this.weatherInfo = weatherInfo;
         parseWeatherInfo(weatherInfo, weatherConfig);
         if (weatherInfo == null) {
             return;
@@ -222,15 +219,8 @@ public class WeatherImageSurfaceView extends SurfaceView implements SurfaceHolde
             default:
                 break;
         }
-        if (weatherInfo.getResult().get(0).getAirCondition().equals(WeatherInfo.WeatherBean.AIR_CONDITION_YOU) || weatherInfo.getResult().get(0).getAirCondition().equals(WeatherInfo.WeatherBean.AIR_CONDITION_LIANG)) {
-            weatherConfig.haveHaze = false;
-        } else {
-            weatherConfig.haveHaze = true;
-        }
-    }
-
-    public int getAirPolluteColor() {
-        return airPolluteColor;
+        weatherConfig.haveHaze = !(weatherInfo.getResult().get(0).getAirCondition().equals(WeatherInfo.WeatherBean.AIR_CONDITION_YOU) ||
+                weatherInfo.getResult().get(0).getAirCondition().equals(WeatherInfo.WeatherBean.AIR_CONDITION_LIANG));
     }
 
     /**
@@ -331,13 +321,15 @@ public class WeatherImageSurfaceView extends SurfaceView implements SurfaceHolde
                 translateY = Float.valueOf(String.valueOf(Math.sin(Math.PI * 2 * timeTag / 300) * radius));
             }
         } catch (InterruptedException e) {
-
+            e.printStackTrace();
         }
     }
 
+    private Canvas mCanvas;
+
     private void draw() {
+        mCanvas = mHolder.lockCanvas();
         try {
-            mCanvas = mHolder.lockCanvas();
             if (mCanvas == null) {
                 return;
             }
@@ -395,9 +387,7 @@ public class WeatherImageSurfaceView extends SurfaceView implements SurfaceHolde
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            if (mCanvas != null) {
-                mHolder.unlockCanvasAndPost(mCanvas);
-            }
+            mHolder.unlockCanvasAndPost(mCanvas);
         }
     }
 
@@ -471,13 +461,13 @@ public class WeatherImageSurfaceView extends SurfaceView implements SurfaceHolde
             } else {
                 mPaint.setColor(airPaintColor);
             }
-            c=Calendar.getInstance();
+            c = Calendar.getInstance();
             int hour = c.get(Calendar.HOUR_OF_DAY);
             mPaint.setColor(parseSunColor(hour));
             final int sunLineCount = 12;
             float lineW = widthF / 12 / 12;
             float lineH = widthF / 4 / 8;
-            float cx = widthF / 8 + widthF / 3 * 2 * (Math.abs((float) hour-7.0f) / 12);
+            float cx = widthF / 8 + widthF / 3 * 2 * (Math.abs((float) hour - 7.0f) / 12);
             Log.d("SunDraw", "cx=" + cx);
             float cy = widthF / 8 + widthF / 4 * (Math.abs(12.0f - (float) hour) / 6);
             float rb = widthF / 8;
