@@ -173,6 +173,10 @@ public class WeatherInfoActivity extends BaseActivity implements SensorEventList
         public void pickCity(View view) {
             startActivity(new Intent(WeatherInfoActivity.this, PickTargetCityActivity.class));
         }
+
+        public void cookBook(View view){
+            startActivity(new Intent(WeatherInfoActivity.this,CookBookMenuActivity.class));
+        }
     }
 
     private void getAirCondition(final View view) {

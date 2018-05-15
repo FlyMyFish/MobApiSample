@@ -1,6 +1,7 @@
 package com.shichen.mobapisample.weatherview;
 
 import android.content.Context;
+import android.graphics.BlurMaskFilter;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.LinearGradient;
@@ -300,7 +301,7 @@ public class WeatherImageSurfaceView extends SurfaceView implements SurfaceHolde
 
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-
+        Log.d(getClass().getCanonicalName(), "surfaceChanged");
     }
 
     @Override
@@ -436,6 +437,7 @@ public class WeatherImageSurfaceView extends SurfaceView implements SurfaceHolde
 
     private static class SunDraw {
         private Paint mPaint;
+        private Paint lightPaint;
         private boolean colorDark = false;
         private int airPaintColor = 0xFFFFFFFF;
         Calendar c;
@@ -453,6 +455,12 @@ public class WeatherImageSurfaceView extends SurfaceView implements SurfaceHolde
             mPaint.setAntiAlias(true);
             mPaint.setColor(Color.WHITE);
             mPaint.setStyle(Paint.Style.FILL);
+            mPaint.setMaskFilter(new BlurMaskFilter(50, BlurMaskFilter.Blur.SOLID));
+            //Blur.INNER——内发光;Blur.SOLID——外发光;Blur.NORMAL——内外发光;Blur.OUTER——仅显示发光效果
+            lightPaint = new Paint();
+            lightPaint.setAntiAlias(true);
+            lightPaint.setColor(Color.WHITE);
+            lightPaint.setStyle(Paint.Style.FILL);
         }
 
         private void draw(Canvas canvas, float widthF, double rotate) {
@@ -464,12 +472,14 @@ public class WeatherImageSurfaceView extends SurfaceView implements SurfaceHolde
             c = Calendar.getInstance();
             int hour = c.get(Calendar.HOUR_OF_DAY);
             mPaint.setColor(parseSunColor(hour));
+            lightPaint.setColor(parseSunColor(hour));
+            int minute = hour * 60 + c.get(Calendar.MINUTE);
             final int sunLineCount = 12;
             float lineW = widthF / 12 / 12;
             float lineH = widthF / 4 / 8;
-            float cx = widthF / 8 + widthF / 3 * 2 * (Math.abs((float) hour - 7.0f) / 12);
+            float cx = widthF / 8 + widthF / 3 * 2 * (Math.abs((float) minute - 7.0f * 60) / 12 / 60);
             Log.d("SunDraw", "cx=" + cx);
-            float cy = widthF / 8 + widthF / 4 * (Math.abs(12.0f - (float) hour) / 6);
+            float cy = widthF / 8 + widthF / 4 * (Math.abs(12.0f * 60 - (float) minute) / 6 / 60);
             float rb = widthF / 8;
             float rs = widthF / 8 - lineH;
             canvas.drawCircle(cx, cy, widthF / 12, mPaint);
@@ -481,16 +491,16 @@ public class WeatherImageSurfaceView extends SurfaceView implements SurfaceHolde
                 path.lineTo(Float.valueOf(String.valueOf(cx + rs * Math.sin(rotate) - lineW / 2 * Math.cos(rotate))), Float.valueOf(String.valueOf(cy - rs * Math.cos(rotate) - lineW / 2 * Math.sin(rotate))));
                 path.close();
                 canvas.rotate(30, cx, cy);
-                canvas.drawPath(path, mPaint);
+                canvas.drawPath(path, lightPaint);
             }
         }
     }
 
 
     private static int parseSunColor(int hour) {
-        if (hour > 7 && hour <= 10) {
+        if (hour > MORNING_START && hour <=MORNING_END) {
             return 0xFFFFD467;
-        } else if (hour > 10 && hour < 17) {
+        } else if (hour >MORNING_END && hour < AFTERNOON_HOUR) {
             return 0xFFFEE895;
         } else {
             return 0xFFFF6633;
@@ -622,6 +632,7 @@ public class WeatherImageSurfaceView extends SurfaceView implements SurfaceHolde
         private boolean colorDark = false;
         private int airPaintColor = 0xFFFFFFFF;
         private int hourColor;
+        Calendar c;
 
         public void setAirPaintColor(int airPaintColor) {
             this.airPaintColor = airPaintColor;
@@ -637,13 +648,21 @@ public class WeatherImageSurfaceView extends SurfaceView implements SurfaceHolde
             mPaint.setAntiAlias(true);
             mPaint.setColor(Color.WHITE);
             mPaint.setStyle(Paint.Style.FILL);
+            mPaint.setMaskFilter(new BlurMaskFilter(10, BlurMaskFilter.Blur.SOLID));
         }
 
         private void draw(Canvas canvas, float heightF, int startX, float screenScale) {
+            c = Calendar.getInstance();
+            int hour = c.get(Calendar.HOUR_OF_DAY);
             if (colorDark) {
                 mPaint.setColor(0xFF44555F);
-            } else {
+            } else if (hour >MORNING_START&& hour <=MORNING_END) {
+                //#533328
+                mPaint.setColor(0xFFca4e25);
+            } else if (hour >MORNING_END && hour <AFTERNOON_HOUR) {
                 mPaint.setColor(airPaintColor);
+            } else {
+                mPaint.setColor(0xFFca4e25);
             }
             Path path = new Path();
             path.moveTo(startX, heightF + 100.0f * screenScale);
@@ -763,10 +782,15 @@ public class WeatherImageSurfaceView extends SurfaceView implements SurfaceHolde
         }
     }
 
+    private static final int MORNING_START = 6;
+    private static final int MORNING_END = 8;
+    private static final int AFTERNOON_HOUR = 17;
+
     private static class SkyDraw {
         private Paint mPaint;
         private int hourColor;
         private boolean colorDark = false;
+        Calendar c;
 
         public void setColorDark(boolean colorDark) {
             this.colorDark = colorDark;
@@ -781,17 +805,26 @@ public class WeatherImageSurfaceView extends SurfaceView implements SurfaceHolde
 
         private void draw(Canvas canvas, int width, int height) {
             int skyTopColor, skyBottomColor;
+            c = Calendar.getInstance();
+            int hour = c.get(Calendar.HOUR_OF_DAY);
             if (colorDark) {
                 skyTopColor = 0xFF44555F;
                 skyBottomColor = 0xFFb8b8b8;
-            } else {
+            } else if (hour >MORNING_START&& hour <=MORNING_END) {
+                skyTopColor = 0xFFe8c1b4;
+                skyBottomColor = 0xFFcb775b;
+            } else if (hour >MORNING_END&& hour <AFTERNOON_HOUR) {
                 skyTopColor = 0xFF3CA0D0;
                 skyBottomColor = 0xFFb2cedb;
+            } else {
+                skyTopColor = 0xFFe8c1b4;
+                skyBottomColor = 0xFFcb775b;
             }
             Rect rect = new Rect(-width / 10, -height / 10, width + width / 10, height + height / 10);
             LinearGradient linearGradient = new LinearGradient(-width / 10, -height / 10, 0, height + height / 10, skyTopColor, skyBottomColor, Shader.TileMode.CLAMP);
             mPaint.setShader(linearGradient);
             canvas.drawRect(rect, mPaint);
+            //#87472B bottom 朝阳 //#EEA459 top 朝阳
         }
     }
 

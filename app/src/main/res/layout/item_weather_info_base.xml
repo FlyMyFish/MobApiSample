@@ -44,6 +44,16 @@
             android:textColor="@color/colorWhite"
             android:textSize="@dimen/normalTextSize" />
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/tv_city"
+            android:text="做饭去"
+            android:onClick="@{handler.cookBook}"
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/normalTextSize" />
+
         <LinearLayout
             android:id="@+id/ll_weather_index"
             android:layout_width="match_parent"
