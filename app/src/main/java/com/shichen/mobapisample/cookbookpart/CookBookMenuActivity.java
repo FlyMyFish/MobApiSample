@@ -18,6 +18,7 @@ import com.shichen.mobapisample.R;
 import com.shichen.mobapisample.bean.CookBook;
 import com.shichen.mobapisample.bean.CookBookTab;
 import com.shichen.mobapisample.config.BaseActivity;
+import com.shichen.mobapisample.config.Config;
 import com.shichen.mobapisample.databinding.ActivityCookBookMenuBinding;
 import com.shichen.mobapisample.utils.DividerItemDecoration;
 import com.shichen.mobapisample.utils.SharePreferenceUtils;
@@ -38,12 +39,13 @@ import static com.shichen.mobapisample.cookbookpart.ViewCookBookActivity.VIEW_CO
 
 public class CookBookMenuActivity extends BaseActivity {
     private ActivityCookBookMenuBinding binding;
-    private Handler handler;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_cook_book_menu);
+        //初始化页数
+        binding.setCurPage(1);
         Toolbar toolbar = binding.toolbar;
         setSupportActionBar(toolbar);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -70,7 +72,8 @@ public class CookBookMenuActivity extends BaseActivity {
                     public void onNext(CookBookTab cookBookTab) {
                         disMissLoadingDialog();
                         bindTab(cookBookTab);
-                        searchCookBookList(cookBookTab.getResult().getChilds().get(0).getChilds().get(0), "");
+                        pageState = Config.PAGE_DATA_FOR_LOAD_INIT;
+                        searchCookBookList();
                     }
 
                     @Override
@@ -87,7 +90,7 @@ public class CookBookMenuActivity extends BaseActivity {
                 DividerItemDecoration.VERTICAL_LIST));
         binding.rvCookList.addItemDecoration(new DividerItemDecoration(this,
                 DividerItemDecoration.VERTICAL_LIST));
-        handler = new Handler();
+        Handler handler = new Handler();
         binding.setHandler(handler);
         binding.searchCook.setSubmitButtonEnabled(true);
         //添加下面一句,防止数据两次加载
@@ -95,7 +98,7 @@ public class CookBookMenuActivity extends BaseActivity {
         binding.searchCook.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                searchCookBookList(handler.mChildsBean, query);
+                searchCookBookList();
                 return true;
             }
 
@@ -107,15 +110,18 @@ public class CookBookMenuActivity extends BaseActivity {
         binding.refreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
-                refreshlayout.finishRefresh(2000);
-                //传入false表示刷新失败
+                pageState = Config.PAGE_DATA_FOR_LOAD_REFRESH;
+                //初始化页数
+                binding.setCurPage(1);
+                searchCookBookList();
             }
         });
         binding.refreshLayout.setOnLoadmoreListener(new OnLoadmoreListener() {
             @Override
             public void onLoadmore(RefreshLayout refreshlayout) {
-                refreshlayout.finishLoadmore(2000);
-                //传入false表示加载失败
+                pageState = Config.PAGE_DATA_FOR_LOAD_LOAD_MORE;
+                binding.setCurPage(binding.getCurPage() + 1);
+                searchCookBookList();
             }
         });
     }
@@ -126,6 +132,12 @@ public class CookBookMenuActivity extends BaseActivity {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 binding.setChildsBeanX(cookBookTab.getResult().getChilds().get(tab.getPosition()));
+                if (cookBookTab.getResult().getChilds().get(tab.getPosition()) != null) {
+                    if (cookBookTab.getResult().getChilds().get(tab.getPosition()).getChilds() != null) {
+                        binding.setMChildBean(cookBookTab.getResult().getChilds().get(tab.getPosition()).getChilds().get(0));
+                        binding.setMenuPosition(0);
+                    }
+                }
             }
 
             @Override
@@ -144,11 +156,11 @@ public class CookBookMenuActivity extends BaseActivity {
     }
 
     public class Handler {
-        private CookBookTab.CookBookBean.ChildsBeanX.ChildsBean mChildsBean;
-
-        public void menuClick(CookBookTab.CookBookBean.ChildsBeanX.ChildsBean childsBean) {
-            mChildsBean = childsBean;
-            searchCookBookList(childsBean, "");
+        public void menuClick(CookBookTab.CookBookBean.ChildsBeanX.ChildsBean childsBean,int position) {
+            binding.setMChildBean(childsBean);
+            binding.setCurPage(1);
+            pageState = Config.PAGE_DATA_FOR_LOAD_INIT;
+            searchCookBookList();
         }
 
         public void cookBookClick(CookBook.ResultBean.ListBean listBean, View view) {
@@ -161,14 +173,15 @@ public class CookBookMenuActivity extends BaseActivity {
         }
     }
 
-    private void searchCookBookList(CookBookTab.CookBookBean.ChildsBeanX.ChildsBean childsBean, String keyWord) {
-        handler.mChildsBean = childsBean;
-        if (childsBean == null) {
+    private void searchCookBookList() {
+        if (binding.getMChildBean()==null){
             return;
         }
-        showLoadingDialog("获取菜谱列表");
+        if (pageState == Config.PAGE_DATA_FOR_LOAD_INIT) {
+            showLoadingDialog("获取菜谱列表");
+        }
         getCookBookRetrofit().create(ICookBookApi.class)
-                .getCookBook(1, keyWord, childsBean.getCategoryInfo().getCtgId(), 10)
+                .getCookBook(binding.getCurPage(), binding.searchCook.getQuery().toString(), binding.getMChildBean().getCategoryInfo().getCtgId(), 10)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<CookBook>() {
@@ -179,18 +192,58 @@ public class CookBookMenuActivity extends BaseActivity {
 
                     @Override
                     public void onNext(CookBook cookBook) {
-                        disMissLoadingDialog();
-                        binding.setCookBook(cookBook);
+                        if (pageState == Config.PAGE_DATA_FOR_LOAD_REFRESH) {
+                            if (cookBook.getResult().getList() != null) {
+                                binding.getCookBookList().clear();
+                                binding.getCookBookList().addAll(cookBook.getResult().getList());
+                                binding.rvCookList.getAdapter().notifyDataSetChanged();
+                                binding.refreshLayout.finishRefresh(true);
+                            } else {
+                                binding.refreshLayout.finishRefresh(false);
+                            }
+                        } else if (pageState == Config.PAGE_DATA_FOR_LOAD_LOAD_MORE) {
+                            if (cookBook.getResult().getList() != null) {
+                                if (cookBook.getResult().getList().size() == 0) {
+                                    binding.setCurPage(binding.getCurPage() - 1);
+                                } else {
+                                    binding.getCookBookList().addAll(cookBook.getResult().getList());
+                                    binding.rvCookList.getAdapter().notifyDataSetChanged();
+                                }
+                                binding.refreshLayout.finishLoadmore(true);
+                            } else {
+                                binding.refreshLayout.finishLoadmore(false);
+                            }
+                        } else if (pageState == Config.PAGE_DATA_FOR_LOAD_INIT) {
+                            disMissLoadingDialog();
+                            if (cookBook.getResult().getList() != null) {
+                                binding.setCookBookList(cookBook.getResult().getList());
+                            }else {
+                                binding.getCookBookList().clear();
+                                binding.rvCookList.getAdapter().notifyDataSetChanged();
+                            }
+                        }
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        disMissLoadingDialog();
+                        if (pageState == Config.PAGE_DATA_FOR_LOAD_LOAD_MORE) {
+                            binding.setCurPage(binding.getCurPage() - 1);
+                        }
+                        if (pageState == Config.PAGE_DATA_FOR_LOAD_INIT) {
+                            disMissLoadingDialog();
+                        }
                     }
 
                     @Override
                     public void onComplete() {
-                        disMissLoadingDialog();
+                        if (pageState == Config.PAGE_DATA_FOR_LOAD_INIT) {
+                            disMissLoadingDialog();
+                        }
+                        if (pageState == Config.PAGE_DATA_FOR_LOAD_REFRESH) {
+                            binding.refreshLayout.finishRefresh();
+                        } else if (pageState == Config.PAGE_DATA_FOR_LOAD_LOAD_MORE) {
+                            binding.refreshLayout.finishLoadmore();
+                        }
                     }
                 });
     }

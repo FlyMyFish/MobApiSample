@@ -478,7 +478,6 @@ public class WeatherImageSurfaceView extends SurfaceView implements SurfaceHolde
             float lineW = widthF / 12 / 12;
             float lineH = widthF / 4 / 8;
             float cx = widthF / 8 + widthF / 3 * 2 * (Math.abs((float) minute - 7.0f * 60) / 12 / 60);
-            Log.d("SunDraw", "cx=" + cx);
             float cy = widthF / 8 + widthF / 4 * (Math.abs(12.0f * 60 - (float) minute) / 6 / 60);
             float rb = widthF / 8;
             float rs = widthF / 8 - lineH;

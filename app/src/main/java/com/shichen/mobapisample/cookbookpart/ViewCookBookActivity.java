@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +30,7 @@ import com.shichen.mobapisample.utils.SharePreferenceUtils;
  */
 
 public class ViewCookBookActivity extends BaseActivity {
+    private final String TAG="ViewCookBookActivity";
     public static final String VIEW_COOK_BOOK = "viewCookBook";
     private CookBook.ResultBean.ListBean listBean;
     private ActivityViewCookBookBinding binding;
@@ -38,6 +40,7 @@ public class ViewCookBookActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_view_cook_book);
         listBean = mGson.fromJson(new SharePreferenceUtils(getApplicationContext()).getData(VIEW_COOK_BOOK), CookBook.ResultBean.ListBean.class);
+        Log.d(TAG,listBean.toString());
         binding.setListBean(listBean);
         Toolbar toolbar = binding.toolbar;
         setSupportActionBar(toolbar);

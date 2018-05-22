@@ -21,6 +21,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 
 public class BaseActivity extends AppCompatActivity {
+    protected int pageState=Config.PAGE_DATA_FOR_LOAD_REFRESH;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

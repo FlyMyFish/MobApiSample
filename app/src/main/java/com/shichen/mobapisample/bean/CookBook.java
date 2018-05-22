@@ -1,5 +1,8 @@
 package com.shichen.mobapisample.bean;
 
+import android.text.TextUtils;
+import android.util.Log;
+
 import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.reflect.TypeToken;
@@ -14,6 +17,7 @@ import java.util.List;
  */
 
 public class CookBook extends BaseResult implements Serializable {
+    private static final String TAG="CookBook";
     @SerializedName("msg")
     private String msg;
     @SerializedName("result")
@@ -170,7 +174,14 @@ public class CookBook extends BaseResult implements Serializable {
                 }
 
                 public String getIngredients() {
-                    return ingredients;
+                    if (TextUtils.isEmpty(ingredients)){
+                        return "";
+                    }
+                    String resultStr=ingredients.replace("[","");
+                    resultStr=resultStr.replace("]","");
+                    resultStr=resultStr.replace(",","\n");
+                    Log.d(TAG,resultStr);
+                    return resultStr;
                 }
 
                 public void setIngredients(String ingredients) {

@@ -38,6 +38,7 @@ public class CookBookMenuAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         if (holder instanceof DataView) {
             DataView mHolder = (DataView) holder;
             mHolder.binding.setChildBean(childsBeanX.getChilds().get(position));
+            mHolder.binding.setPosition(mHolder.getAdapterPosition());
             mHolder.binding.setHandler(handler);
         }
     }
