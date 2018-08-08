@@ -2,10 +2,11 @@
 <layout xmlns:bind="http://schemas.android.com/tools">
 
     <data>
-
+        <import type="java.util.List" />
+        
         <variable
-            name="cookBook"
-            type="com.shichen.mobapisample.bean.CookBook" />
+            name="cookBookList"
+            type="List&lt;com.shichen.mobapisample.bean.CookBook.ResultBean.ListBean>"/>
 
         <variable
             name="cookBookTab"
@@ -18,6 +19,18 @@
         <variable
             name="handler"
             type="com.shichen.mobapisample.cookbookpart.CookBookMenuActivity.Handler" />
+
+        <variable
+            name="curPage"
+            type="java.lang.Integer"/>
+
+        <variable
+            name="mChildBean"
+            type="com.shichen.mobapisample.bean.CookBookTab.CookBookBean.ChildsBeanX.ChildsBean"/>
+
+        <variable
+            name="menuPosition"
+            type="Integer"/>
     </data>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -89,7 +102,7 @@
                         android:id="@+id/rv_cook_list"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        app:cookBook="@{cookBook}"
+                        app:cookBook="@{cookBookList}"
                         app:handler="@{handler}" />
 
                     <com.scwang.smartrefresh.layout.footer.ClassicsFooter

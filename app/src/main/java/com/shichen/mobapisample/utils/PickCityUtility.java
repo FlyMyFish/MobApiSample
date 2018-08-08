@@ -1,9 +1,13 @@
 package com.shichen.mobapisample.utils;
 
 import android.databinding.BindingAdapter;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.TextView;
 
+import com.shichen.mobapisample.R;
 import com.shichen.mobapisample.bean.AirQuality;
 import com.shichen.mobapisample.bean.CookBook;
 import com.shichen.mobapisample.bean.CookBookTab;
@@ -82,14 +86,32 @@ public class PickCityUtility {
     }
 
     @BindingAdapter({"cookBook", "handler"})
-    public static void setCookBook(RecyclerView recyclerView, CookBook cookBook, CookBookMenuActivity.Handler handler) {
+    public static void setCookBook(RecyclerView recyclerView, List<CookBook.ResultBean.ListBean> cookBookList, CookBookMenuActivity.Handler handler) {
         recyclerView.setLayoutManager(new LinearLayoutManager(recyclerView.getContext(), LinearLayoutManager.VERTICAL, false));
-        recyclerView.setAdapter(new CookBookListAdapter(recyclerView.getContext(), cookBook, handler));
+        recyclerView.setAdapter(new CookBookListAdapter(recyclerView.getContext(), cookBookList, handler));
     }
 
     @BindingAdapter({"cookStep"})
     public static void setCookStep(RecyclerView recyclerView, CookBook.ResultBean.ListBean.RecipeBean recipeBean) {
         recyclerView.setLayoutManager(new LinearLayoutManager(recyclerView.getContext(), LinearLayoutManager.VERTICAL, false));
         recyclerView.setAdapter(new CookStepAdapter(recipeBean, recyclerView.getContext()));
+    }
+
+    @BindingAdapter({"textViewChecked"})
+    public static void setTextViewChekced(TextView textView,boolean checked){
+        if (checked){
+            textView.setTextColor(ContextCompat.getColor(textView.getContext(), R.color.colorAccent));
+        }else {
+            textView.setTextColor(ContextCompat.getColor(textView.getContext(), R.color.colorPrimary));
+        }
+    }
+
+    @BindingAdapter({"viewChecked"})
+    public static void setViewChekced(View view, boolean checked){
+        if (checked){
+            view.setBackgroundColor(ContextCompat.getColor(view.getContext(), R.color.colorAccent));
+        }else {
+            view.setBackgroundColor(ContextCompat.getColor(view.getContext(), R.color.colorPrimary));
+        }
     }
 }

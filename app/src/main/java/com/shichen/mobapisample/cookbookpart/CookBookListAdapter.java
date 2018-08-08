@@ -2,6 +2,7 @@ package com.shichen.mobapisample.cookbookpart;
 
 import android.content.Context;
 import android.databinding.DataBindingUtil;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,8 @@ import com.shichen.mobapisample.bean.CookBook;
 import com.shichen.mobapisample.databinding.ItemCookBookListBinding;
 import com.shichen.mobapisample.utils.RequestOptionsUtils;
 
+import java.util.List;
+
 /**
  * Created by shichen on 2017/12/8.
  *
@@ -21,49 +24,44 @@ import com.shichen.mobapisample.utils.RequestOptionsUtils;
 
 public class CookBookListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private Context context;
-    private CookBook cookBook;
+    private List<CookBook.ResultBean.ListBean> cookBookList;
     private CookBookMenuActivity.Handler handler;
 
-    public CookBookListAdapter(Context context, CookBook cookBook, CookBookMenuActivity.Handler handler) {
+    public CookBookListAdapter(Context context, List<CookBook.ResultBean.ListBean> cookBookList, CookBookMenuActivity.Handler handler) {
         this.context = context;
-        this.cookBook = cookBook;
+        this.cookBookList = cookBookList;
         this.handler = handler;
     }
 
+    @NonNull
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         ItemCookBookListBinding binding = DataBindingUtil.inflate(LayoutInflater.from(context), R.layout.item_cook_book_list, parent, false);
         return new DataView(binding);
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull final RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof DataView) {
             final DataView mHolder = (DataView) holder;
             mHolder.binding.setHandler(handler);
-            mHolder.binding.setListBean(cookBook.getResult().getList().get(position));
+            mHolder.binding.setListBean(cookBookList.get(holder.getAdapterPosition()));
             mHolder.binding.llItemParent.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    handler.cookBookClick(cookBook.getResult().getList().get(position), mHolder.binding.imgFood);
+                    handler.cookBookClick(cookBookList.get(holder.getAdapterPosition()), mHolder.binding.imgFood);
                 }
             });
-            Glide.with(context).load(cookBook.getResult().getList().get(position).getThumbnail()).apply(RequestOptionsUtils.rectOption()).into(mHolder.binding.imgFood);
+            Glide.with(context).load(cookBookList.get(holder.getAdapterPosition()).getThumbnail()).apply(RequestOptionsUtils.rectOption()).into(mHolder.binding.imgFood);
         }
     }
 
     @Override
     public int getItemCount() {
-        if (cookBook == null) {
+        if (cookBookList == null) {
             return 0;
         }
-        if (cookBook.getResult() == null) {
-            return 0;
-        }
-        if (cookBook.getResult().getList() == null) {
-            return 0;
-        }
-        return cookBook.getResult().getList().size();
+        return cookBookList.size();
     }
 
     private class DataView extends RecyclerView.ViewHolder {

@@ -1,16 +1,18 @@
 package com.shichen.mobapisample.weatherview;
 
 import android.content.Context;
+import android.graphics.BlurMaskFilter;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.LinearGradient;
 import android.graphics.Paint;
 import android.graphics.Path;
-import android.graphics.RadialGradient;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Shader;
+import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
@@ -32,9 +34,9 @@ import java.util.concurrent.TimeUnit;
  * Created by shichen on 2017/11/8.
  *
  * @author shichen 754314442@qq.com
- *         <p>
- *         使用SurfaceView是为了提升动画性能，曾经使用过FrameLayout以及Drawable，最终效果都不尽如人意，卡顿并且容易崩溃
- *         原因是View的绘制在主线程，而SurfaceView的绘制是在子线程
+ * <p>
+ * 使用SurfaceView是为了提升动画性能，曾经使用过FrameLayout以及Drawable，最终效果都不尽如人意，卡顿并且容易崩溃
+ * 原因是View的绘制在主线程，而SurfaceView的绘制是在子线程
  */
 
 public class WeatherImageSurfaceView extends SurfaceView implements SurfaceHolder.Callback, Runnable {
@@ -42,13 +44,11 @@ public class WeatherImageSurfaceView extends SurfaceView implements SurfaceHolde
      * SurfaceHolder是SurfaceView控制器，用来操作SurfaceView
      */
     private SurfaceHolder mHolder;
-    private Canvas mCanvas;
     private boolean mIsDrawing;
     private Paint mPaint;
     private float radius;
     private int timeTag;
     private float density;
-    private WeatherInfo weatherInfo;
     private WeatherConfig weatherConfig;
     private int parentTransitionX;
     private int parentTransitionY;
@@ -99,8 +99,30 @@ public class WeatherImageSurfaceView extends SurfaceView implements SurfaceHolde
      * @param weatherInfo 天气信息
      */
     public void setWeatherInfo(WeatherInfo weatherInfo) {
-        this.weatherInfo = weatherInfo;
-        parseWeatherInfo();
+        parseWeatherInfo(weatherInfo, weatherConfig);
+        if (weatherInfo == null) {
+            return;
+        }
+        airPolluteColor = parseColor(weatherInfo.getResult().get(0).getAirCondition());
+        if (weatherConfig.haveSun) {
+            if (sunDraw == null) {
+                sunDraw = new SunDraw();
+            }
+        }
+        if (weatherConfig.haveCloud) {
+            if (cloudDraw == null) {
+                cloudDraw = new CloudDraw();
+            }
+        }
+        if (weatherConfig.haveHaze) {
+            if (hazeDraw == null) {
+                hazeDraw = new HazeDraw(getWidth(), getHeight());
+            }
+        }
+        if (cityDraw == null) {
+            cityDraw = new CityDraw(parseSunColor(c.get(Calendar.HOUR_OF_DAY)));
+        }
+        skyDraw = new SkyDraw(parseSunColor(c.get(Calendar.HOUR_OF_DAY)));
     }
 
     private SkyDraw skyDraw;
@@ -112,7 +134,7 @@ public class WeatherImageSurfaceView extends SurfaceView implements SurfaceHolde
     /**
      * 解析天气信息结果用WeatherInfo表现
      */
-    private void parseWeatherInfo() {
+    private void parseWeatherInfo(WeatherInfo weatherInfo, WeatherConfig weatherConfig) {
         if (weatherInfo == null) {
             return;
         }
@@ -198,48 +220,21 @@ public class WeatherImageSurfaceView extends SurfaceView implements SurfaceHolde
             default:
                 break;
         }
-        if (weatherInfo.getResult().get(0).getAirCondition().equals(WeatherInfo.WeatherBean.AIR_CONDITION_YOU) || weatherInfo.getResult().get(0).getAirCondition().equals(WeatherInfo.WeatherBean.AIR_CONDITION_LIANG)) {
-            weatherConfig.haveHaze = false;
-        } else {
-            weatherConfig.haveHaze = false;
-        }
-        airPolluteColor = parseColor(weatherInfo.getResult().get(0).getAirCondition());
-        if (weatherConfig.haveSun) {
-            if (sunDraw == null) {
-                sunDraw = new SunDraw();
-            }
-        }
-        if (weatherConfig.haveCloud) {
-            if (cloudDraw == null) {
-                cloudDraw = new CloudDraw();
-            }
-        }
-        if (weatherConfig.haveHaze) {
-            if (hazeDraw == null) {
-                hazeDraw = new HazeDraw();
-            }
-        }
-        if (cityDraw == null) {
-            cityDraw = new CityDraw(parseSunColor(c.get(Calendar.HOUR_OF_DAY)));
-        }
-        skyDraw = new SkyDraw(parseSunColor(c.get(Calendar.HOUR_OF_DAY)));
-    }
-
-    public int getAirPolluteColor() {
-        return airPolluteColor;
+        weatherConfig.haveHaze = !(weatherInfo.getResult().get(0).getAirCondition().equals(WeatherInfo.WeatherBean.AIR_CONDITION_YOU) ||
+                weatherInfo.getResult().get(0).getAirCondition().equals(WeatherInfo.WeatherBean.AIR_CONDITION_LIANG));
     }
 
     /**
      * 所有指数的颜色
      */
-    public static int[] arcColors = new int[]{0xFF0289c3,
+    public int[] arcColors = new int[]{0xFF0289c3,
             0xFF36BBCE,
             0xFF36BBCE,
             0xFF698dc3,
             0xFF698dc3,
             0xFF8fa3c2};
 
-    public static int parseColor(String airCondition) {
+    public int parseColor(String airCondition) {
         if (airCondition.equals(WeatherInfo.WeatherBean.AIR_CONDITION_YOU)) {
             return arcColors[1];
         } else if (airCondition.equals(WeatherInfo.WeatherBean.AIR_CONDITION_LIANG)) {
@@ -250,6 +245,32 @@ public class WeatherImageSurfaceView extends SurfaceView implements SurfaceHolde
             return arcColors[4];
         } else if (airCondition.equals(WeatherInfo.WeatherBean.AIR_CONDITION_SERIOUS_POLLUTE)) {
             return arcColors[5];
+        } else {
+            return 0xFFFFFFFF;
+        }
+    }
+
+    public int parseColor(WeatherInfo weatherInfo) {
+        if (weatherInfo != null) {
+            if (weatherInfo.getResult() != null) {
+                if (weatherInfo.getResult().get(0) != null) {
+                    WeatherConfig weatherConfigN = new WeatherConfig();
+                    parseWeatherInfo(weatherInfo, weatherConfigN);
+                    if (weatherConfigN.blackCloud || weatherConfigN.haveHaze) {
+                        return 0xFF44555F;
+                    } else {
+                        if (!TextUtils.isEmpty(weatherInfo.getResult().get(0).getAirCondition())) {
+                            return parseColor(weatherInfo.getResult().get(0).getAirCondition());
+                        } else {
+                            return 0xFFFFFFFF;
+                        }
+                    }
+                } else {
+                    return 0xFFFFFFFF;
+                }
+            } else {
+                return 0xFFFFFFFF;
+            }
         } else {
             return 0xFFFFFFFF;
         }
@@ -280,12 +301,14 @@ public class WeatherImageSurfaceView extends SurfaceView implements SurfaceHolde
 
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-
+        Log.d(getClass().getCanonicalName(), "surfaceChanged");
     }
 
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
-        mIsDrawing = false;
+        synchronized (this) {
+            mIsDrawing = false;
+        }
         singleThreadPool.shutdown();
     }
 
@@ -301,68 +324,76 @@ public class WeatherImageSurfaceView extends SurfaceView implements SurfaceHolde
                 translateY = Float.valueOf(String.valueOf(Math.sin(Math.PI * 2 * timeTag / 300) * radius));
             }
         } catch (InterruptedException e) {
-
+            e.printStackTrace();
         }
     }
 
-    private void draw() {
-        try {
-            mCanvas = mHolder.lockCanvas();
-            if (mCanvas == null) {
-                return;
-            }
-            mCanvas.translate(parentTransitionX, parentTransitionY);
-            // SurfaceView背景
-            skyDraw.draw(mCanvas, getWidth(), getHeight());
-            if (weatherConfig.haveSun) {
-                if (weatherConfig.blackCloud || weatherConfig.haveHaze) {
-                    mPaint.setColor(0xFF44555F);
-                    sunDraw.setColorDark(true);
-                } else {
-                    mPaint.setColor(0xFFFFFFFF);
-                    sunDraw.setColorDark(false);
-                }
-                sunDraw.setAirPaintColor(airPolluteColor);
-                sunDraw.draw(mCanvas, getWidth(), rotate);
-            }
-            {
-                if (weatherConfig.blackCloud || weatherConfig.haveHaze) {
-                    mPaint.setColor(0xFF44555F);
-                    cityDraw.setColorDark(true);
-                } else {
-                    mPaint.setColor(0xFFFFFFFF);
-                    cityDraw.setColorDark(false);
-                }
-                cityDraw.setAirPaintColor(airPolluteColor);
-                cityDraw.draw(mCanvas, getHeight() + 20, -120, screenScale);
-            }
+    private Canvas mCanvas;
 
-            if (weatherConfig.haveRain) {
-                drawRain(mCanvas);
-            }
-            if (weatherConfig.haveSnow) {
-                drawSnow(mCanvas);
-            }
-            if (weatherConfig.haveCloud) {
-                if (weatherConfig.blackCloud || weatherConfig.haveHaze) {
-                    mPaint.setColor(0xFF44555F);
-                    cloudDraw.setColorDark(true);
-                } else {
-                    mPaint.setColor(0xFFFFFFFF);
-                    cloudDraw.setColorDark(false);
+    private void draw() {
+        synchronized (this) {
+            mCanvas = mHolder.lockCanvas();
+            try {
+                if (mCanvas == null) {
+                    return;
                 }
-                cloudDraw.setAirPaintColor(airPolluteColor);
-                cloudDraw.draw(mCanvas, getWidth(), translateX, translateY);
+                mCanvas.translate(parentTransitionX, parentTransitionY);
+                // SurfaceView背景
+                skyDraw.draw(mCanvas, getWidth(), getHeight());
+                if (weatherConfig.blackCloud || weatherConfig.haveHaze) {
+                    skyDraw.setColorDark(true);
+                } else {
+                    skyDraw.setColorDark(false);
+                }
+                if (weatherConfig.haveSun) {
+                    if (weatherConfig.blackCloud || weatherConfig.haveHaze) {
+                        mPaint.setColor(0xFF44555F);
+                        sunDraw.setColorDark(true);
+                    } else {
+                        mPaint.setColor(0xFFFFFFFF);
+                        sunDraw.setColorDark(false);
+                    }
+                    sunDraw.setAirPaintColor(airPolluteColor);
+                    sunDraw.draw(mCanvas, getWidth(), rotate);
+                }
+                {
+                    if (weatherConfig.blackCloud || weatherConfig.haveHaze) {
+                        mPaint.setColor(0xFF44555F);
+                        cityDraw.setColorDark(true);
+                    } else {
+                        mPaint.setColor(0xFFFFFFFF);
+                        cityDraw.setColorDark(false);
+                    }
+                    cityDraw.setAirPaintColor(airPolluteColor);
+                    cityDraw.draw(mCanvas, getHeight() + 20, -120, screenScale);
+                }
+
+                if (weatherConfig.haveRain) {
+                    drawRain(mCanvas);
+                }
+                if (weatherConfig.haveSnow) {
+                    drawSnow(mCanvas);
+                }
+                if (weatherConfig.haveCloud) {
+                    if (weatherConfig.blackCloud || weatherConfig.haveHaze) {
+                        mPaint.setColor(0xFF44555F);
+                        cloudDraw.setColorDark(true);
+                    } else {
+                        mPaint.setColor(0xFFFFFFFF);
+                        cloudDraw.setColorDark(false);
+                    }
+                    cloudDraw.setAirPaintColor(airPolluteColor);
+                    cloudDraw.draw(mCanvas, getWidth(), translateX, translateY);
+                }
+                if (weatherConfig.haveHaze) {
+                    hazeDraw.draw(mCanvas, timeTag);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+
             }
-            if (weatherConfig.haveHaze) {
-                hazeDraw.draw(mCanvas, getWidth(), getHeight());
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            if (mCanvas != null) {
-                mHolder.unlockCanvasAndPost(mCanvas);
-            }
+            mHolder.unlockCanvasAndPost(mCanvas);
         }
     }
 
@@ -411,9 +442,10 @@ public class WeatherImageSurfaceView extends SurfaceView implements SurfaceHolde
 
     private static class SunDraw {
         private Paint mPaint;
+        private Paint lightPaint;
         private boolean colorDark = false;
         private int airPaintColor = 0xFFFFFFFF;
-        Calendar c = Calendar.getInstance();
+        Calendar c;
 
         public void setAirPaintColor(int airPaintColor) {
             this.airPaintColor = airPaintColor;
@@ -428,6 +460,12 @@ public class WeatherImageSurfaceView extends SurfaceView implements SurfaceHolde
             mPaint.setAntiAlias(true);
             mPaint.setColor(Color.WHITE);
             mPaint.setStyle(Paint.Style.FILL);
+            mPaint.setMaskFilter(new BlurMaskFilter(50, BlurMaskFilter.Blur.SOLID));
+            //Blur.INNER——内发光;Blur.SOLID——外发光;Blur.NORMAL——内外发光;Blur.OUTER——仅显示发光效果
+            lightPaint = new Paint();
+            lightPaint.setAntiAlias(true);
+            lightPaint.setColor(Color.WHITE);
+            lightPaint.setStyle(Paint.Style.FILL);
         }
 
         private void draw(Canvas canvas, float widthF, double rotate) {
@@ -436,16 +474,19 @@ public class WeatherImageSurfaceView extends SurfaceView implements SurfaceHolde
             } else {
                 mPaint.setColor(airPaintColor);
             }
+            c = Calendar.getInstance();
             int hour = c.get(Calendar.HOUR_OF_DAY);
             mPaint.setColor(parseSunColor(hour));
+            lightPaint.setColor(parseSunColor(hour));
+            int minute = hour * 60 + c.get(Calendar.MINUTE);
             final int sunLineCount = 12;
-            canvas.drawCircle(widthF / 8, widthF / 4, widthF / 12, mPaint);
             float lineW = widthF / 12 / 12;
             float lineH = widthF / 4 / 8;
-            float cx = widthF / 8;
-            float cy = widthF / 4;
+            float cx = widthF / 8 + widthF / 3 * 2 * (Math.abs((float) minute - 7.0f * 60) / 12 / 60);
+            float cy = widthF / 8 + widthF / 4 * (Math.abs(12.0f * 60 - (float) minute) / 6 / 60);
             float rb = widthF / 8;
             float rs = widthF / 8 - lineH;
+            canvas.drawCircle(cx, cy, widthF / 12, mPaint);
             for (int i = 0; i < sunLineCount; i++) {
                 Path path = new Path();
                 path.moveTo(Float.valueOf(String.valueOf(cx + rb * Math.sin(rotate) - lineW / 2 * Math.cos(rotate))), Float.valueOf(String.valueOf(cy - rb * Math.cos(rotate) - lineW / 2 * Math.sin(rotate))));
@@ -454,16 +495,16 @@ public class WeatherImageSurfaceView extends SurfaceView implements SurfaceHolde
                 path.lineTo(Float.valueOf(String.valueOf(cx + rs * Math.sin(rotate) - lineW / 2 * Math.cos(rotate))), Float.valueOf(String.valueOf(cy - rs * Math.cos(rotate) - lineW / 2 * Math.sin(rotate))));
                 path.close();
                 canvas.rotate(30, cx, cy);
-                canvas.drawPath(path, mPaint);
+                canvas.drawPath(path, lightPaint);
             }
         }
     }
 
 
     private static int parseSunColor(int hour) {
-        if (hour > 7 && hour <= 10) {
+        if (hour > MORNING_START && hour <= MORNING_END) {
             return 0xFFFFD467;
-        } else if (hour > 10 && hour < 17) {
+        } else if (hour > MORNING_END && hour < AFTERNOON_HOUR) {
             return 0xFFFEE895;
         } else {
             return 0xFFFF6633;
@@ -531,7 +572,7 @@ public class WeatherImageSurfaceView extends SurfaceView implements SurfaceHolde
             } else {
                 mPaint.setColor(airPaintColor);
             }
-            float radiusF = totalH / 8;
+            float radiusF = totalH / 12;
             RectF rectF = new RectF();
             rectF.set(xF, yF + totalH - radiusF * 2, xF + radiusF * 2, yF + totalH);
             canvas.drawArc(rectF, 180, -180, false, mPaint);
@@ -595,6 +636,7 @@ public class WeatherImageSurfaceView extends SurfaceView implements SurfaceHolde
         private boolean colorDark = false;
         private int airPaintColor = 0xFFFFFFFF;
         private int hourColor;
+        Calendar c;
 
         public void setAirPaintColor(int airPaintColor) {
             this.airPaintColor = airPaintColor;
@@ -610,15 +652,22 @@ public class WeatherImageSurfaceView extends SurfaceView implements SurfaceHolde
             mPaint.setAntiAlias(true);
             mPaint.setColor(Color.WHITE);
             mPaint.setStyle(Paint.Style.FILL);
+            mPaint.setMaskFilter(new BlurMaskFilter(10, BlurMaskFilter.Blur.SOLID));
         }
 
         private void draw(Canvas canvas, float heightF, int startX, float screenScale) {
+            c = Calendar.getInstance();
+            int hour = c.get(Calendar.HOUR_OF_DAY);
             if (colorDark) {
                 mPaint.setColor(0xFF44555F);
-            } else {
+            } else if (hour > MORNING_START && hour <= MORNING_END) {
+                //#533328
+                mPaint.setColor(0xFFca4e25);
+            } else if (hour > MORNING_END && hour < AFTERNOON_HOUR) {
                 mPaint.setColor(airPaintColor);
+            } else {
+                mPaint.setColor(0xFFca4e25);
             }
-            mPaint.setColor(airPaintColor);
             Path path = new Path();
             path.moveTo(startX, heightF + 100.0f * screenScale);
             path.lineTo(startX, heightF - 420.0f * screenScale);
@@ -737,9 +786,19 @@ public class WeatherImageSurfaceView extends SurfaceView implements SurfaceHolde
         }
     }
 
+    private static final int MORNING_START = 6;
+    private static final int MORNING_END = 8;
+    private static final int AFTERNOON_HOUR = 17;
+
     private static class SkyDraw {
         private Paint mPaint;
         private int hourColor;
+        private boolean colorDark = false;
+        Calendar c;
+
+        public void setColorDark(boolean colorDark) {
+            this.colorDark = colorDark;
+        }
 
         private SkyDraw(int hourColor) {
             this.hourColor = hourColor;
@@ -749,28 +808,69 @@ public class WeatherImageSurfaceView extends SurfaceView implements SurfaceHolde
         }
 
         private void draw(Canvas canvas, int width, int height) {
+            int skyTopColor, skyBottomColor;
+            c = Calendar.getInstance();
+            int hour = c.get(Calendar.HOUR_OF_DAY);
+            if (colorDark) {
+                skyTopColor = 0xFF44555F;
+                skyBottomColor = 0xFFb8b8b8;
+            } else if (hour > MORNING_START && hour <= MORNING_END) {
+                skyTopColor = 0xFFe8c1b4;
+                skyBottomColor = 0xFFcb775b;
+            } else if (hour > MORNING_END && hour < AFTERNOON_HOUR) {
+                skyTopColor = 0xFF3CA0D0;
+                skyBottomColor = 0xFFb2cedb;
+            } else {
+                skyTopColor = 0xFFe8c1b4;
+                skyBottomColor = 0xFFcb775b;
+            }
             Rect rect = new Rect(-width / 10, -height / 10, width + width / 10, height + height / 10);
-            LinearGradient linearGradient = new LinearGradient(-width / 10, -height / 10, 0, height + height / 10, 0xFF3CA0D0, 0xFFb2cedb, Shader.TileMode.CLAMP);
+            LinearGradient linearGradient = new LinearGradient(-width / 10, -height / 10, 0, height + height / 10, skyTopColor, skyBottomColor, Shader.TileMode.CLAMP);
             mPaint.setShader(linearGradient);
             canvas.drawRect(rect, mPaint);
+            //#87472B bottom 朝阳 //#EEA459 top 朝阳
         }
     }
 
     private static class HazeDraw {
         private Paint mPaint;
+        /*private List<Integer> positionXList;
+        private List<Integer> positionYList;
+        private List<Integer> lengthList;
+        private List<Integer> speedList;*/
+        private int width;
+        private int height;
 
-        private HazeDraw() {
+        private HazeDraw(int width, int height) {
+            this.width = width;
+            this.height = height;
+            /*positionXList = new ArrayList<>();
+            positionYList = new ArrayList<>();
+            lengthList = new ArrayList<>();
+            speedList = new ArrayList<>();*/
             mPaint = new Paint();
             mPaint.setAntiAlias(true);
             mPaint.setStyle(Paint.Style.FILL);
+            /*Random random = new Random();
+            for (int i = 0; i < 28; i++) {
+                positionXList.add(random.nextInt(width + width / 6) % (width + width / 6 + width / 6 + 1) - width / 6);
+                positionYList.add(random.nextInt(height / 4 * 3));
+                lengthList.add(random.nextInt(width / 8) % (width / 8 - width / 20 + 1) + width / 20);
+                speedList.add(random.nextInt(2) + 1);
+            }*/
         }
 
-        private void draw(Canvas canvas, int width, int height) {
+        private void draw(Canvas canvas, int timeTag) {
+            int heightL = height / 60;
             Rect rect = new Rect(-width / 10, -height / 10, width + width / 10, height + height / 10);
-            mPaint.setColor(0x99999999);
-            RadialGradient radialGradient = new RadialGradient(width / 2, height / 2, width / 8, 0xffffffff, 0x00ffffff, Shader.TileMode.CLAMP);
-            mPaint.setShader(radialGradient);
-            canvas.drawCircle(width / 2, height / 2, width / 4, mPaint);
+            mPaint.setColor(0xbb333333);
+            canvas.drawRect(rect, mPaint);
+            /*canvas.save();
+            mPaint.setColor(0xbb999999);
+            for (int i = 0; i < 28; i++) {
+                RectF rectF = new RectF((positionXList.get(i) + timeTag * speedList.get(i)) % (width + width / 3) - width / 5, positionYList.get(i), (positionXList.get(i) + lengthList.get(i) + timeTag * speedList.get(i)) % (width + width / 3) - width / 5, positionYList.get(i) + heightL);
+                canvas.drawRoundRect(rectF, heightL / 2, heightL / 2, mPaint);
+            }*/
         }
     }
 }

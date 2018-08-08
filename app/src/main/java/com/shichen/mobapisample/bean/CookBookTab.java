@@ -194,6 +194,16 @@ public class CookBookTab extends BaseResult implements Serializable {
                     @SerializedName("parentId")
                     private String parentId;
 
+                    private boolean checked;
+
+                    public boolean isChecked() {
+                        return checked;
+                    }
+
+                    public void setChecked(boolean checked) {
+                        this.checked = checked;
+                    }
+
                     public String getCtgId() {
                         return ctgId;
                     }
